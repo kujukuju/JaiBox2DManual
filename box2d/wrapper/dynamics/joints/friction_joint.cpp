@@ -7,8 +7,8 @@ b2Joint* World_create_friction_joint(
     bool collide_connected,
     b2Vec2 local_anchor_a,
     b2Vec2 local_anchor_b,
-    f32 max_force,
-    f32 max_torque
+    float max_force,
+    float max_torque
 ) {
     b2FrictionJointDef def;
     def.bodyA = body_a;
@@ -41,15 +41,15 @@ const b2Vec2* FrictionJoint_get_local_anchor_a(const b2FrictionJoint* self) {
 const b2Vec2* FrictionJoint_get_local_anchor_b(const b2FrictionJoint* self) {
     return &self->GetLocalAnchorB();
 }
-void FrictionJoint_set_max_force(b2FrictionJoint* self, f32 force) {
+void FrictionJoint_set_max_force(b2FrictionJoint* self, float force) {
     self->SetMaxForce(force);
 }
-f32 FrictionJoint_get_max_force(const b2FrictionJoint* self) {
+float FrictionJoint_get_max_force(const b2FrictionJoint* self) {
     return self->GetMaxForce();
 }
-void FrictionJoint_set_max_torque(b2FrictionJoint* self, f32 torque) {
+void FrictionJoint_set_max_torque(b2FrictionJoint* self, float torque) {
     self->SetMaxTorque(torque);
 }
-f32 FrictionJoint_get_max_torque(const b2FrictionJoint* self) {
+float FrictionJoint_get_max_torque(const b2FrictionJoint* self) {
     return self->GetMaxTorque();
 }

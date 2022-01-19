@@ -160,17 +160,17 @@ void QueryCallbackLink_drop(QueryCallbackLink* self) {
     delete self;
 }
 
-//typedef f32 (*RCCReportFixtureCB)(RustObject, b2Fixture*,
-//                                  const b2Vec2*, const b2Vec2*, f32);
+//typedef float (*RCCReportFixtureCB)(RustObject, b2Fixture*,
+//                                  const b2Vec2*, const b2Vec2*, float);
 
 //struct RayCastCallbackLink: public b2RayCastCallback {
 //    RayCastCallbackLink() {}
 //    ~RayCastCallbackLink() {}
 //
-//    f32 ReportFixture(b2Fixture* fixture,
+//    float ReportFixture(b2Fixture* fixture,
 //                      const b2Vec2& point,
 //                      const b2Vec2& normal,
-//                      f32 fraction) {
+//                      float fraction) {
 //        return report_fixture(object, fixture, &point, &normal, fraction);
 //    }
 //

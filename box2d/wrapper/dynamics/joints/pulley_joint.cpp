@@ -9,9 +9,9 @@ b2Joint* World_create_pulley_joint(
     b2Vec2 ground_anchor_b,
     b2Vec2 local_anchor_a,
     b2Vec2 local_anchor_b,
-    f32 length_a,
-    f32 length_b,
-    f32 ratio
+    float length_a,
+    float length_b,
+    float ratio
 ) {
     b2PulleyJointDef def;
     def.bodyA = body_a;
@@ -34,7 +34,7 @@ void PulleyJointDef_initialize(b2PulleyJointDef* self,
                                const b2Vec2* ground_anchor_b,
                                const b2Vec2* anchor_a,
                                const b2Vec2* anchor_b,
-                               f32 ratio) {
+                               float ratio) {
     self->Initialize(body_a, body_b,
                      *ground_anchor_a, *ground_anchor_b,
                      *anchor_a, *anchor_b,
@@ -54,18 +54,18 @@ b2Vec2 PulleyJoint_get_ground_anchor_a(const b2PulleyJoint* self) {
 b2Vec2 PulleyJoint_get_ground_anchor_b(const b2PulleyJoint* self) {
     return self->GetGroundAnchorB();
 }
-f32 PulleyJoint_get_length_a(const b2PulleyJoint* self) {
+float PulleyJoint_get_length_a(const b2PulleyJoint* self) {
     return self->GetLengthA();
 }
-f32 PulleyJoint_get_length_b(const b2PulleyJoint* self) {
+float PulleyJoint_get_length_b(const b2PulleyJoint* self) {
     return self->GetLengthB();
 }
-f32 PulleyJoint_get_ratio(const b2PulleyJoint* self) {
+float PulleyJoint_get_ratio(const b2PulleyJoint* self) {
     return self->GetRatio();
 }
-f32 PulleyJoint_get_current_length_a(const b2PulleyJoint* self) {
+float PulleyJoint_get_current_length_a(const b2PulleyJoint* self) {
     return self->GetCurrentLengthA();
 }
-f32 PulleyJoint_get_current_length_b(const b2PulleyJoint* self) {
+float PulleyJoint_get_current_length_b(const b2PulleyJoint* self) {
     return self->GetCurrentLengthB();
 }

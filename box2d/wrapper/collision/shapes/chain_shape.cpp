@@ -22,21 +22,17 @@ void ChainShape_clear(b2ChainShape* self) {
 
 void ChainShape_create_loop(b2ChainShape* self,
                             const b2Vec2* vertices,
-                            i32 count) {
+                            int32_t count) {
     self->CreateLoop(vertices, count);
 }
 
 void ChainShape_create_chain(b2ChainShape* self,
                              const b2Vec2* vertices,
-                             i32 count) {
+                             int32_t count) {
     self->CreateChain(vertices, count);
 }
 
-const b2Vec2* ChainShape_get_vertices_const(const b2ChainShape* self) {
-    return self->m_vertices;
-}
-
-i32 ChainShape_get_vertex_count(const b2ChainShape* self) {
+int32_t ChainShape_get_vertex_count(const b2ChainShape* self) {
     return self->m_count;
 }
 
@@ -69,6 +65,6 @@ void ChainShape_set_next_vertex(b2ChainShape* self, const b2Vec2* next) {
 }
 
 void ChainShape_get_child_edge(const b2ChainShape* self,
-                               b2EdgeShape* edge, i32 index) {
+                               b2EdgeShape* edge, int32_t index) {
     self->GetChildEdge(edge, index);
 }

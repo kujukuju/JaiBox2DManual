@@ -1,8 +1,8 @@
 #include "common/draw.h"
 
-//typedef void (*DrawPolygonCB)(RustObject, const b2Vec2*, i32, const b2Color*);
-//typedef void (*DrawCircleCB)(RustObject, const b2Vec2*, f32, const b2Color*);
-//typedef void (*DrawSolidCircleCB)(RustObject, const b2Vec2*, f32, const b2Vec2*,
+//typedef void (*DrawPolygonCB)(RustObject, const b2Vec2*, int32_t, const b2Color*);
+//typedef void (*DrawCircleCB)(RustObject, const b2Vec2*, float, const b2Color*);
+//typedef void (*DrawSolidCircleCB)(RustObject, const b2Vec2*, float, const b2Vec2*,
 //                                  const b2Color*);
 //typedef void (*DrawSegmentCB)(RustObject, const b2Vec2*, const b2Vec2*,
 //                              const b2Color*);
@@ -12,22 +12,22 @@
 //    DrawLink(): b2Draw() {}
 //    ~DrawLink() {}
 //
-//    void DrawPolygon(const b2Vec2* vertices, i32 count,
+//    void DrawPolygon(const b2Vec2* vertices, int32_t count,
 //                     const b2Color& color) {
 //        draw_polygon(object, vertices, count, &color);
 //    }
 //
-//    void DrawSolidPolygon(const b2Vec2* vertices, i32 count,
+//    void DrawSolidPolygon(const b2Vec2* vertices, int32_t count,
 //                          const b2Color& color) {
 //        draw_solid_polygon(object, vertices, count, &color);
 //    }
 //
-//    void DrawCircle(const b2Vec2& center, f32 radius,
+//    void DrawCircle(const b2Vec2& center, float radius,
 //                    const b2Color& color) {
 //        draw_circle(object, &center, radius, &color);
 //    }
 //
-//    void DrawSolidCircle(const b2Vec2& center, f32 radius,
+//    void DrawSolidCircle(const b2Vec2& center, float radius,
 //                         const b2Vec2& axis, const b2Color& color) {
 //        draw_solid_circle(object, &center, radius, &axis, &color);
 //    }
@@ -79,6 +79,6 @@
 //    self->draw_transform = dt;
 //}
 //
-//void DrawLink_set_flags(DrawLink* self, u32 flags) {
+//void DrawLink_set_flags(DrawLink* self, uint32_t flags) {
 //    self->SetFlags(flags);
 //}

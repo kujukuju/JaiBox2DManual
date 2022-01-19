@@ -7,9 +7,9 @@ b2Joint* World_create_distance_joint(
     bool collide_connected,
     b2Vec2 local_anchor_a,
     b2Vec2 local_anchor_b,
-    f32 length,
-    f32 frequency,
-    f32 damping_ratio
+    float length,
+    float frequency,
+    float damping_ratio
 ) {
     b2DistanceJointDef def;
     def.bodyA = body_a;
@@ -46,22 +46,22 @@ const b2Vec2* DistanceJoint_get_local_anchor_b(
                                         const b2DistanceJoint* self) {
     return &self->GetLocalAnchorB();
 }
-void DistanceJoint_set_length(b2DistanceJoint* self, f32 length) {
+void DistanceJoint_set_length(b2DistanceJoint* self, float length) {
     self->SetLength(length);
 }
-f32 DistanceJoint_get_length(const b2DistanceJoint* self) {
+float DistanceJoint_get_length(const b2DistanceJoint* self) {
     return self->GetLength();
 }
-void DistanceJoint_set_frequency(b2DistanceJoint* self, f32 hz) {
+void DistanceJoint_set_frequency(b2DistanceJoint* self, float hz) {
     self->SetFrequency(hz);
 }
-f32 DistanceJoint_get_frequency(const b2DistanceJoint* self) {
+float DistanceJoint_get_frequency(const b2DistanceJoint* self) {
     return self->GetFrequency();
 }
 void DistanceJoint_set_damping_ratio(b2DistanceJoint* self,
-                                     f32 ratio) {
+                                     float ratio) {
     self->SetDampingRatio(ratio);
 }
-f32 DistanceJoint_get_damping_ratio(const b2DistanceJoint* self) {
+float DistanceJoint_get_damping_ratio(const b2DistanceJoint* self) {
     return self->GetDampingRatio();
 }

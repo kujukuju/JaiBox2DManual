@@ -204,7 +204,7 @@ b2Draw :: struct {
 	m_drawFlags: b2DrawFlag;
 }
 
-b2DrawFlag :: enum {
+b2DrawFlag :: enum u32 {
     e_shapeBit :: 0x0001;
     e_jointBit :: 0x0002;
     e_aabbBit :: 0x0004;
@@ -390,7 +390,7 @@ b2JointDef :: struct {
 	/	bool collideConnected;
 }
 
-b2JointType :: enum {
+b2JointType :: enum u32 {
 	e_unknownJoint;
 	e_revoluteJoint;
 	e_prismaticJoint;
@@ -417,7 +417,7 @@ b2Manifold :: struct {
 	pointCount: int32;
 }
 
-b2ManifoldType :: enum {
+b2ManifoldType :: enum u32 {
     e_circles;
     e_faceA;
     e_faceB;
@@ -629,7 +629,7 @@ b2Shape :: struct {
     m_radius: float;
 }
 
-b2ShapeType :: enum {
+b2ShapeType :: enum u32 {
     e_circle :: 0;
     e_edge;
     e_polygon;
@@ -676,7 +676,7 @@ b2Body :: struct {
 	m_userData: b2BodyUserData;
 }
 
-b2BodyType :: enum {
+b2BodyType :: enum u32 {
 	b2_staticBody :: 0;
 	b2_kinematicBody;
 	b2_dynamicBody;

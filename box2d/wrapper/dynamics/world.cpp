@@ -34,9 +34,9 @@ void World_destroy_joint(b2World* self, b2Joint* joint) {
     self->DestroyJoint(joint);
 }
 void World_step(b2World* self,
-                f32 time_step,
-                i32 velocity_iterations,
-                i32 position_iterations) {
+                float time_step,
+                int32_t velocity_iterations,
+                int32_t position_iterations) {
     self->Step(time_step, velocity_iterations, position_iterations);
 }
 void World_clear_forces(b2World* self) {
@@ -58,19 +58,10 @@ void World_ray_cast(const b2World* self,
 b2Body* World_get_body_list(b2World* self) {
     return self->GetBodyList();
 }
-const b2Body* World_get_body_list_const(const b2World* self) {
-    return self->GetBodyList();
-}
 b2Joint* World_get_joint_list(b2World* self) {
     return self->GetJointList();
 }
-const b2Joint* World_get_joint_list_const(const b2World* self) {
-    return self->GetJointList();
-}
 b2Contact* World_get_contact_list(b2World* self) {
-    return self->GetContactList();
-}
-const b2Contact* World_get_contact_list_const(const b2World* self) {
     return self->GetContactList();
 }
 void World_set_allow_sleeping(b2World* self, bool flag) {
@@ -97,25 +88,25 @@ void World_set_sub_stepping(b2World* self, bool flag) {
 bool World_get_sub_stepping(const b2World* self) {
     return self->GetSubStepping();
 }
-i32 World_get_proxy_count(const b2World* self) {
+int32_t World_get_proxy_count(const b2World* self) {
     return self->GetProxyCount();
 }
-i32 World_get_body_count(const b2World* self) {
+int32_t World_get_body_count(const b2World* self) {
     return self->GetBodyCount();
 }
-i32 World_get_joint_count(const b2World* self) {
+int32_t World_get_joint_count(const b2World* self) {
     return self->GetJointCount();
 }
-i32 World_get_contact_count(const b2World* self) {
+int32_t World_get_contact_count(const b2World* self) {
     return self->GetContactCount();
 }
-i32 World_get_tree_height(const b2World* self) {
+int32_t World_get_tree_height(const b2World* self) {
     return self->GetTreeHeight();
 }
-i32 World_get_tree_balance(const b2World* self) {
+int32_t World_get_tree_balance(const b2World* self) {
     return self->GetTreeBalance();
 }
-f32 World_get_tree_quality(const b2World* self) {
+float World_get_tree_quality(const b2World* self) {
     return self->GetTreeQuality();
 }
 void World_set_gravity(b2World* self, const b2Vec2* gravity) {

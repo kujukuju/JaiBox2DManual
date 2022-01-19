@@ -5,7 +5,7 @@ b2Joint* World_create_gear_joint(
     bool collide_connected,
     b2Joint* joint_a,
     b2Joint* joint_b,
-    f32 ratio
+    float ratio
 ) {
     b2GearJointDef def;
     def.collideConnected = collide_connected;
@@ -29,9 +29,9 @@ b2Joint* GearJoint_get_joint_1(b2GearJoint* self) {
 b2Joint* GearJoint_get_joint_2(b2GearJoint* self) {
     return self->GetJoint2();
 }
-void GearJoint_set_ratio(b2GearJoint* self, f32 ratio) {
+void GearJoint_set_ratio(b2GearJoint* self, float ratio) {
     self->SetRatio(ratio);
 }
-f32 GearJoint_get_ratio(const b2GearJoint* self) {
+float GearJoint_get_ratio(const b2GearJoint* self) {
     return self->GetRatio();
 }
