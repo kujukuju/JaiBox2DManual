@@ -257,10 +257,50 @@ generate :: () {
 
     write_entire_file("structs.jai", builder_to_string(*file_builder));
 
-    // print("data %\n", function_data);
+    print("Creating assertgen.cpp file...\n");
 
-    // and then generate a cpp file that prints out the necessary jai file for all the various struct sizes...
-    // and then possibly run that cpp file?
+    reset(*file_builder);
+    append(*file_builder, #string DONE
+#include <iostream>
+#include <fstream>
+
+#include "../box2d/lib.cpp"
+
+int main() {
+    std::ofstream assertFile;
+    assertFile.open("../../asserts.jai");
+    assertFile << "#run {\n";
+    DONE);
+
+    for type: found_types {
+        if array_find(IGNORE_TYPES, type) {
+            continue;
+        }
+        
+        append(*file_builder, "    assertFile << \"    assert(size_of(");
+        append(*file_builder, type);
+        append(*file_builder, ") == \" << sizeof(");
+        append(*file_builder, type);
+        append(*file_builder, ")");
+        append(*file_builder, " << \", \\\"");
+        append(*file_builder, type);
+        append(*file_builder, " must be of size \" << sizeof(");
+        append(*file_builder, type);
+        append(*file_builder, ") << \".\\\");\\n\";\n");
+    }
+
+    append(*file_builder, #string DONE
+    assertFile << "}\n";
+    assertFile.close();
+    return 0;
+}
+    DONE);
+
+    write_entire_file("assertgen/main.cpp", builder_to_string(*file_builder));
+
+    print("Generating asserts.jai...\n");
+
+    success, exit_code, output_string, error_string := os_run_command(tprint("%assertgen/generate_asserts.bat", #filepath), working_directory=tprint("%assertgen/build", #filepath));
 }
 
 #scope_file
@@ -274,3 +314,4 @@ generate :: () {
 #import "System";
 #import "Windows_Resources";
 #import "File_Utilities";
+#import "Process";

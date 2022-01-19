@@ -7,7 +7,7 @@ set(BOX2D_INSTALL true)
 set(BOX2D_BUILD_STATIC true)
 set(BOX2D_VERSION 1.1.0)
 
-add_subdirectory(../box2d/Box2D/Box2D ../box2d/Box2D/Box2D)
+add_subdirectory(../box2d/Box2D/Box2D ../box2d)
 
 include_directories(../box2d/Box2D ../box2d/wrapper)
 
