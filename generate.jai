@@ -255,7 +255,7 @@ generate :: () {
         append(*file_builder, "\n");
     }
 
-    write_entire_file("structs.jai", builder_to_string(*file_builder));
+    write_entire_file("newstructs.jai", builder_to_string(*file_builder));
 
     print("Creating assertgen.cpp file...\n");
 
