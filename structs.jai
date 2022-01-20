@@ -1,5 +1,20 @@
 b2_maxManifoldPoints :: 2;
 b2_maxPolygonVertices :: 8;
+b2_blockSizes :: 14;
+b2_stackSize :: 100 * 1024;
+b2_maxStackEntries :: 32;
+
+// TODO try to use jai mats I think
+b2Mat22 :: struct {
+    ex: Vector2;
+    ey: Vector2;
+}
+
+b2Mat33 :: struct {
+    ex: Vector3;
+    ey: Vector3;
+    ez: Vector3;
+}
 
 b2WorldManifold :: struct {
     normal: Vector2;
@@ -58,11 +73,11 @@ b2PointState :: enum u32 {
 }
 
 b2ShapeType :: enum u32 {
-    e_circle = 0;
-    e_edge = 1;
-    e_polygon = 2;
-    e_chain = 3;
-    e_typeCount = 4;
+    e_circle :: 0;
+    e_edge :: 1;
+    e_polygon :: 2;
+    e_chain :: 3;
+    e_typeCount :: 4;
 }
 
 b2Shape :: struct {
@@ -121,6 +136,21 @@ b2TOIInput :: struct {
     tMax: float32;
 }
 
+b2Sweep :: struct {
+    localCenter: Vector2;
+    c0: Vector2;
+    c: Vector2;
+    a0: float32;
+    a: float32;
+    alpha0: float32;
+}
+
+b2ContactImpulse :: struct {
+    normalImpulses: [b2_maxManifoldPoints] float32;
+    tangentImpulses: [b2_maxManifoldPoints] float32;
+    count: s32;
+}
+
 b2Contact :: struct {
     vtable: u64;
     m_flags: u32;
@@ -155,7 +185,7 @@ b2Fixture :: struct {
 }
 
 b2BodyType :: enum u32 {
-	b2_staticBody = 0;
+	b2_staticBody :: 0;
 	b2_kinematicBody;
 	b2_dynamicBody;
 }
@@ -177,9 +207,9 @@ b2Body :: struct {
     m_fixtureCount: s32;
     m_jointList: *b2JointEdge;
     m_contactList: *b2ContactEdge;
-    m_mass: float32,
+    m_mass: float32;
     m_invMass: float32;
-    m_I: float32,
+    m_I: float32;
     m_invI: float32;
     m_linearDamping: float32;
     m_angularDamping: float32;
@@ -227,6 +257,44 @@ b2World :: struct {
     m_subStepping: bool;
     m_stepComplete: bool;
     m_profile: b2Profile;
+}
+
+b2FixtureProxy :: struct {
+    aabb: b2AABB;
+    fixture: *b2Fixture;
+    childIndex: s32;
+    proxyId: s32;
+}
+
+b2Block :: struct {
+    next: *b2Block;
+}
+
+b2Chunk :: struct {
+    blockSize: s32;
+    blocks: *b2Block;
+}
+
+b2BlockAllocator :: struct {
+    m_chunks: *b2Chunk;
+    m_chunkCount: s32;
+    m_chunkSpace: s32;
+    m_freeLists: [b2_blockSizes] *b2Block;
+}
+
+b2StackAllocator :: struct {
+    m_data: [b2_stackSize] u8;
+    m_index: s32;
+    m_allocation: s32;
+    m_maxAllocation: s32;
+    m_entries: [b2_maxStackEntries] b2StackEntry;
+    m_entryCount: s32;
+}
+
+b2StackEntry :: struct {
+    data: *u8;
+    size: s32;
+    usedMalloc: bool;
 }
 
 b2Filter :: struct {
@@ -285,6 +353,21 @@ b2BodyDef :: struct {
     gravityScale: float32;
 }
 
+b2JointType :: enum u32 {
+    e_unknownJoint;
+	e_revoluteJoint;
+	e_prismaticJoint;
+	e_distanceJoint;
+	e_pulleyJoint;
+	e_mouseJoint;
+	e_gearJoint;
+	e_wheelJoint;
+    e_weldJoint;
+	e_frictionJoint;
+	e_ropeJoint;
+	e_motorJoint;
+}
+
 b2Joint :: struct {
     vtable: *void;
     m_type: b2JointType;
@@ -314,6 +397,45 @@ b2QueryCallback :: struct {
 
 b2RayCastCallback :: struct {
     vtable: *void;
+}
+
+b2DynamicTree :: struct {
+    m_root: s32;
+    m_nodes: *b2TreeNode;
+    m_nodeCount: s32;
+    m_nodeCapacity: s32;
+    m_freeList: s32;
+    m_path: u32;
+    m_insertionCount: s32;
+}
+
+b2TreeNode :: struct {
+    aabb: b2AABB;
+    userData: *void;
+    union {
+        parent: s32;
+        next: s32;
+    }
+    child1: s32;
+    child2: s32;
+    height: s32;
+}
+
+b2Pair :: struct {
+    proxyIdA: int32;
+    proxyIdB: int32;
+}
+
+b2BroadPhase :: struct {
+    m_tree: b2DynamicTree;
+    m_proxyCount: s32;
+    m_moveBuffer: *s32;
+    m_moveCapacity: s32;
+    m_moveCount: s32;
+    m_pairBuffer: *b2Pair;
+    m_pairCapacity: s32;
+    m_pairCount: s32;
+    m_queryProxyId: s32;
 }
 
 b2ContactManager :: struct {
@@ -393,7 +515,7 @@ RayCastCallbackLink :: struct {
     report_fixture: RCCReportFixtureCB;
 }
 
-RCCReportFixtureCB :: #type (a0: RustObject, a1: *b2Fixture, a2: *Vector2, a3: *Vector2, a4: f32) -> f32 #c_call;
+RCCReportFixtureCB :: #type (a0: RustObject, a1: *b2Fixture, a2: *Vector2, a3: *Vector2, a4: float32) -> float32 #c_call;
 
 b2ChainShape :: struct {
     using shape: b2Shape;
@@ -624,7 +746,7 @@ b2PrismaticJoint :: struct {
     m_localXAxisA: Vector2;
     m_localYAxisA: Vector2;
     m_referenceAngle: float32;
-    m_impulse: b2Vec3;
+    m_impulse: Vector3;
     m_motorImpulse: float32;
     m_lowerTranslation: float32;
     m_upperTranslation: float32;
@@ -641,11 +763,11 @@ b2PrismaticJoint :: struct {
     m_invMassB: float32;
     m_invIA: float32;
     m_invIB: float32;
-    m_axi: Vector2s
+    m_axi: Vector2;
     m_perp: Vector2;
-    m_s: float321
+    m_s: float32;
     m_s2: float32;
-    m_a: float321
+    m_a: float32;
     m_a2: float32;
     m_K: b2Mat33;
     m_motorMass: float32;
@@ -709,7 +831,7 @@ b2RevoluteJoint :: struct {
 
     m_localAnchorA: Vector2;
     m_localAnchorB: Vector2;
-    m_impulse: b2Vec3;
+    m_impulse: Vector3;
     m_motorImpulse: float32;
     m_enableMotor: bool;
     m_maxMotorTorque: float32;
@@ -783,7 +905,7 @@ b2WeldJoint :: struct {
     m_localAnchorB: Vector2;
     m_referenceAngle: float32;
     m_gamma: float32;
-    m_impulse: b2Vec3;
+    m_impulse: Vector3;
     m_indexA: s32;
     m_indexB: s32;
     m_rA: Vector2;
@@ -846,3 +968,6 @@ b2WheelJoint :: struct {
     m_gamma: float32;
 }
 
+#scope_file
+
+#import "Math";

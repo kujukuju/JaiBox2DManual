@@ -72,3 +72,7 @@
     assert(size_of(b2WheelJointDef) == 88, "b2WheelJointDef must be of size 88.");
     assert(size_of(b2WheelJoint) == 288, "b2WheelJoint must be of size 288.");
 }
+
+#scope_file
+
+#import "Basic";

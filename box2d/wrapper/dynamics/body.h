@@ -52,7 +52,7 @@ EXPORT int32_t Body_get_type(const b2Body* self);
 EXPORT void Body_set_bullet(b2Body* self, bool flag);
 EXPORT bool Body_is_bullet(const b2Body* self);
 EXPORT void Body_set_sleeping_allowed(b2Body* self, bool flag);
-EXPORT bool Body_is_sleeping_allowed(const b2Body *self);
+EXPORT bool Body_is_sleeping_allowed(const b2Body* self);
 EXPORT void Body_set_awake(b2Body* self, bool flag);
 EXPORT bool Body_is_awake(const b2Body* self);
 EXPORT void Body_set_active(b2Body* self, bool flag);

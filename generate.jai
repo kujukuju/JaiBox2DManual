@@ -232,6 +232,25 @@ generate :: () {
         }
     }
 
+    array_add(*found_types, "b2Mat22");
+    array_add(*found_types, "b2Mat33");
+    array_add(*found_types, "b2Sweep");
+    array_add(*found_types, "b2ContactImpulse");
+    array_add(*found_types, "b2BlockAllocator");
+    array_add(*found_types, "b2Chunk");
+    array_add(*found_types, "b2Block");
+    array_add(*found_types, "b2FixtureProxy");
+    array_add(*found_types, "b2StackAllocator");
+    array_add(*found_types, "b2StackEntry");
+    array_add(*found_types, "b2JointType");
+    array_add(*found_types, "b2BroadPhase");
+    array_add(*found_types, "b2DynamicTree");
+    array_add(*found_types, "b2Pair");
+    array_add(*found_types, "b2TreeNode");
+    array_add(*found_types, "b2BroadPhase");
+    array_add(*found_types, "b2BroadPhase");
+    array_add(*found_types, "b2BroadPhase");
+
     IGNORE_TYPES :: string.[
         "void",
         "s32",
@@ -254,6 +273,8 @@ generate :: () {
         append(*file_builder, "\n");
         append(*file_builder, "\n");
     }
+
+    append(*file_builder, "#scope_file\n\n#import \"Math\";\n\n");
 
     write_entire_file("newstructs.jai", builder_to_string(*file_builder));
 
@@ -290,7 +311,7 @@ int main() {
     }
 
     append(*file_builder, #string DONE
-    assertFile << "}\n";
+    assertFile << "}\n\n#scope_file\n\n#import \"Basic";\n\n";
     assertFile.close();
     return 0;
 }

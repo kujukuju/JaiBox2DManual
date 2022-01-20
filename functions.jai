@@ -46,7 +46,7 @@ Body_get_type :: (self: *b2Body) -> s32 #must #foreign box2d;
 Body_set_bullet :: (self: *b2Body, flag: bool) -> void #foreign box2d;
 Body_is_bullet :: (self: *b2Body) -> bool #must #foreign box2d;
 Body_set_sleeping_allowed :: (self: *b2Body, flag: bool) -> void #foreign box2d;
-Body_is_sleeping_allowed :: (*self: b2Body) -> bool #must #foreign box2d;
+Body_is_sleeping_allowed :: (self: *b2Body) -> bool #must #foreign box2d;
 Body_set_awake :: (self: *b2Body, flag: bool) -> void #foreign box2d;
 Body_is_awake :: (self: *b2Body) -> bool #must #foreign box2d;
 Body_set_active :: (self: *b2Body, flag: bool) -> void #foreign box2d;
@@ -361,3 +361,9 @@ WheelJoint_set_spring_frequency :: (self: *b2WheelJoint, frequency: float) -> vo
 WheelJoint_get_spring_frequency :: (self: *b2WheelJoint) -> float #must #foreign box2d;
 WheelJoint_set_spring_damping_ratio :: (self: *b2WheelJoint, ratio: float) -> void #foreign box2d;
 WheelJoint_get_spring_damping_ratio :: (self: *b2WheelJoint) -> float #must #foreign box2d;
+
+#scope_file
+
+#import "Math";
+
+box2d :: #foreign_library "bin/win/box2djai";
