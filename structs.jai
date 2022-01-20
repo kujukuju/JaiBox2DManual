@@ -18,7 +18,7 @@ b2Mat33 :: struct {
 
 b2WorldManifold :: struct {
     normal: Vector2;
-    points: Vector2;
+    points: [b2_maxManifoldPoints] Vector2;
     separations: [b2_maxManifoldPoints] float32;
 }
 
@@ -422,8 +422,8 @@ b2TreeNode :: struct {
 }
 
 b2Pair :: struct {
-    proxyIdA: int32;
-    proxyIdB: int32;
+    proxyIdA: s32;
+    proxyIdB: s32;
 }
 
 b2BroadPhase :: struct {

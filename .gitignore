@@ -3,3 +3,5 @@ assertgen/build/
 assertgen/box2d/
 *.idea/
 box2d/cmake-build-*
+*.exe
+*.pdb
