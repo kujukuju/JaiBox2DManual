@@ -3,12 +3,13 @@
 I might update this significantly in the near future.
 
 My potential planned changes are:
-    1. Remove a lot of the unnecessary pointers for most functions.
-    2. Update the Box2D version to the latest to get all bug fixes within the past 8 years.
-    3. Take the google liquidfun plugin that's based on the 8 year old version of box2d (this) and smash it into the updated version of box2d.
-    4. Possibly change all the binding syntax to be more cpp style.
 
-#### Example
+1. Remove a lot of the unnecessary pointers for most functions.
+2. Update the Box2D version to the latest to get all bug fixes within the past 8 years.
+3. Take the google liquidfun plugin that's based on the 8 year old version of box2d (this) and smash it into the updated version of box2d.
+4. Possibly change all the binding syntax to be more cpp style.
+
+### Example
 
 ```jai
 world: b2World = World_create(*Vector2.{0, 0});
