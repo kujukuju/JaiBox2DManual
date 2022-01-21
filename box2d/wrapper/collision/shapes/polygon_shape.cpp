@@ -7,6 +7,10 @@ void PolygonShape_drop(b2PolygonShape* self) {
     delete self;
 }
 
+b2PolygonShape PolygonShape_create() {
+    return b2PolygonShape();
+}
+
 b2Shape* PolygonShape_as_shape(b2PolygonShape* self) {
     return static_cast<b2Shape*>(self);
 }

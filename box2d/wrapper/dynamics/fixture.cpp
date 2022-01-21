@@ -1,5 +1,12 @@
 #include "dynamics/fixture.h"
 
+b2FixtureDef* FixtureDef_new() {
+    return new b2FixtureDef();
+}
+b2FixtureDef FixtureDef_create() {
+    return b2FixtureDef();
+}
+
 int32_t Fixture_get_type(const b2Fixture* self) {
     return self->GetType();
 }

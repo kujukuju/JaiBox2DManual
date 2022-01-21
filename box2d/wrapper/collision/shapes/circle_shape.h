@@ -1,5 +1,6 @@
 EXPORT b2CircleShape* CircleShape_new();
 EXPORT void CircleShape_drop(b2CircleShape* self);
+EXPORT b2CircleShape CircleShape_create();
 EXPORT b2Shape* CircleShape_as_shape(b2CircleShape* self);
 EXPORT b2CircleShape* Shape_as_circle_shape(b2Shape* self);
 EXPORT int32_t CircleShape_get_support(const b2CircleShape* self,

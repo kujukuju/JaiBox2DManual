@@ -5,3 +5,4 @@ assertgen/box2d/
 box2d/cmake-build-*
 *.exe
 *.pdb
+build/

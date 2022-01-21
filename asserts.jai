@@ -12,7 +12,9 @@
     assert(size_of(b2TOIInput) == 144, "b2TOIInput must be of size 144.");
     assert(size_of(b2Contact) == 208, "b2Contact must be of size 208.");
     assert(size_of(b2Fixture) == 72, "b2Fixture must be of size 72.");
+    assert(size_of(b2BodyDef) == 64, "b2BodyDef must be of size 64.");
     assert(size_of(b2Body) == 184, "b2Body must be of size 184.");
+    assert(size_of(b2FixtureDef) == 40, "b2FixtureDef must be of size 40.");
     assert(size_of(b2MassData) == 16, "b2MassData must be of size 16.");
     assert(size_of(b2JointEdge) == 32, "b2JointEdge must be of size 32.");
     assert(size_of(b2ContactEdge) == 32, "b2ContactEdge must be of size 32.");
@@ -25,7 +27,6 @@
     assert(size_of(b2ContactFilter) == 8, "b2ContactFilter must be of size 8.");
     assert(size_of(b2ContactListener) == 8, "b2ContactListener must be of size 8.");
     assert(size_of(b2Draw) == 16, "b2Draw must be of size 16.");
-    assert(size_of(b2BodyDef) == 64, "b2BodyDef must be of size 64.");
     assert(size_of(b2Joint) == 128, "b2Joint must be of size 128.");
     assert(size_of(b2JointDef) == 40, "b2JointDef must be of size 40.");
     assert(size_of(b2QueryCallback) == 8, "b2QueryCallback must be of size 8.");
@@ -71,6 +72,19 @@
     assert(size_of(b2WeldJoint) == 272, "b2WeldJoint must be of size 272.");
     assert(size_of(b2WheelJointDef) == 88, "b2WheelJointDef must be of size 88.");
     assert(size_of(b2WheelJoint) == 288, "b2WheelJoint must be of size 288.");
+    assert(size_of(b2Mat22) == 16, "b2Mat22 must be of size 16.");
+    assert(size_of(b2Mat33) == 36, "b2Mat33 must be of size 36.");
+    assert(size_of(b2Sweep) == 36, "b2Sweep must be of size 36.");
+    assert(size_of(b2ContactImpulse) == 20, "b2ContactImpulse must be of size 20.");
+    assert(size_of(b2BlockAllocator) == 128, "b2BlockAllocator must be of size 128.");
+    assert(size_of(b2FixtureProxy) == 32, "b2FixtureProxy must be of size 32.");
+    assert(size_of(b2StackAllocator) == 102936, "b2StackAllocator must be of size 102936.");
+    assert(size_of(b2StackEntry) == 16, "b2StackEntry must be of size 16.");
+    assert(size_of(b2JointType) == 4, "b2JointType must be of size 4.");
+    assert(size_of(b2BroadPhase) == 88, "b2BroadPhase must be of size 88.");
+    assert(size_of(b2DynamicTree) == 40, "b2DynamicTree must be of size 40.");
+    assert(size_of(b2Pair) == 8, "b2Pair must be of size 8.");
+    assert(size_of(b2TreeNode) == 40, "b2TreeNode must be of size 40.");
 }
 
 #scope_file

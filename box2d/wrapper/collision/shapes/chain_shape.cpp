@@ -8,6 +8,10 @@ void ChainShape_drop(b2ChainShape* self) {
     delete self;
 }
 
+b2ChainShape ChainShape_create() {
+    return b2ChainShape();
+}
+
 b2Shape* ChainShape_as_shape(b2ChainShape* self) {
     return static_cast<b2Shape*>(self);
 }

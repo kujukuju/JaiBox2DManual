@@ -1,26 +1,28 @@
-b2Fixture* Body_create_fixture(b2Body* self, const b2FixtureDef* def);
-b2Fixture* Body_create_fast_fixture(b2Body* self,
+EXPORT b2BodyDef* BodyDef_new();
+EXPORT b2BodyDef BodyDef_create();
+EXPORT b2Fixture* Body_create_fixture(b2Body* self, const b2FixtureDef* def);
+EXPORT b2Fixture* Body_create_fast_fixture(b2Body* self,
                                     const b2Shape* shape,
                                     float density);
-void Body_destroy_fixture(b2Body* self, b2Fixture* fixture);
-void Body_set_transform(b2Body* self, const b2Vec2* pos, float angle);
-const b2Transform* Body_get_transform(const b2Body* self);
-const b2Vec2* Body_get_position(const b2Body* self);
-float Body_get_angle(const b2Body* self);
-const b2Vec2* Body_get_world_center(const b2Body* self);
-const b2Vec2* Body_get_local_center(const b2Body* self);
-void Body_set_linear_velocity(b2Body* self, const b2Vec2* v);
-const b2Vec2* Body_get_linear_velocity(const b2Body* self);
-void Body_set_angular_velocity(b2Body* self, float omega);
-float Body_get_angular_velocity(const b2Body* self);
-void Body_apply_force(b2Body* self,
+EXPORT void Body_destroy_fixture(b2Body* self, b2Fixture* fixture);
+EXPORT void Body_set_transform(b2Body* self, const b2Vec2* pos, float angle);
+EXPORT const b2Transform* Body_get_transform(const b2Body* self);
+EXPORT const b2Vec2* Body_get_position(const b2Body* self);
+EXPORT float Body_get_angle(const b2Body* self);
+EXPORT const b2Vec2* Body_get_world_center(const b2Body* self);
+EXPORT const b2Vec2* Body_get_local_center(const b2Body* self);
+EXPORT void Body_set_linear_velocity(b2Body* self, const b2Vec2* v);
+EXPORT const b2Vec2* Body_get_linear_velocity(const b2Body* self);
+EXPORT void Body_set_angular_velocity(b2Body* self, float omega);
+EXPORT float Body_get_angular_velocity(const b2Body* self);
+EXPORT void Body_apply_force(b2Body* self,
                       const b2Vec2* force,
                       const b2Vec2* point,
                       bool wake);
-void Body_apply_force_to_center(b2Body* self,
+EXPORT void Body_apply_force_to_center(b2Body* self,
                                 const b2Vec2* force,
                                 bool wake);
-void Body_apply_torque(b2Body* self, float torque, bool wake);
+EXPORT void Body_apply_torque(b2Body* self, float torque, bool wake);
 EXPORT void Body_apply_linear_impulse(b2Body* self,
                                const b2Vec2* impulse,
                                const b2Vec2* point,

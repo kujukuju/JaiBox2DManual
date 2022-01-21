@@ -1,0 +1,2 @@
+jai generate.jai
+pause

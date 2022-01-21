@@ -7,6 +7,8 @@ set(BOX2D_INSTALL true)
 set(BOX2D_BUILD_STATIC true)
 set(BOX2D_VERSION 1.1.0)
 
+set(CMAKE_BUILD_TYPE RelWithDebInfo)
+
 add_subdirectory(Box2D/Box2D)
 
 include_directories(Box2D wrapper)

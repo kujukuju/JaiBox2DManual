@@ -10,6 +10,20 @@ FunctionData :: struct {
 generate :: () {
     set_build_options_dc(.{do_output = false});
 
+    make_directory_if_it_does_not_exist(tprint("%box2d/build", #filepath));
+    make_directory_if_it_does_not_exist(tprint("%assertgen/build", #filepath));
+
+    print("Generating dll and lib...");
+
+    generated_dll := os_run_command(tprint("%box2d/build.bat", #filepath), working_directory=tprint("%box2d/build", #filepath));
+    assert(generated_dll, "Could not generate dll.");
+
+    file_delete(tprint("%bin/win/box2djai.dll", #filepath));
+    file_delete(tprint("%bin/win/box2djai.lib", #filepath));
+
+    assert(file_move(tprint("%box2d/build/RelWithDebInfo/box2djai.dll", #filepath), tprint("%bin/win/box2djai.dll", #filepath)), "Could not move dll.");
+    assert(file_move(tprint("%box2d/build/RelWithDebInfo/box2djai.lib", #filepath), tprint("%bin/win/box2djai.lib", #filepath)), "Could not move lib.");
+
     file_builder: String_Builder;
 
     files := file_list(tprint("%box2d/wrapper", #filepath), true);
@@ -18,7 +32,7 @@ generate :: () {
             continue;
         }
 
-        print("HEADER FILE: %\n", file);
+        // print("HEADER FILE: %\n", file);
 
         contents, read := read_entire_file(file);
         if !read {
@@ -179,8 +193,6 @@ generate :: () {
         // print the function
         append(*file_builder, data.name);
         append(*file_builder, " :: (");
-
-        print("name %\n", data.name);
     
         for i: 0..data.parameters.count - 1 {
             parameters := data.parameters[i];
@@ -192,16 +204,13 @@ generate :: () {
             if i < data.parameters.count - 1 {
                 append(*file_builder, ", ");
             }
-
-            print("parameters % %\n", parameters[0], parameters[1]);
         }
         append(*file_builder, ") -> ");
         append(*file_builder, data.type);
-        if data.type != "void" {
-            append(*file_builder, " #must");
-        }
         append(*file_builder, " #foreign box2d;\n");
     }
+
+    append(*file_builder, "\n#scope_file\n\nbox2d :: #foreign_library \"bin/win/box2djai\";\n");
 
     write_entire_file("functions.jai", builder_to_string(*file_builder));
 
@@ -247,9 +256,6 @@ generate :: () {
     array_add(*found_types, "b2DynamicTree");
     array_add(*found_types, "b2Pair");
     array_add(*found_types, "b2TreeNode");
-    array_add(*found_types, "b2BroadPhase");
-    array_add(*found_types, "b2BroadPhase");
-    array_add(*found_types, "b2BroadPhase");
 
     IGNORE_TYPES :: string.[
         "void",
@@ -257,6 +263,11 @@ generate :: () {
         "Vector2",
         "float",
         "bool",
+    ];
+
+    IGNORE_FOR_ASSSERTS :: string.[
+        "b2Chunk",
+        "b2Block",
     ];
 
     reset(*file_builder);
@@ -297,6 +308,10 @@ int main() {
         if array_find(IGNORE_TYPES, type) {
             continue;
         }
+
+        if array_find(IGNORE_FOR_ASSSERTS, type) {
+            continue;
+        }
         
         append(*file_builder, "    assertFile << \"    assert(size_of(");
         append(*file_builder, type);
@@ -311,7 +326,7 @@ int main() {
     }
 
     append(*file_builder, #string DONE
-    assertFile << "}\n\n#scope_file\n\n#import \"Basic";\n\n";
+    assertFile << "}\n\n#scope_file\n\n#import \"Basic\";\n";
     assertFile.close();
     return 0;
 }

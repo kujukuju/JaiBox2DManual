@@ -1,5 +1,12 @@
 #include "dynamics/body.h"
 
+b2BodyDef* BodyDef_new() {
+    return new b2BodyDef();
+}
+b2BodyDef BodyDef_create() {
+    return b2BodyDef();
+}
+
 b2Fixture* Body_create_fixture(b2Body* self, const b2FixtureDef* def) {
     return self->CreateFixture(def);
 }

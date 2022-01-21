@@ -1,5 +1,6 @@
 EXPORT b2EdgeShape* EdgeShape_new();
 EXPORT void EdgeShape_drop(b2EdgeShape* self);
+EXPORT b2EdgeShape EdgeShape_create();
 EXPORT b2Shape* EdgeShape_as_shape(b2EdgeShape* self);
 EXPORT b2EdgeShape* Shape_as_edge_shape(b2Shape* self);
 EXPORT void EdgeShape_set(b2EdgeShape* self,

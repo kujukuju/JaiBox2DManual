@@ -1,5 +1,6 @@
 EXPORT b2PolygonShape* PolygonShape_new();
 EXPORT void PolygonShape_drop(b2PolygonShape* self);
+EXPORT b2PolygonShape PolygonShape_create();
 EXPORT b2Shape* PolygonShape_as_shape(b2PolygonShape* self);
 EXPORT b2PolygonShape* Shape_as_polygon_shape(b2Shape* self);
 EXPORT void PolygonShape_set(b2PolygonShape* self,

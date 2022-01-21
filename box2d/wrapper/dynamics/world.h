@@ -1,5 +1,6 @@
 EXPORT b2World* World_new(const b2Vec2* gravity);
 EXPORT void World_drop(b2World* self);
+EXPORT b2World World_create(const b2Vec2 gravity);
 EXPORT void World_set_destruction_listener(b2World* self,
                                     b2DestructionListener* listener);
 EXPORT void World_set_contact_filter(b2World* self, b2ContactFilter* filter);

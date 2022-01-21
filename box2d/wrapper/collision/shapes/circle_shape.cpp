@@ -10,6 +10,10 @@ void CircleShape_drop(b2CircleShape* self) {
     delete self;
 }
 
+b2CircleShape CircleShape_create() {
+    return b2CircleShape();
+}
+
 b2Shape* CircleShape_as_shape(b2CircleShape* self) {
     return static_cast<b2Shape*>(self);
 }

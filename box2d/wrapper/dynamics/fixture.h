@@ -1,3 +1,5 @@
+EXPORT b2FixtureDef* FixtureDef_new();
+EXPORT b2FixtureDef FixtureDef_create();
 EXPORT int32_t Fixture_get_type(const b2Fixture* self);
 EXPORT b2Shape* Fixture_get_shape(b2Fixture* self);
 EXPORT void Fixture_set_sensor(b2Fixture* self, bool flag);

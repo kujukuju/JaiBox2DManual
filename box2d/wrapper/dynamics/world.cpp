@@ -7,6 +7,10 @@ void World_drop(b2World* self) {
     delete self;
 }
 
+b2World World_create(const b2Vec2 gravity) {
+    return b2World(gravity);
+}
+
 void World_set_destruction_listener(b2World* self,
                                     b2DestructionListener* listener) {
     self->SetDestructionListener(listener);

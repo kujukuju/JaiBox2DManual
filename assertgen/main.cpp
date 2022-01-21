@@ -20,7 +20,9 @@ int main() {
     assertFile << "    assert(size_of(b2TOIInput) == " << sizeof(b2TOIInput) << ", \"b2TOIInput must be of size " << sizeof(b2TOIInput) << ".\");\n";
     assertFile << "    assert(size_of(b2Contact) == " << sizeof(b2Contact) << ", \"b2Contact must be of size " << sizeof(b2Contact) << ".\");\n";
     assertFile << "    assert(size_of(b2Fixture) == " << sizeof(b2Fixture) << ", \"b2Fixture must be of size " << sizeof(b2Fixture) << ".\");\n";
+    assertFile << "    assert(size_of(b2BodyDef) == " << sizeof(b2BodyDef) << ", \"b2BodyDef must be of size " << sizeof(b2BodyDef) << ".\");\n";
     assertFile << "    assert(size_of(b2Body) == " << sizeof(b2Body) << ", \"b2Body must be of size " << sizeof(b2Body) << ".\");\n";
+    assertFile << "    assert(size_of(b2FixtureDef) == " << sizeof(b2FixtureDef) << ", \"b2FixtureDef must be of size " << sizeof(b2FixtureDef) << ".\");\n";
     assertFile << "    assert(size_of(b2MassData) == " << sizeof(b2MassData) << ", \"b2MassData must be of size " << sizeof(b2MassData) << ".\");\n";
     assertFile << "    assert(size_of(b2JointEdge) == " << sizeof(b2JointEdge) << ", \"b2JointEdge must be of size " << sizeof(b2JointEdge) << ".\");\n";
     assertFile << "    assert(size_of(b2ContactEdge) == " << sizeof(b2ContactEdge) << ", \"b2ContactEdge must be of size " << sizeof(b2ContactEdge) << ".\");\n";
@@ -33,7 +35,6 @@ int main() {
     assertFile << "    assert(size_of(b2ContactFilter) == " << sizeof(b2ContactFilter) << ", \"b2ContactFilter must be of size " << sizeof(b2ContactFilter) << ".\");\n";
     assertFile << "    assert(size_of(b2ContactListener) == " << sizeof(b2ContactListener) << ", \"b2ContactListener must be of size " << sizeof(b2ContactListener) << ".\");\n";
     assertFile << "    assert(size_of(b2Draw) == " << sizeof(b2Draw) << ", \"b2Draw must be of size " << sizeof(b2Draw) << ".\");\n";
-    assertFile << "    assert(size_of(b2BodyDef) == " << sizeof(b2BodyDef) << ", \"b2BodyDef must be of size " << sizeof(b2BodyDef) << ".\");\n";
     assertFile << "    assert(size_of(b2Joint) == " << sizeof(b2Joint) << ", \"b2Joint must be of size " << sizeof(b2Joint) << ".\");\n";
     assertFile << "    assert(size_of(b2JointDef) == " << sizeof(b2JointDef) << ", \"b2JointDef must be of size " << sizeof(b2JointDef) << ".\");\n";
     assertFile << "    assert(size_of(b2QueryCallback) == " << sizeof(b2QueryCallback) << ", \"b2QueryCallback must be of size " << sizeof(b2QueryCallback) << ".\");\n";
@@ -79,7 +80,20 @@ int main() {
     assertFile << "    assert(size_of(b2WeldJoint) == " << sizeof(b2WeldJoint) << ", \"b2WeldJoint must be of size " << sizeof(b2WeldJoint) << ".\");\n";
     assertFile << "    assert(size_of(b2WheelJointDef) == " << sizeof(b2WheelJointDef) << ", \"b2WheelJointDef must be of size " << sizeof(b2WheelJointDef) << ".\");\n";
     assertFile << "    assert(size_of(b2WheelJoint) == " << sizeof(b2WheelJoint) << ", \"b2WheelJoint must be of size " << sizeof(b2WheelJoint) << ".\");\n";
-    assertFile << "}\n";
+    assertFile << "    assert(size_of(b2Mat22) == " << sizeof(b2Mat22) << ", \"b2Mat22 must be of size " << sizeof(b2Mat22) << ".\");\n";
+    assertFile << "    assert(size_of(b2Mat33) == " << sizeof(b2Mat33) << ", \"b2Mat33 must be of size " << sizeof(b2Mat33) << ".\");\n";
+    assertFile << "    assert(size_of(b2Sweep) == " << sizeof(b2Sweep) << ", \"b2Sweep must be of size " << sizeof(b2Sweep) << ".\");\n";
+    assertFile << "    assert(size_of(b2ContactImpulse) == " << sizeof(b2ContactImpulse) << ", \"b2ContactImpulse must be of size " << sizeof(b2ContactImpulse) << ".\");\n";
+    assertFile << "    assert(size_of(b2BlockAllocator) == " << sizeof(b2BlockAllocator) << ", \"b2BlockAllocator must be of size " << sizeof(b2BlockAllocator) << ".\");\n";
+    assertFile << "    assert(size_of(b2FixtureProxy) == " << sizeof(b2FixtureProxy) << ", \"b2FixtureProxy must be of size " << sizeof(b2FixtureProxy) << ".\");\n";
+    assertFile << "    assert(size_of(b2StackAllocator) == " << sizeof(b2StackAllocator) << ", \"b2StackAllocator must be of size " << sizeof(b2StackAllocator) << ".\");\n";
+    assertFile << "    assert(size_of(b2StackEntry) == " << sizeof(b2StackEntry) << ", \"b2StackEntry must be of size " << sizeof(b2StackEntry) << ".\");\n";
+    assertFile << "    assert(size_of(b2JointType) == " << sizeof(b2JointType) << ", \"b2JointType must be of size " << sizeof(b2JointType) << ".\");\n";
+    assertFile << "    assert(size_of(b2BroadPhase) == " << sizeof(b2BroadPhase) << ", \"b2BroadPhase must be of size " << sizeof(b2BroadPhase) << ".\");\n";
+    assertFile << "    assert(size_of(b2DynamicTree) == " << sizeof(b2DynamicTree) << ", \"b2DynamicTree must be of size " << sizeof(b2DynamicTree) << ".\");\n";
+    assertFile << "    assert(size_of(b2Pair) == " << sizeof(b2Pair) << ", \"b2Pair must be of size " << sizeof(b2Pair) << ".\");\n";
+    assertFile << "    assert(size_of(b2TreeNode) == " << sizeof(b2TreeNode) << ", \"b2TreeNode must be of size " << sizeof(b2TreeNode) << ".\");\n";
+    assertFile << "}\n\n#scope_file\n\n#import \"Basic\";\n";
     assertFile.close();
     return 0;
 }

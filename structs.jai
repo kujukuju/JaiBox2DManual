@@ -259,6 +259,16 @@ b2World :: struct {
     m_profile: b2Profile;
 }
 
+b2FixtureDef :: struct {
+    shape: *b2Shape;
+    userData: *void;
+    friction: float32;
+    restitution: float32;
+    density: float32;
+    isSensor: bool;
+    filter: b2Filter;
+}
+
 b2FixtureProxy :: struct {
     aabb: b2AABB;
     fixture: *b2Fixture;

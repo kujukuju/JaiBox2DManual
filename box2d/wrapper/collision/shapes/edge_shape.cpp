@@ -7,6 +7,10 @@ void EdgeShape_drop(b2EdgeShape* self) {
     delete self;
 }
 
+b2EdgeShape EdgeShape_create() {
+    return b2EdgeShape();
+}
+
 b2Shape* EdgeShape_as_shape(b2EdgeShape* self) {
     return static_cast<b2Shape*>(self);
 }

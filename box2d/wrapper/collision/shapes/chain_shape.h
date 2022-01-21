@@ -1,5 +1,6 @@
 EXPORT b2ChainShape* ChainShape_new();
 EXPORT void ChainShape_drop(b2ChainShape* self);
+EXPORT b2ChainShape ChainShape_create();
 EXPORT b2Shape* ChainShape_as_shape(b2ChainShape* self);
 EXPORT b2ChainShape* Shape_as_chain_shape(b2Shape* self);
 EXPORT void ChainShape_clear(b2ChainShape* self);
