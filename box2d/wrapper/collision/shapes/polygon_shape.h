@@ -1,16 +1,13 @@
 EXPORT b2PolygonShape* PolygonShape_new();
-EXPORT void PolygonShape_drop(b2PolygonShape* self);
 EXPORT b2PolygonShape PolygonShape_create();
-EXPORT b2Shape* PolygonShape_as_shape(b2PolygonShape* self);
-EXPORT b2PolygonShape* Shape_as_polygon_shape(b2Shape* self);
-EXPORT void PolygonShape_set(b2PolygonShape* self,
-                      const b2Vec2* points, int32_t count);
-EXPORT void PolygonShape_set_as_box(b2PolygonShape* self, float hw, float hh);
-EXPORT void PolygonShape_set_as_oriented_box(b2PolygonShape* self,
-                                      float hw, float hh,
-                                      const b2Vec2* center,
-                                      float angle);
-EXPORT int32_t PolygonShape_get_vertex_count(const b2PolygonShape* self);
-EXPORT const b2Vec2* PolygonShape_get_vertex(const b2PolygonShape* self,
-                                      int32_t index);
-EXPORT bool PolygonShape_validate(const b2PolygonShape* self);
+EXPORT b2Shape* PolygonShape_clone(b2PolygonShape* self, b2BlockAllocator* allocator);
+EXPORT int32 PolygonShape_get_child_count(b2PolygonShape* self);
+EXPORT void PolygonShape_set(b2PolygonShape* self, const b2Vec2* points, int32 count);
+EXPORT void PolygonShape_set_as_box(b2PolygonShape* self, float hx, float hy);
+// TODO maybe dont extern c so I can overload this? will that work?
+EXPORT void PolygonShape_set_as_box_angled(b2PolygonShape* self, float hx, float hy, const b2Vec2* center, float angle);
+EXPORT bool PolygonShape_test_point(b2PolygonShape* self, const b2Transform* transform, const b2Vec2* p);
+EXPORT bool PolygonShape_ray_cast(b2PolygonShape* self, b2RayCastOutput* output, const b2RayCastInput* input, const b2Transform* transform, int32 childIndex);
+EXPORT void PolygonShape_compute_aabb(b2PolygonShape* self, b2AABB* aabb, const b2Transform* transform, int32 childIndex);
+EXPORT void PolygonShape_compute_mass(b2PolygonShape* self, b2MassData* massData, float density);
+EXPORT bool PolygonShape_validate(b2PolygonShape* self);

@@ -1,13 +1,11 @@
-EXPORT b2Joint* World_create_gear_joint(
-        b2World* self,
-        bool collide_connected,
-        b2Joint* joint_a,
-        b2Joint* joint_b,
-        float ratio
-);
-EXPORT b2Joint* GearJoint_as_joint(b2GearJoint* self);
-EXPORT b2GearJoint* Joint_as_gear_joint(b2Joint* self);
-EXPORT b2Joint* GearJoint_get_joint_1(b2GearJoint* self);
-EXPORT b2Joint* GearJoint_get_joint_2(b2GearJoint* self);
+EXPORT b2GearJointDef* GearJointDef_new();
+EXPORT b2GearJointDef GearJointDef_create();
+EXPORT b2Vec2 GearJoint_get_anchor_a(b2GearJoint* self);
+EXPORT b2Vec2 GearJoint_get_anchor_b(b2GearJoint* self);
+EXPORT b2Vec2 GearJoint_get_reaction_force(b2GearJoint* self, float inv_dt);
+EXPORT float GearJoint_get_reaction_torque(b2GearJoint* self, float inv_dt);
+EXPORT b2Joint* GearJoint_get_joint1(b2GearJoint* self);
+EXPORT b2Joint* GearJoint_get_joint2(b2GearJoint* self);
 EXPORT void GearJoint_set_ratio(b2GearJoint* self, float ratio);
-EXPORT float GearJoint_get_ratio(const b2GearJoint* self);
+EXPORT float GearJoint_get_ratio(b2GearJoint* self);
+EXPORT void GearJoint_dump(b2GearJoint* self);

@@ -1,52 +1,29 @@
 #include "collision/shapes/shape.h"
 
-void Shape_drop_virtual(b2Shape* self) {
-    delete self;
-}
-/*b2Shape* Shape_clone_virtual(const b2Shape* self, 
-                             b2BlockAllocator* allocator) {
+b2Shape* Shape_clone(b2Shape* self, b2BlockAllocator* allocator) {
     return self->Clone(allocator);
-}*/
+}
 
-int32_t Shape_get_type(const b2Shape* self) {
+b2Shape::Type Shape_get_type(b2Shape* self) {
     return self->GetType();
 }
 
-int32_t Shape_get_child_count_virtual(const b2Shape* self) {
+int32 Shape_get_child_count(b2Shape* self) {
     return self->GetChildCount();
 }
 
-bool Shape_test_point_virtual(const b2Shape* self,
-                              const b2Transform* xf,
-                              const b2Vec2* p) {
+bool Shape_test_point(b2Shape* self, const b2Transform* xf, const b2Vec2* p) {
     return self->TestPoint(*xf, *p);
 }
 
-bool Shape_ray_cast_virtual(const b2Shape* self,
-                            b2RayCastOutput* output,
-                            const b2RayCastInput* input,
-                            const b2Transform* transform,
-                            int32_t child_id) {
-    return self->RayCast(output, *input, *transform, child_id);
+bool Shape_ray_cast(b2Shape* self, b2RayCastOutput* output, const b2RayCastInput* input, const b2Transform* transform, int32 childIndex) {
+    return self->RayCast(output, *input, *transform, childIndex);
 }
 
-void Shape_compute_aabb_virtual(const b2Shape* self,
-                                b2AABB* aabb,
-                                const b2Transform* xf,
-                                int32_t child_id) {
-    self->ComputeAABB(aabb, *xf, child_id);
+void Shape_compute_aabb(b2Shape* self, b2AABB* aabb, const b2Transform* xf, int32 childIndex) {
+    self->ComputeAABB(aabb, *xf, childIndex);
 }
 
-void Shape_compute_mass_virtual(const b2Shape* self,
-                                b2MassData* data,
-                                float density) {
-    self->ComputeMass(data, density);
-}
-
-float Shape_get_radius(const b2Shape* self) {
-    return self->m_radius;
-}
-
-void Shape_set_radius(b2Shape* self, float radius) {
-    self->m_radius = radius;
+void Shape_compute_mass(b2Shape* self, b2MassData* massData, float density) {
+    self->ComputeMass(massData, density);
 }

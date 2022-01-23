@@ -1,50 +1,25 @@
 #include "collision/shapes/circle_shape.h"
 
-#include <cstdio>
-
 b2CircleShape* CircleShape_new() {
     return new b2CircleShape();
-}
-
-void CircleShape_drop(b2CircleShape* self) {
-    delete self;
 }
 
 b2CircleShape CircleShape_create() {
     return b2CircleShape();
 }
 
-b2Shape* CircleShape_as_shape(b2CircleShape* self) {
-    return static_cast<b2Shape*>(self);
+bool CircleShape_test_point(b2CircleShape* self, b2Transform* transform, b2Vec2* p) {
+    return self->TestPoint(*transform, *p);
 }
 
-b2CircleShape* Shape_as_circle_shape(b2Shape* self) {
-    return static_cast<b2CircleShape*>(self);
+bool CircleShape_ray_cast(b2CircleShape* self, b2RayCastOutput* output, const b2RayCastInput* input, const b2Transform* transform, int32 childIndex) {
+    return self->RayCast(output, *input, *transform, childIndex);
 }
 
-int32_t CircleShape_get_support(const b2CircleShape* self,
-                            const b2Vec2* d) {
-    return self->GetSupport(*d);
+void CircleShape_compute_aabb(b2CircleShape* self, b2AABB* aabb, const b2Transform* transform, int32 childIndex) {
+    self->ComputeAABB(aabb, *transform, childIndex);
 }
 
-const b2Vec2* CircleShape_get_support_vertex(const b2CircleShape* self,
-                                             const b2Vec2* d) {
-    return &self->GetSupportVertex(*d);
-}
-
-int32_t CircleShape_get_vertex_count(const b2CircleShape* self) {
-    return self->GetVertexCount();
-}
-
-const b2Vec2* CircleShape_get_vertex(const b2CircleShape* self,
-                                     int32_t index) {
-    return &self->GetVertex(index);
-}
-
-b2Vec2 CircleShape_get_pos(const b2CircleShape* self) {
-    return self->m_p;
-}
-
-void CircleShape_set_pos(b2CircleShape* self, b2Vec2 pos) {
-    self->m_p = pos;
+void CircleShape_compute_mass(b2CircleShape* self, b2MassData* massData, float density) {
+    self->ComputeMass(massData, density);
 }

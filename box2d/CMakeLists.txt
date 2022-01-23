@@ -3,16 +3,18 @@ project(box2djai)
 
 set(CMAKE_CXX_STANDARD 20)
 
-set(BOX2D_INSTALL true)
-set(BOX2D_BUILD_STATIC true)
-set(BOX2D_VERSION 1.1.0)
+#set(BOX2D_INSTALL false)
+#set(BOX2D_BUILD_STATIC false)
+#set(BOX2D_VERSION 1.1.0)
 
 set(CMAKE_BUILD_TYPE RelWithDebInfo)
 
-add_subdirectory(Box2D/Box2D)
+#option(box2d_EXPORTS "Export lib I guess" ON)
 
-include_directories(Box2D wrapper)
+add_subdirectory(Box2D)
+
+include_directories(Box2D/include wrapper)
 
 add_library(box2djai SHARED lib.cpp)
 
-target_link_libraries(box2djai PUBLIC Box2D)
+target_link_libraries(box2djai PUBLIC box2d)

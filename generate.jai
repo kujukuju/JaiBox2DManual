@@ -93,7 +93,7 @@ generate :: () {
         while true {
             defer character += 1;
 
-            if character >= line.count || line[character] == #char "\r" || line[character] == #char "\n" || line[character] == #char " " || line[character] == #char "," || line[character] == #char "(" || line[character] == #char ")" || line[character] == #char ";" {
+            if character >= line.count || line[character] == #char "\r" || line[character] == #char "\n" || line[character] == #char "\t" || line[character] == #char " " || line[character] == #char "," || line[character] == #char "(" || line[character] == #char ")" || line[character] == #char ";" {
                 if builder_string_length(*current_builder) > 0 {
                     if reading_function_type {
                         current_function_data.type = builder_to_string(*current_builder);
@@ -152,6 +152,8 @@ generate :: () {
     REPLACEMENT_TYPES :: [2] string.[
         string.["int32_t", "s32"],
         string.["b2Vec2", "Vector2"],
+        string.["b2Shape::Type", "b2ShapeType"],
+        string.["uint32_t", "u32"],
     ];
 
     // fix pointers
@@ -268,26 +270,96 @@ generate :: () {
     IGNORE_FOR_ASSSERTS :: string.[
         "b2Chunk",
         "b2Block",
+        "u32",
+        "b2ShapeType",
     ];
 
-    reset(*file_builder);
-    for type: found_types {
-        if array_find(IGNORE_TYPES, type) {
-            continue;
+    existing_structs_contents, read_existing_structs_file := read_entire_file("structs.jai");
+    if read_existing_structs_file {
+        already_written_structs: [..] string;
+        lines := split(existing_structs_contents, "\n");
+
+        for line: lines {
+            found_valid_type := false;
+            valid_type_length := 0;
+
+            if line.count == 0 || line[0] == #char " " || line[0] == #char "\t" {
+                continue;
+            }
+
+            for i: 0..line.count - 2 {
+                if line[i] == #char ":" && line[i + 1] == #char ":" {
+                    found_valid_type = true;
+                    valid_type_length = i - 1;
+                    break;
+                }
+            }
+
+            if !found_valid_type {
+                continue;
+            }
+
+            type_name: string = line;
+            type_name.count = valid_type_length;
+            array_add(*already_written_structs, type_name);
         }
 
-        append(*file_builder, type);
-        append(*file_builder, " :: struct {");
-        append(*file_builder, "\n");
-        append(*file_builder, "\n");
-        append(*file_builder, "}");
-        append(*file_builder, "\n");
-        append(*file_builder, "\n");
+        reset(*file_builder);
+        for type: found_types {
+            if array_find(IGNORE_TYPES, type) {
+                continue;
+            }
+
+            if array_find(already_written_structs, type) {
+                continue;
+            }
+
+            append(*file_builder, type);
+            // append(*file_builder, " :: struct {");
+            append(*file_builder, "\n");
+            append(*file_builder, "\n");
+            // append(*file_builder, "}");
+            // append(*file_builder, "\n");
+            // append(*file_builder, "\n");
+        }
+        // append(*file_builder, "#scope_file\n\n#import \"Math\";\n\n");
+        write_entire_file("newstructs.jai", builder_to_string(*file_builder));
+
+        reset(*file_builder);
+        for type: already_written_structs {
+            if array_find(found_types, type) {
+                continue;
+            }
+
+            append(*file_builder, type);
+            // append(*file_builder, " :: struct {");
+            append(*file_builder, "\n");
+            append(*file_builder, "\n");
+            // append(*file_builder, "}");
+            // append(*file_builder, "\n");
+            // append(*file_builder, "\n");
+        }
+        write_entire_file("removestructs.jai", builder_to_string(*file_builder));
+    } else {
+        reset(*file_builder);
+        for type: found_types {
+            if array_find(IGNORE_TYPES, type) {
+                continue;
+            }
+
+            append(*file_builder, type);
+            append(*file_builder, " :: struct {");
+            append(*file_builder, "\n");
+            append(*file_builder, "\n");
+            append(*file_builder, "}");
+            append(*file_builder, "\n");
+            append(*file_builder, "\n");
+        }
+
+        append(*file_builder, "#scope_file\n\n#import \"Math\";\n\n");
+
+        write_entire_file("newstructs.jai", builder_to_string(*file_builder));
     }
-
-    append(*file_builder, "#scope_file\n\n#import \"Math\";\n\n");
-
-    write_entire_file("newstructs.jai", builder_to_string(*file_builder));
 
     print("Creating assertgen.cpp file...\n");
 
@@ -337,6 +409,8 @@ int main() {
     print("Generating asserts.jai...\n");
 
     success, exit_code, output_string, error_string := os_run_command(tprint("%assertgen/generate_asserts.bat", #filepath), working_directory=tprint("%assertgen/build", #filepath));
+
+    print("Finished successfully.\n");
 }
 
 #scope_file

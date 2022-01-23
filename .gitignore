@@ -6,3 +6,5 @@ box2d/cmake-build-*
 *.exe
 *.pdb
 build/
+box2d/.vscode/
+box2d/wrapper/.vscode/

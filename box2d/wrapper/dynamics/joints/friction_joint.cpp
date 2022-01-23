@@ -1,55 +1,57 @@
 #include "dynamics/joints/friction_joint.h"
 
-b2Joint* World_create_friction_joint(
-    b2World* self,
-    b2Body* body_a,
-    b2Body* body_b,
-    bool collide_connected,
-    b2Vec2 local_anchor_a,
-    b2Vec2 local_anchor_b,
-    float max_force,
-    float max_torque
-) {
-    b2FrictionJointDef def;
-    def.bodyA = body_a;
-    def.bodyB = body_b;
-    def.collideConnected = collide_connected;
-    def.localAnchorA = local_anchor_a;
-    def.localAnchorB = local_anchor_b;
-    def.maxForce = max_force;
-    def.maxTorque = max_torque;
-
-    return self->CreateJoint(&def);
+b2FrictionJointDef* FrictionJointDef_new() {
+    return new b2FrictionJointDef();
 }
 
-void FrictionJointDef_initialize(b2FrictionJointDef* self,
-                                 b2Body* body_a, b2Body* body_b,
-                                 const b2Vec2* anchor) {
-    self->Initialize(body_a, body_b, *anchor);
+b2FrictionJointDef FrictionJointDef_create() {
+    return b2FrictionJointDef();
 }
 
-b2Joint* FrictionJoint_as_joint(b2FrictionJoint* self) {
-    return static_cast<b2Joint*>(self);
-}
-b2FrictionJoint* Joint_as_friction_joint(b2Joint* self) {
-    return static_cast<b2FrictionJoint*>(self);
+void FrictionJointDef_initialize(b2FrictionJointDef* self, b2Body* bodyA, b2Body* bodyB, const b2Vec2* anchor) {
+    self->Initialize(bodyA, bodyB, *anchor);
 }
 
-const b2Vec2* FrictionJoint_get_local_anchor_a(const b2FrictionJoint* self) {
-    return &self->GetLocalAnchorA();
+b2Vec2 FrictionJoint_get_anchor_a(b2FrictionJoint* self) {
+    return self->GetAnchorA();
 }
-const b2Vec2* FrictionJoint_get_local_anchor_b(const b2FrictionJoint* self) {
-    return &self->GetLocalAnchorB();
+
+b2Vec2 FrictionJoint_get_anchor_b(b2FrictionJoint* self) {
+    return self->GetAnchorB();
 }
+
+b2Vec2 FrictionJoint_get_reaction_force(b2FrictionJoint* self, float inv_dt) {
+    return self->GetReactionForce(inv_dt);
+}
+
+float FrictionJoint_get_reaction_torque(b2FrictionJoint* self, float inv_dt) {
+    return self->GetReactionTorque(inv_dt);
+}
+
+b2Vec2 FrictionJoint_get_local_anchor_a(b2FrictionJoint* self) {
+    return self->GetLocalAnchorA();
+}
+
+b2Vec2 FrictionJoint_get_local_anchor_b(b2FrictionJoint* self) {
+    return self->GetLocalAnchorB();
+}
+
 void FrictionJoint_set_max_force(b2FrictionJoint* self, float force) {
     self->SetMaxForce(force);
 }
-float FrictionJoint_get_max_force(const b2FrictionJoint* self) {
+
+float FrictionJoint_get_max_force(b2FrictionJoint* self) {
     return self->GetMaxForce();
 }
+
 void FrictionJoint_set_max_torque(b2FrictionJoint* self, float torque) {
     self->SetMaxTorque(torque);
 }
-float FrictionJoint_get_max_torque(const b2FrictionJoint* self) {
+
+float FrictionJoint_get_max_torque(b2FrictionJoint* self) {
     return self->GetMaxTorque();
+}
+
+void FrictionJoint_dump(b2FrictionJoint* self) {
+    self->Dump();
 }

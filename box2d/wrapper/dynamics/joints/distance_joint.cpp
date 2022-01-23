@@ -1,67 +1,89 @@
 #include "dynamics/joints/distance_joint.h"
 
-b2Joint* World_create_distance_joint(
-    b2World* self,
-    b2Body* body_a,
-    b2Body* body_b,
-    bool collide_connected,
-    b2Vec2 local_anchor_a,
-    b2Vec2 local_anchor_b,
-    float length,
-    float frequency,
-    float damping_ratio
-) {
-    b2DistanceJointDef def;
-    def.bodyA = body_a;
-    def.bodyB = body_b;
-    def.collideConnected = collide_connected;
-    def.localAnchorA = local_anchor_a;
-    def.localAnchorB = local_anchor_b;
-    def.length = length;
-    def.frequencyHz = frequency;
-    def.dampingRatio = damping_ratio;
-
-    return self->CreateJoint(&def);
+b2DistanceJointDef* DistanceJointDef_new() {
+    return new b2DistanceJointDef();
 }
 
-void DistanceJointDef_initialize(b2DistanceJointDef* self,
-                                 b2Body* body_a, b2Body* body_b,
-                                 const b2Vec2* anchor_a,
-                                 const b2Vec2* anchor_b) {
-    self->Initialize(body_a, body_b, *anchor_a, *anchor_b);
+b2DistanceJointDef DistanceJointDef_create() {
+    return b2DistanceJointDef();
 }
 
-b2Joint* DistanceJoint_as_joint(b2DistanceJoint* self) {
-    return static_cast<b2Joint*>(self);
-}
-b2DistanceJoint* Joint_as_distance_joint(b2Joint* self) {
-    return static_cast<b2DistanceJoint*>(self);
+void DistanceJointDef_initialize(b2DistanceJointDef* self, b2Body* bodyA, b2Body* bodyB, const b2Vec2* anchorA, const b2Vec2* anchorB) {
+    self->Initialize(bodyA, bodyB, *anchorA, *anchorB);
 }
 
-const b2Vec2* DistanceJoint_get_local_anchor_a(
-                                        const b2DistanceJoint* self) {
-    return &self->GetLocalAnchorA();
+b2Vec2 DistanceJoint_get_anchor_a(b2DistanceJoint* self) {
+    return self->GetAnchorA();
 }
-const b2Vec2* DistanceJoint_get_local_anchor_b(
-                                        const b2DistanceJoint* self) {
-    return &self->GetLocalAnchorB();
+
+b2Vec2 DistanceJoint_get_anchor_b(b2DistanceJoint* self) {
+    return self->GetAnchorB();
 }
-void DistanceJoint_set_length(b2DistanceJoint* self, float length) {
-    self->SetLength(length);
+
+b2Vec2 DistanceJoint_get_reaction_force(b2DistanceJoint* self, float inv_dt) {
+    return self->GetReactionForce(inv_dt);
 }
-float DistanceJoint_get_length(const b2DistanceJoint* self) {
+
+float DistanceJoint_get_reaction_torque(b2DistanceJoint* self, float inv_dt) {
+    return self->GetReactionTorque(inv_dt);
+}
+
+b2Vec2 DistanceJoint_get_local_anchor_a(b2DistanceJoint* self) {
+    return self->GetLocalAnchorA();
+}
+
+b2Vec2 DistanceJoint_get_local_anchor_b(b2DistanceJoint* self) {
+    return self->GetLocalAnchorB();
+}
+
+float DistanceJoint_get_length(b2DistanceJoint* self) {
     return self->GetLength();
 }
-void DistanceJoint_set_frequency(b2DistanceJoint* self, float hz) {
-    self->SetFrequency(hz);
+
+float DistanceJoint_set_length(b2DistanceJoint* self, float length) {
+    return self->SetLength(length);
 }
-float DistanceJoint_get_frequency(const b2DistanceJoint* self) {
-    return self->GetFrequency();
+
+float DistanceJoint_get_min_length(b2DistanceJoint* self) {
+    return self->GetMinLength();
 }
-void DistanceJoint_set_damping_ratio(b2DistanceJoint* self,
-                                     float ratio) {
-    self->SetDampingRatio(ratio);
+
+float DistanceJoint_set_min_length(b2DistanceJoint* self, float minLength) {
+    return self->SetMinLength(minLength);
 }
-float DistanceJoint_get_damping_ratio(const b2DistanceJoint* self) {
-    return self->GetDampingRatio();
+
+float DistanceJoint_get_max_length(b2DistanceJoint* self) {
+    return self->GetMaxLength();
+}
+
+float DistanceJoint_set_max_length(b2DistanceJoint* self, float maxLength) {
+    return self->SetMaxLength(maxLength);
+}
+
+float DistanceJoint_get_current_length(b2DistanceJoint* self) {
+    return self->GetCurrentLength();
+}
+
+void DistanceJoint_set_stiffness(b2DistanceJoint* self, float stiffness) {
+    self->SetStiffness(stiffness);
+}
+
+float DistanceJoint_get_stiffness(b2DistanceJoint* self) {
+    return self->GetStiffness();
+}
+
+void DistanceJoint_set_damping(b2DistanceJoint* self, float damping) {
+    self->SetDamping(damping);
+}
+
+float DistanceJoint_get_damping(b2DistanceJoint* self) {
+    return self->GetDamping();
+}
+
+void DistanceJoint_dump(b2DistanceJoint* self) {
+    self->Dump();
+}
+
+void DistanceJoint_draw(b2DistanceJoint* self, b2Draw* draw) {
+    self->Draw(draw);
 }

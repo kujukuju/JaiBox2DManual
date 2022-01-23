@@ -1,115 +1,73 @@
 #include "collision/collision.h"
 
-void WorldManifold_Initialize(b2WorldManifold* self,
-                              const b2Manifold* manifold,
-                              const b2Transform* xf_a, float radius_a,
-                              const b2Transform* xf_b, float radius_b) {
-    self->Initialize(manifold,
-                     *xf_a, radius_a,
-                     *xf_b, radius_b);
+void WorldManifold_initialize(b2WorldManifold* self, const b2Manifold* manifold, const b2Transform* xf_a, float radius_a, const b2Transform* xf_b, float radius_b) {
+    self->Initialize(manifold, *xf_a, radius_a, *xf_b, radius_b);
 }
 
-void get_point_states(b2PointState* s1, b2PointState* s2,
-                      const b2Manifold* m1, const b2Manifold* m2) {
+void get_point_states(b2PointState* s1, b2PointState* s2, const b2Manifold* m1, const b2Manifold* m2) {
     b2GetPointStates(s1, s2, m1, m2);
 }
 
-bool test_overlap(const b2Shape* shape_a, int32_t index_a,
-                  const b2Shape* shape_b, int32_t index_b,
-                  const b2Transform* xf_a, const b2Transform* xf_b) {
-    return b2TestOverlap(shape_a, index_a,
-                         shape_b, index_b,
-                         *xf_a, *xf_b);
+bool AABB_is_valid(b2AABB* self) {
+    return self->IsValid();
 }
 
-
-void DistanceProxy_set(b2DistanceProxy* self,
-                       const b2Shape* shape, int32_t index) {
-    self->Set(shape, index);
+b2Vec2 AABB_get_center(b2AABB* self) {
+    return self->GetCenter();
 }
 
-void distance(b2DistanceOutput* output,
-              b2SimplexCache* cache,
-              const b2DistanceInput* input) {
-    b2Distance(output, cache, input);
+b2Vec2 AABB_get_extents(b2AABB* self) {
+    return self->GetExtents();
 }
 
-void time_of_impact(b2TOIOutput* output, const b2TOIInput* input) {
-    b2TimeOfImpact(output, input);
+float AABB_get_perimeter(b2AABB* self) {
+    return self->GetPerimeter();
 }
 
-
-b2Manifold* Contact_get_manifold(b2Contact* self) {
-    return self->GetManifold();
+void AABB_combine(b2AABB* self, const b2AABB* aabb) {
+    self->Combine(*aabb);
 }
 
-void Contact_get_world_manifold(const b2Contact* self,
-                                b2WorldManifold* world_manifold) {
-    self->GetWorldManifold(world_manifold);
+void AABB_combine_two(b2AABB* self, const b2AABB* aabb1, const b2AABB* aabb2) {
+    self->Combine(*aabb1, *aabb2);
 }
 
-bool Contact_is_touching(const b2Contact* self) {
-    return self->IsTouching();
+bool AABB_contains(b2AABB* self, const b2AABB* aabb) {
+    return self->Contains(*aabb);
 }
 
-bool Contact_is_enabled(const b2Contact* self) {
-    return self->IsEnabled();
+bool AABB_ray_cast(b2AABB* self, b2RayCastOutput* output, const b2RayCastInput* input) {
+    return self->RayCast(output, *input);
 }
 
-b2Contact* Contact_get_next(b2Contact* self) {
-    return self->GetNext();
+void collide_circles(b2Manifold* manifold, const b2CircleShape* circleA, const b2Transform* xfA, const b2CircleShape* circleB, const b2Transform* xfB) {
+    b2CollideCircles(manifold, circleA, *xfA, circleB, *xfB);
 }
 
-b2Fixture* Contact_get_fixture_a(b2Contact* self) {
-    return self->GetFixtureA();
+void collide_polygon_and_circle(b2Manifold* manifold, const b2PolygonShape* polygonA, const b2Transform* xfA, const b2CircleShape* circleB, const b2Transform* xfB) {
+    b2CollidePolygonAndCircle(manifold, polygonA, *xfA, circleB, *xfB);
 }
 
-int32_t Contact_get_child_index_a(const b2Contact* self) {
-    return self->GetChildIndexA();
+void collide_polygons(b2Manifold* manifold, const b2PolygonShape* polygonA, const b2Transform* xfA, const b2PolygonShape* polygonB, const b2Transform* xfB) {
+    b2CollidePolygons(manifold, polygonA, *xfA, polygonB, *xfB);
 }
 
-b2Fixture* Contact_get_fixture_b(b2Contact* self) {
-    return self->GetFixtureB();
+void collide_edge_and_circle(b2Manifold* manifold, const b2EdgeShape* polygonA, const b2Transform* xfA, const b2CircleShape* circleB, const b2Transform* xfB) {
+    b2CollideEdgeAndCircle(manifold, polygonA, *xfA, circleB, *xfB);
 }
 
-int32_t Contact_get_child_index_b(const b2Contact* self) {
-    return self->GetChildIndexB();
+void collide_edge_and_polygon(b2Manifold* manifold, const b2EdgeShape* edgeA, const b2Transform* xfA, const b2PolygonShape* circleB, const b2Transform* xfB) {
+    b2CollideEdgeAndPolygon(manifold, edgeA, *xfA, circleB, *xfB);
 }
 
-void Contact_set_friction(b2Contact* self, float friction) {
-    self->SetFriction(friction);
+uint32_t clip_segment_to_line(b2ClipVertex* vOut, const b2ClipVertex* vIn, const b2Vec2* normal, float offset, int32_t vertexIndexA) {
+    return b2ClipSegmentToLine(vOut, vIn, *normal, offset, vertexIndexA);
 }
 
-float Contact_get_friction(const b2Contact* self) {
-    return self->GetFriction();
+bool test_overlap(const b2Shape* shapeA, int32_t indexA, const b2Shape* shapeB, int32_t indexB, const b2Transform* xfA, const b2Transform* xfB) {
+    return b2TestOverlap(shapeA, indexA, shapeB, indexB, *xfA, *xfB);
 }
 
-void Contact_reset_friction(b2Contact* self) {
-    self->ResetFriction();
-}
-
-void Contact_set_restitution(b2Contact* self, float restitution) {
-    self->SetRestitution(restitution);
-}
-
-float Contact_get_restitution(const b2Contact* self) {
-    return self->GetRestitution();
-}
-
-void Contact_reset_restitution(b2Contact* self) {
-    self->ResetRestitution();
-}
-
-void Contact_set_tangent_speed(b2Contact* self, float speed) {
-    self->SetTangentSpeed(speed);
-}
-
-float Contact_get_tangent_speed(const b2Contact* self) {
-    return self->GetTangentSpeed();
-}
-
-void Contact_evaluate_virtual(b2Contact* self, b2Manifold* manifold,
-                              const b2Transform* xf_a,
-                              const b2Transform* xf_b) {
-    self->Evaluate(manifold, *xf_a, *xf_b);
+bool test_overlap_aabb(const b2AABB* a, const b2AABB* b) {
+    return b2TestOverlap(*a, *b);
 }

@@ -1,36 +1,18 @@
-EXPORT void WorldManifold_Initialize(b2WorldManifold* self,
-                              const b2Manifold* manifold,
-                              const b2Transform* xf_a, float radius_a,
-                              const b2Transform* xf_b, float radius_b);
-EXPORT void get_point_states(b2PointState* s1, b2PointState* s2,
-                      const b2Manifold* m1, const b2Manifold* m2);
-EXPORT bool test_overlap(const b2Shape* shape_a, int32_t index_a,
-                  const b2Shape* shape_b, int32_t index_b,
-                  const b2Transform* xf_a, const b2Transform* xf_b);
-EXPORT void DistanceProxy_set(b2DistanceProxy* self,
-                       const b2Shape* shape, int32_t index);
-EXPORT void distance(b2DistanceOutput* output,
-              b2SimplexCache* cache,
-              const b2DistanceInput* input);
-EXPORT void time_of_impact(b2TOIOutput* output, const b2TOIInput* input);
-EXPORT b2Manifold* Contact_get_manifold(b2Contact* self);
-EXPORT void Contact_get_world_manifold(const b2Contact* self,
-                                b2WorldManifold* world_manifold);
-EXPORT bool Contact_is_touching(const b2Contact* self);
-EXPORT bool Contact_is_enabled(const b2Contact* self);
-EXPORT b2Contact* Contact_get_next(b2Contact* self);
-EXPORT b2Fixture* Contact_get_fixture_a(b2Contact* self);
-EXPORT int32_t Contact_get_child_index_a(const b2Contact* self);
-EXPORT b2Fixture* Contact_get_fixture_b(b2Contact* self);
-EXPORT int32_t Contact_get_child_index_b(const b2Contact* self);
-EXPORT void Contact_set_friction(b2Contact* self, float friction);
-EXPORT float Contact_get_friction(const b2Contact* self);
-EXPORT void Contact_reset_friction(b2Contact* self);
-EXPORT void Contact_set_restitution(b2Contact* self, float restitution);
-EXPORT float Contact_get_restitution(const b2Contact* self);
-EXPORT void Contact_reset_restitution(b2Contact* self);
-EXPORT void Contact_set_tangent_speed(b2Contact* self, float speed);
-EXPORT float Contact_get_tangent_speed(const b2Contact* self);
-EXPORT void Contact_evaluate_virtual(b2Contact* self, b2Manifold* manifold,
-                              const b2Transform* xf_a,
-                              const b2Transform* xf_b);
+EXPORT void WorldManifold_initialize(b2WorldManifold* self, const b2Manifold* manifold, const b2Transform* xf_a, float radius_a, const b2Transform* xf_b, float radius_b);
+EXPORT void get_point_states(b2PointState* s1, b2PointState* s2, const b2Manifold* m1, const b2Manifold* m2);
+EXPORT bool AABB_is_valid(b2AABB* self);
+EXPORT b2Vec2 AABB_get_center(b2AABB* self);
+EXPORT b2Vec2 AABB_get_extents(b2AABB* self);
+EXPORT float AABB_get_perimeter(b2AABB* self);
+EXPORT void AABB_combine(b2AABB* self, const b2AABB* aabb);
+EXPORT void AABB_combine_two(b2AABB* self, const b2AABB* aabb1, const b2AABB* aabb2);
+EXPORT bool AABB_contains(b2AABB* self, const b2AABB* aabb);
+EXPORT bool AABB_ray_cast(b2AABB* self, b2RayCastOutput* output, const b2RayCastInput* input); 
+EXPORT void collide_circles(b2Manifold* manifold, const b2CircleShape* circleA, const b2Transform* xfA, const b2CircleShape* circleB, const b2Transform* xfB);
+EXPORT void collide_polygon_and_circle(b2Manifold* manifold, const b2PolygonShape* polygonA, const b2Transform* xfA, const b2CircleShape* circleB, const b2Transform* xfB);
+EXPORT void collide_polygons(b2Manifold* manifold, const b2PolygonShape* polygonA, const b2Transform* xfA, const b2PolygonShape* polygonB, const b2Transform* xfB);
+EXPORT void collide_edge_and_circle(b2Manifold* manifold, const b2EdgeShape* polygonA, const b2Transform* xfA, const b2CircleShape* circleB, const b2Transform* xfB);
+EXPORT void collide_edge_and_polygon(b2Manifold* manifold, const b2EdgeShape* edgeA, const b2Transform* xfA, const b2PolygonShape* circleB, const b2Transform* xfB);
+EXPORT uint32_t clip_segment_to_line(b2ClipVertex* vOut, const b2ClipVertex* vIn, const b2Vec2* normal, float offset, int32_t vertexIndexA);
+EXPORT bool test_overlap(const b2Shape* shapeA, int32_t indexA, const b2Shape* shapeB, int32_t indexB, const b2Transform* xfA, const b2Transform* xfB);
+EXPORT bool test_overlap_aabb(const b2AABB* a, const b2AABB* b);

@@ -3,41 +3,47 @@
 b2PolygonShape* PolygonShape_new() {
     return new b2PolygonShape();
 }
-void PolygonShape_drop(b2PolygonShape* self) {
-    delete self;
-}
 
 b2PolygonShape PolygonShape_create() {
     return b2PolygonShape();
 }
 
-b2Shape* PolygonShape_as_shape(b2PolygonShape* self) {
-    return static_cast<b2Shape*>(self);
-}
-b2PolygonShape* Shape_as_polygon_shape(b2Shape* self) {
-    return static_cast<b2PolygonShape*>(self);
+b2Shape* PolygonShape_clone(b2PolygonShape* self, b2BlockAllocator* allocator) {
+    return self->Clone(allocator);
 }
 
-void PolygonShape_set(b2PolygonShape* self,
-                      const b2Vec2* points, int32_t count) {
+int32 PolygonShape_get_child_count(b2PolygonShape* self) {
+    return self->GetChildCount();
+}
+
+void PolygonShape_set(b2PolygonShape* self, const b2Vec2* points, int32 count) {
     self->Set(points, count);
 }
-void PolygonShape_set_as_box(b2PolygonShape* self, float hw, float hh) {
-    self->SetAsBox(hw, hh);
+
+void PolygonShape_set_as_box(b2PolygonShape* self, float hx, float hy) {
+    self->SetAsBox(hx, hy);
 }
-void PolygonShape_set_as_oriented_box(b2PolygonShape* self,
-                                      float hw, float hh,
-                                      const b2Vec2* center,
-                                      float angle) {
-    self->SetAsBox(hw, hh, *center, angle);
+
+void PolygonShape_set_as_box_angled(b2PolygonShape* self, float hx, float hy, const b2Vec2* center, float angle) {
+    self->SetAsBox(hx, hy, *center, angle);
 }
-int32_t PolygonShape_get_vertex_count(const b2PolygonShape* self) {
-    return self->GetVertexCount();
+
+bool PolygonShape_test_point(b2PolygonShape* self, const b2Transform* transform, const b2Vec2* p) {
+    return self->TestPoint(*transform, *p);
 }
-const b2Vec2* PolygonShape_get_vertex(const b2PolygonShape* self,
-                                      int32_t index) {
-    return &self->GetVertex(index);
+
+bool PolygonShape_ray_cast(b2PolygonShape* self, b2RayCastOutput* output, const b2RayCastInput* input, const b2Transform* transform, int32 childIndex) {
+    return self->RayCast(output, *input, *transform, childIndex);
 }
-bool PolygonShape_validate(const b2PolygonShape* self) {
+
+void PolygonShape_compute_aabb(b2PolygonShape* self, b2AABB* aabb, const b2Transform* transform, int32 childIndex) {
+    self->ComputeAABB(aabb, *transform, childIndex);
+}
+
+void PolygonShape_compute_mass(b2PolygonShape* self, b2MassData* massData, float density) {
+    self->ComputeMass(massData, density);
+}
+
+bool PolygonShape_validate(b2PolygonShape* self) {
     return self->Validate();
 }

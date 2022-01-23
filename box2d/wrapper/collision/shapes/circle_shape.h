@@ -1,14 +1,15 @@
 EXPORT b2CircleShape* CircleShape_new();
-EXPORT void CircleShape_drop(b2CircleShape* self);
 EXPORT b2CircleShape CircleShape_create();
-EXPORT b2Shape* CircleShape_as_shape(b2CircleShape* self);
-EXPORT b2CircleShape* Shape_as_circle_shape(b2Shape* self);
-EXPORT int32_t CircleShape_get_support(const b2CircleShape* self,
-                            const b2Vec2* d);
-EXPORT const b2Vec2* CircleShape_get_support_vertex(const b2CircleShape* self,
-                                             const b2Vec2* d);
-EXPORT int32_t CircleShape_get_vertex_count(const b2CircleShape* self);
-EXPORT const b2Vec2* CircleShape_get_vertex(const b2CircleShape* self,
-                                     int32_t index);
-EXPORT b2Vec2 CircleShape_get_pos(const b2CircleShape* self);
-EXPORT void CircleShape_set_pos(b2CircleShape* self, b2Vec2 pos);
+EXPORT bool CircleShape_test_point(b2CircleShape* self, b2Transform* transform, b2Vec2* p);
+EXPORT bool CircleShape_ray_cast(b2CircleShape* self,
+                                 b2RayCastOutput* output,
+                                 const b2RayCastInput* input,
+				                 const b2Transform* transform,
+                                 int32 childIndex);
+EXPORT void CircleShape_compute_aabb(b2CircleShape* self,
+                                     b2AABB* aabb,
+                                     const b2Transform* transform,
+                                     int32 childIndex);
+EXPORT void CircleShape_compute_mass(b2CircleShape* self,
+                                     b2MassData* massData,
+                                     float density);

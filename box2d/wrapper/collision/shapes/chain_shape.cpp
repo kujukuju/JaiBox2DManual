@@ -4,71 +4,46 @@ b2ChainShape* ChainShape_new() {
     return new b2ChainShape();
 }
 
-void ChainShape_drop(b2ChainShape* self) {
-    delete self;
-}
-
 b2ChainShape ChainShape_create() {
     return b2ChainShape();
-}
-
-b2Shape* ChainShape_as_shape(b2ChainShape* self) {
-    return static_cast<b2Shape*>(self);
-}
-
-b2ChainShape* Shape_as_chain_shape(b2Shape* self) {
-    return static_cast<b2ChainShape*>(self);
 }
 
 void ChainShape_clear(b2ChainShape* self) {
     self->Clear();
 }
 
-void ChainShape_create_loop(b2ChainShape* self,
-                            const b2Vec2* vertices,
-                            int32_t count) {
+void ChainShape_create_loop(b2ChainShape* self, const b2Vec2* vertices, int32_t count) {
     self->CreateLoop(vertices, count);
 }
 
-void ChainShape_create_chain(b2ChainShape* self,
-                             const b2Vec2* vertices,
-                             int32_t count) {
-    self->CreateChain(vertices, count);
+void ChainShape_create_chain(b2ChainShape* self, const b2Vec2* vertices, int32_t count, const b2Vec2 prevVertex, const b2Vec2 nextVertex) {
+    self->CreateChain(vertices, count, prevVertex, nextVertex);
 }
 
-int32_t ChainShape_get_vertex_count(const b2ChainShape* self) {
-    return self->m_count;
+b2Shape* ChainShape_clone(b2ChainShape* self, b2BlockAllocator* allocator) {
+    return self->Clone(allocator);
 }
 
-bool ChainShape_get_prev_vertex(const b2ChainShape* self, b2Vec2* prev) {
-    *prev = self->m_prevVertex;
-    return self->m_hasPrevVertex;
+int32_t ChainShape_get_child_count(b2ChainShape* self) {
+    return self->GetChildCount();
 }
 
-void ChainShape_set_prev_vertex(b2ChainShape* self, const b2Vec2* prev) {
-    if (prev) {
-        self->m_prevVertex = *prev;
-        self->m_hasPrevVertex = true;
-    } else {
-        self->m_hasPrevVertex = false;
-    }
-}
-
-bool ChainShape_get_next_vertex(const b2ChainShape* self, b2Vec2* next) {
-    *next = self->m_nextVertex;
-    return self->m_hasNextVertex;
-}
-
-void ChainShape_set_next_vertex(b2ChainShape* self, const b2Vec2* next) {
-    if (next) {
-        self->m_nextVertex = *next;
-        self->m_hasNextVertex = true;
-    } else {
-        self->m_hasNextVertex = false;
-    }
-}
-
-void ChainShape_get_child_edge(const b2ChainShape* self,
-                               b2EdgeShape* edge, int32_t index) {
+void ChainShape_get_child_edge(b2ChainShape* self, b2EdgeShape* edge, int32_t index) {
     self->GetChildEdge(edge, index);
+}
+
+bool ChainShape_test_point(b2ChainShape* self, b2Transform* transform, b2Vec2* p) {
+    return self->TestPoint(*transform, *p);
+}
+
+bool ChainShape_ray_cast(b2ChainShape* self, b2RayCastOutput* output, b2RayCastInput* input, b2Transform* transform, int32 childIndex) {
+    return self->RayCast(output, *input, *transform, childIndex);
+}
+
+void ChainShape_compute_aabb(b2ChainShape* self, b2AABB* aabb, const b2Transform* transform, int32 childIndex) {
+    self->ComputeAABB(aabb, *transform, childIndex);
+}
+
+void ChainShape_compute_mass(b2ChainShape* self, b2MassData* massData, float density) {
+    self->ComputeMass(massData, density);
 }

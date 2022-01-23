@@ -3,66 +3,39 @@
 b2EdgeShape* EdgeShape_new() {
     return new b2EdgeShape();
 }
-void EdgeShape_drop(b2EdgeShape* self) {
-    delete self;
-}
 
 b2EdgeShape EdgeShape_create() {
     return b2EdgeShape();
 }
 
-b2Shape* EdgeShape_as_shape(b2EdgeShape* self) {
-    return static_cast<b2Shape*>(self);
-}
-b2EdgeShape* Shape_as_edge_shape(b2Shape* self) {
-    return static_cast<b2EdgeShape*>(self);
+void EdgeShape_set_one_sided(b2EdgeShape* self, const b2Vec2* v0, const b2Vec2* v1, const b2Vec2* v2, const b2Vec2* v3) {
+    self->SetOneSided(*v0, *v1, *v2, *v3);
 }
 
-void EdgeShape_set(b2EdgeShape* self,
-                   const b2Vec2* v1, const b2Vec2* v2) {
-    self->Set(*v1, *v2);
+void EdgeShape_set_two_sided(b2EdgeShape* self, const b2Vec2* v1, const b2Vec2* v2) {
+    self->SetTwoSided(*v1, *v2);
 }
 
-b2Vec2 EdgeShape_get_v1(const b2EdgeShape* self) {
-    return self->m_vertex1;
+b2Shape* EdgeShape_clone(b2EdgeShape* self, b2BlockAllocator* allocator) {
+    return self->Clone(allocator);
 }
 
-void EdgeShape_set_v1(b2EdgeShape* self, b2Vec2 v1) {
-    self->m_vertex1 = v1;
+int32 EdgeShape_get_child_count(b2EdgeShape* self) {
+    return self->GetChildCount();
 }
 
-b2Vec2 EdgeShape_get_v2(const b2EdgeShape* self) {
-    return self->m_vertex2;
+bool EdgeShape_test_point(b2EdgeShape* self, const b2Transform* transform, const b2Vec2* p) {
+    return self->TestPoint(*transform, *p);
 }
 
-void EdgeShape_set_v2(b2EdgeShape* self, b2Vec2 v2) {
-    self->m_vertex2 = v2;
+bool EdgeShape_ray_cast(b2EdgeShape* self, b2RayCastOutput* output, const b2RayCastInput* input, const b2Transform* transform, int32 childIndex) {
+    return self->RayCast(output, *input, *transform, childIndex);
 }
 
-bool EdgeShape_get_v0(const b2EdgeShape* self, b2Vec2* v0) {
-    *v0 = self->m_vertex0;
-    return self->m_hasVertex0;
+void EdgeShape_compute_aabb(b2EdgeShape* self, b2AABB* aabb, const b2Transform* transform, int32 childIndex) {
+    self->ComputeAABB(aabb, *transform, childIndex);
 }
 
-void EdgeShape_set_v0(b2EdgeShape* self, const b2Vec2* v0) {
-    if (v0) {
-        self->m_vertex0 = *v0;
-        self->m_hasVertex0 = true;
-    } else {
-        self->m_hasVertex0 = false;
-    }
-}
-
-bool EdgeShape_get_v3(const b2EdgeShape* self, b2Vec2* v3) {
-    *v3 = self->m_vertex3;
-    return self->m_hasVertex3;
-}
-
-void EdgeShape_set_v3(b2EdgeShape* self, const b2Vec2* v3) {
-    if (v3) {
-        self->m_vertex3 = *v3;
-        self->m_hasVertex3 = true;
-    } else {
-        self->m_hasVertex3 = false;
-    }
+void EdgeShape_compute_mass(b2EdgeShape* self, b2MassData* massData, float density) {
+    self->ComputeMass(massData, density);
 }

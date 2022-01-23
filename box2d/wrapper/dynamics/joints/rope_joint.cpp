@@ -1,44 +1,45 @@
 #include "dynamics/joints/rope_joint.h"
 
-b2Joint* World_create_rope_joint(
-    b2World* world,
-    b2Body* body_a,
-    b2Body* body_b,
-    bool collide_connected,
-    b2Vec2 local_anchor_a,
-    b2Vec2 local_anchor_b,
-    float max_length
-) {
-    b2RopeJointDef def;
-    def.bodyA = body_a;
-    def.bodyB = body_b;
-    def.collideConnected = collide_connected;
-    def.localAnchorA = local_anchor_a;
-    def.localAnchorB = local_anchor_b;
-    def.maxLength = max_length;
-
-    return world->CreateJoint(&def);
+b2RopeTuning* RopeTuning_new() {
+    return new b2RopeTuning();
 }
 
-b2Joint* RopeJoint_as_joint(b2RopeJoint* self) {
-    return static_cast<b2Joint*>(self);
-}
-b2RopeJoint* Joint_as_rope_joint(b2Joint* self) {
-    return static_cast<b2RopeJoint*>(self);
+b2RopeTuning RopeTurning_create() {
+    return b2RopeTuning();
 }
 
-const b2Vec2* RopeJoint_get_local_anchor_a(const b2RopeJoint* self) {
-    return &self->GetLocalAnchorA();
+b2RopeDef* RopeDef_new() {
+    return new b2RopeDef();
 }
-const b2Vec2* RopeJoint_get_local_anchor_b(const b2RopeJoint* self) {
-    return &self->GetLocalAnchorB();
+
+b2RopeDef RopeDef_create() {
+    return b2RopeDef();
 }
-void RopeJoint_set_max_length(b2RopeJoint* self, float length) {
-    self->SetMaxLength(length);
+
+b2Rope* Rope_new() {
+    return new b2Rope();
 }
-float RopeJoint_get_max_length(const b2RopeJoint* self) {
-    return self->GetMaxLength();
+
+b2Rope Rope_create() {
+    return b2Rope();
 }
-b2LimitState RopeJoint_get_limit_state(const b2RopeJoint* self) {
-    return self->GetLimitState();
+
+void Rope_initialize(b2Rope* self, const b2RopeDef* def) {
+    self->Create(*def);
+}
+
+void Rope_set_tuning(b2Rope* self, const b2RopeTuning* tuning) {
+    self->SetTuning(*tuning);
+}
+
+void Rope_step(b2Rope* self, float timeStep, int32_t iterations, const b2Vec2* position) {
+    self->Step(timeStep, iterations, *position);
+}
+
+void Rope_reset(b2Rope* self, const b2Vec2* position) {
+    self->Reset(*position);
+}
+
+void Rope_draw(b2Rope* self, b2Draw* draw) {
+    self->Draw(draw);
 }

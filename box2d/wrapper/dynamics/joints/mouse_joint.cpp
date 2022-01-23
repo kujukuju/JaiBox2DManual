@@ -1,55 +1,66 @@
 #include "dynamics/joints/mouse_joint.h"
 
-b2Joint* World_create_mouse_joint(
-    b2World* self,
-    b2Body* body_a,
-    b2Body* body_b,
-    bool collide_connected,
-    b2Vec2 target,
-    float max_force,
-    float frequency,
-    float damping_ratio
-) {
-    b2MouseJointDef def;
-    def.bodyA = body_a;
-    def.bodyB = body_b;
-    def.collideConnected = collide_connected;
-    def.target = target;
-    def.maxForce = max_force;
-    def.frequencyHz = frequency;
-    def.dampingRatio = damping_ratio;
-
-    return self->CreateJoint(&def);
+b2MouseJointDef* MouseJointDef_new() {
+    return new b2MouseJointDef();
 }
 
-b2Joint* MouseJoint_as_joint(b2MouseJoint* self) {
-    return static_cast<b2Joint*>(self);
+b2MouseJointDef MouseJointDef_create() {
+    return b2MouseJointDef();
 }
-b2MouseJoint* Joint_as_mouse_joint(b2Joint* self) {
-    return static_cast<b2MouseJoint*>(self);
+
+b2Vec2 MouseJoint_get_anchor_a(b2MouseJoint* self) {
+    return self->GetAnchorA();
+}
+
+b2Vec2 MouseJoint_get_anchor_b(b2MouseJoint* self) {
+    return self->GetAnchorB();
+}
+
+b2Vec2 MouseJoint_get_reaction_force(b2MouseJoint* self, float inv_dt) {
+    return self->GetReactionForce(inv_dt);
+}
+
+float MouseJoint_get_reaction_torque(b2MouseJoint* self, float inv_dt) {
+    return self->GetReactionTorque(inv_dt);
 }
 
 void MouseJoint_set_target(b2MouseJoint* self, const b2Vec2* target) {
     self->SetTarget(*target);
 }
-const b2Vec2* MouseJoint_get_target(const b2MouseJoint* self) {
-    return &self->GetTarget();
+
+b2Vec2 MouseJoint_get_target(b2MouseJoint* self) {
+    return self->GetTarget();
 }
+
 void MouseJoint_set_max_force(b2MouseJoint* self, float force) {
     self->SetMaxForce(force);
 }
-float MouseJoint_get_max_force(const b2MouseJoint* self) {
+
+float MouseJoint_get_max_force(b2MouseJoint* self) {
     return self->GetMaxForce();
 }
-void MouseJoint_set_frequency(b2MouseJoint* self, float hz) {
-    self->SetFrequency(hz);
+
+void MouseJoint_set_stiffness(b2MouseJoint* self, float stiffness) {
+    self->SetStiffness(stiffness);
 }
-float MouseJoint_get_frequency(const b2MouseJoint* self) {
-    return self->GetFrequency();
+
+float MouseJoint_get_stiffness(b2MouseJoint* self) {
+    return self->GetStiffness();
 }
-void MouseJoint_set_damping_ratio(b2MouseJoint* self, float ratio) {
-    self->SetDampingRatio(ratio);
+
+void MouseJoint_set_damping(b2MouseJoint* self, float damping) {
+    self->SetDamping(damping);
 }
-float MouseJoint_get_damping_ratio(const b2MouseJoint* self) {
-    return self->GetDampingRatio();
+
+float MouseJoint_get_damping(b2MouseJoint* self) {
+    return self->GetDamping();
 }
+
+void MouseJoint_dump(b2MouseJoint* self) {
+    self->Dump();
+}
+
+void MouseJoint_shift_origin(b2MouseJoint* self, const b2Vec2* newOrigin) {
+    self->ShiftOrigin(*newOrigin);
+}
+
