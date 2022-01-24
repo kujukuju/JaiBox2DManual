@@ -151,6 +151,7 @@ generate :: () {
 
     REPLACEMENT_TYPES :: [2] string.[
         string.["int32_t", "s32"],
+        string.["int32", "s32"],
         string.["b2Vec2", "Vector2"],
         string.["b2Shape::Type", "b2ShapeType"],
         string.["uint32_t", "u32"],
@@ -243,6 +244,11 @@ generate :: () {
         }
     }
 
+    array_add(*found_types, "b2_maxManifoldPoints");
+    array_add(*found_types, "b2_maxPolygonVertices");
+    array_add(*found_types, "b2_blockSizes");
+    array_add(*found_types, "b2_stackSize");
+    array_add(*found_types, "b2_maxStackEntries");
     array_add(*found_types, "b2Mat22");
     array_add(*found_types, "b2Mat33");
     array_add(*found_types, "b2Sweep");
@@ -258,10 +264,23 @@ generate :: () {
     array_add(*found_types, "b2DynamicTree");
     array_add(*found_types, "b2Pair");
     array_add(*found_types, "b2TreeNode");
+    array_add(*found_types, "b2ManifoldPoint");
+    array_add(*found_types, "b2ManifoldType");
+    array_add(*found_types, "b2ContactFeature");
+    array_add(*found_types, "b2Rot");
+    array_add(*found_types, "b2ContactID");
+    array_add(*found_types, "b2ManifoldType");
+    array_add(*found_types, "b2LimitState");
+    array_add(*found_types, "b2StretchingModel");
+    array_add(*found_types, "b2BendingModel");
+    array_add(*found_types, "b2RopeStretch");
+    array_add(*found_types, "b2RopeBend");
+    array_add(*found_types, "b2Color");
 
     IGNORE_TYPES :: string.[
         "void",
         "s32",
+        "u32",
         "Vector2",
         "float",
         "bool",
@@ -272,6 +291,15 @@ generate :: () {
         "b2Block",
         "u32",
         "b2ShapeType",
+        "b2ManifoldType",
+        "b2LimitState",
+        "b2RopeStretch",
+        "b2RopeBend",
+        "b2_blockSizes",
+        "b2_maxManifoldPoints",
+        "b2_maxPolygonVertices",
+        "b2_stackSize",
+        "b2_maxStackEntries",
     ];
 
     existing_structs_contents, read_existing_structs_file := read_entire_file("structs.jai");
@@ -279,6 +307,7 @@ generate :: () {
         already_written_structs: [..] string;
         lines := split(existing_structs_contents, "\n");
 
+        print("ALREADY WRITTEN\n");
         for line: lines {
             found_valid_type := false;
             valid_type_length := 0;
@@ -302,7 +331,10 @@ generate :: () {
             type_name: string = line;
             type_name.count = valid_type_length;
             array_add(*already_written_structs, type_name);
+            
+            print("%\n", type_name);
         }
+
 
         reset(*file_builder);
         for type: found_types {
@@ -376,6 +408,7 @@ int main() {
     assertFile << "#run {\n";
     DONE);
 
+    print("ASSERT TYPES\n");
     for type: found_types {
         if array_find(IGNORE_TYPES, type) {
             continue;
@@ -395,6 +428,8 @@ int main() {
         append(*file_builder, " must be of size \" << sizeof(");
         append(*file_builder, type);
         append(*file_builder, ") << \".\\\");\\n\";\n");
+
+        print("%\n", type);
     }
 
     append(*file_builder, #string DONE

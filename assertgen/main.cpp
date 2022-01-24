@@ -64,7 +64,6 @@ int main() {
     assertFile << "    assert(size_of(ReportFixtureRayCastCB) == " << sizeof(ReportFixtureRayCastCB) << ", \"ReportFixtureRayCastCB must be of size " << sizeof(ReportFixtureRayCastCB) << ".\");\n";
     assertFile << "    assert(size_of(b2ChainShape) == " << sizeof(b2ChainShape) << ", \"b2ChainShape must be of size " << sizeof(b2ChainShape) << ".\");\n";
     assertFile << "    assert(size_of(b2BlockAllocator) == " << sizeof(b2BlockAllocator) << ", \"b2BlockAllocator must be of size " << sizeof(b2BlockAllocator) << ".\");\n";
-    assertFile << "    assert(size_of(int32) == " << sizeof(int32) << ", \"int32 must be of size " << sizeof(int32) << ".\");\n";
     assertFile << "    assert(size_of(b2DistanceJointDef) == " << sizeof(b2DistanceJointDef) << ", \"b2DistanceJointDef must be of size " << sizeof(b2DistanceJointDef) << ".\");\n";
     assertFile << "    assert(size_of(b2DistanceJoint) == " << sizeof(b2DistanceJoint) << ", \"b2DistanceJoint must be of size " << sizeof(b2DistanceJoint) << ".\");\n";
     assertFile << "    assert(size_of(b2FrictionJointDef) == " << sizeof(b2FrictionJointDef) << ", \"b2FrictionJointDef must be of size " << sizeof(b2FrictionJointDef) << ".\");\n";
@@ -102,6 +101,13 @@ int main() {
     assertFile << "    assert(size_of(b2DynamicTree) == " << sizeof(b2DynamicTree) << ", \"b2DynamicTree must be of size " << sizeof(b2DynamicTree) << ".\");\n";
     assertFile << "    assert(size_of(b2Pair) == " << sizeof(b2Pair) << ", \"b2Pair must be of size " << sizeof(b2Pair) << ".\");\n";
     assertFile << "    assert(size_of(b2TreeNode) == " << sizeof(b2TreeNode) << ", \"b2TreeNode must be of size " << sizeof(b2TreeNode) << ".\");\n";
+    assertFile << "    assert(size_of(b2ManifoldPoint) == " << sizeof(b2ManifoldPoint) << ", \"b2ManifoldPoint must be of size " << sizeof(b2ManifoldPoint) << ".\");\n";
+    assertFile << "    assert(size_of(b2ContactFeature) == " << sizeof(b2ContactFeature) << ", \"b2ContactFeature must be of size " << sizeof(b2ContactFeature) << ".\");\n";
+    assertFile << "    assert(size_of(b2Rot) == " << sizeof(b2Rot) << ", \"b2Rot must be of size " << sizeof(b2Rot) << ".\");\n";
+    assertFile << "    assert(size_of(b2ContactID) == " << sizeof(b2ContactID) << ", \"b2ContactID must be of size " << sizeof(b2ContactID) << ".\");\n";
+    assertFile << "    assert(size_of(b2StretchingModel) == " << sizeof(b2StretchingModel) << ", \"b2StretchingModel must be of size " << sizeof(b2StretchingModel) << ".\");\n";
+    assertFile << "    assert(size_of(b2BendingModel) == " << sizeof(b2BendingModel) << ", \"b2BendingModel must be of size " << sizeof(b2BendingModel) << ".\");\n";
+    assertFile << "    assert(size_of(b2Color) == " << sizeof(b2Color) << ", \"b2Color must be of size " << sizeof(b2Color) << ".\");\n";
     assertFile << "}\n\n#scope_file\n\n#import \"Basic\";\n";
     assertFile.close();
     return 0;

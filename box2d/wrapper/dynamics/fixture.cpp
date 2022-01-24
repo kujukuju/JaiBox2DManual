@@ -1,5 +1,13 @@
 #include "dynamics/fixture.h"
 
+b2Filter* Filter_new() {
+    return new b2Filter();
+}
+
+b2Filter Filter_create() {
+    return b2Filter();
+}
+
 b2FixtureDef* FixtureDef_new() {
     return new b2FixtureDef();
 }

@@ -86,56 +86,6 @@ b2Shape :: struct {
     m_radius: float32;
 }
 
-b2DistanceProxy :: struct {
-    m_buffer: [2] Vector2;
-    m_vertices: *Vector2;
-    m_count: s32;
-    m_radius: float32;
-}
-
-b2DistanceOutput :: struct {
-    pointA: Vector2;
-    pointB: Vector2;
-    distance: float32;
-    iterations: s32;
-}
-
-b2SimplexCache :: struct {
-    metric: float32;
-    count: u16;
-    indexA: [3] u8;
-    indexB: [3] u8;
-}
-
-b2DistanceInput :: struct {
-    proxyA: b2DistanceProxy;
-    proxyB: b2DistanceProxy;
-    transformA: b2Transform;
-    transformB: b2Transform;
-    useRadii: bool;
-}
-
-b2TOIOutputState :: enum u32 {
-    e_unknown;
-    e_failed;
-    e_overlapped;
-    e_touching;
-    e_separated;
-}
-
-b2TOIOutput :: struct {
-    state: b2TOIOutputState;
-    t: float32;
-}
-
-b2TOIInput :: struct {
-    proxyA: b2DistanceProxy;
-    proxyB: b2DistanceProxy;
-    sweepA: b2Sweep;
-    sweepB: b2Sweep;
-    tMax: float32;
-}
-
 b2Sweep :: struct {
     localCenter: Vector2;
     c0: Vector2;
@@ -467,65 +417,6 @@ b2Profile :: struct {
     broadphase: float32;
     solveTOI: float32;
 }
-
-DestructionListenerLink :: struct {
-    using parent: b2DestructionListener;
-    object: RustObject;
-    say_goodbye_to_joint: SayGoodbyeToJointCB;
-    say_goodbye_to_fixture: SayGoodbyeToFixtureCB;
-}
-
-// TODO remove this
-RustObject :: *void;
-
-SayGoodbyeToJointCB :: #type (a0: RustObject, a1: *b2Joint) -> void #c_call;
-
-SayGoodbyeToFixtureCB :: #type (a0: RustObject, a1: *b2Fixture) -> void #c_call;
-
-ContactFilterLink :: struct {
-    using b2contactfilter: b2ContactFilter;
-
-    object: RustObject;
-    should_collide: ShouldCollideCB;
-}
-
-ShouldCollideCB :: #type (a0: RustObject, a1: *b2Fixture, a2: *b2Fixture) -> bool #c_call;
-
-ContactListenerLink :: struct {
-    using b2contactlistener: b2ContactListener;
-
-    object: RustObject;
-    begin_contact: BeginContactCB;
-    end_contact: EndContactCB;
-    pre_solve: PreSolveCB;
-    post_solve: PostSolveCB;
-}
-
-BeginContactCB :: #type (a0: RustObject, a1: *b2Contact) -> void #c_call;
-
-EndContactCB :: #type (a0: RustObject, a1: *b2Contact) -> void #c_call;
-
-PreSolveCB :: #type (a0: RustObject, a1: *b2Contact, a2: *b2Manifold) -> void #c_call;
-
-PostSolveCB :: #type (a0: RustObject, a1: *b2Contact, a2: *b2ContactImpulse) -> void #c_call;
-
-QueryCallbackLink :: struct {
-    using b2querycallback: b2QueryCallback;
-
-    object: RustObject;
-    report_fixture: QCReportFixtureCB;
-}
-
-QCReportFixtureCB :: #type (a0: RustObject, a1: *b2Fixture) -> bool #c_call;
-
-RayCastCallbackLink :: struct {
-    using b2raycastcallback: b2RayCastCallback;
-
-    object: RustObject;
-    report_fixture: RCCReportFixtureCB;
-}
-
-RCCReportFixtureCB :: #type (a0: RustObject, a1: *b2Fixture, a2: *Vector2, a3: *Vector2, a4: float32) -> float32 #c_call;
 
 b2ChainShape :: struct {
     using shape: b2Shape;
@@ -865,29 +756,6 @@ b2RevoluteJoint :: struct {
     m_limitState: b2LimitState;
 }
 
-b2RopeJoint :: struct {
-    using joint: b2Joint;
-
-    m_localAnchorA: Vector2;
-    m_localAnchorB: Vector2;
-    m_maxLength: float32;
-    m_length: float32;
-    m_impulse: float32;
-    m_indexA: s32;
-    m_indexB: s32;
-    m_u: Vector2;
-    m_rA: Vector2;
-    m_rB: Vector2;
-    m_localCenterA: Vector2;
-    m_localCenterB: Vector2;
-    m_invMassA: float32;
-    m_invMassB: float32;
-    m_invIA: float32;
-    m_invIB: float32;
-    m_mass: float32;
-    m_state: b2LimitState;
-}
-
 b2LimitState :: enum u32 {
 	e_inactiveLimit;
 	e_atLowerLimit;
@@ -976,6 +844,192 @@ b2WheelJoint :: struct {
     m_springMass: float32;
     m_bias: float32;
     m_gamma: float32;
+}
+
+b2ClipVertex :: struct {
+    v: Vector2;
+    id: b2ContactID;
+}
+
+Draw :: struct {
+    using draw: b2Draw;
+    
+    m_drawPolygon: DrawPolygonCB;
+    m_drawSolidPolygon: DrawSolidPolygonCB;
+    m_drawCircle: DrawCircleCB;
+    m_drawSolidCircle: DrawSolidCircleCB;
+    m_drawSegment: DrawSegmentCB;
+    m_drawTransform: DrawTransformCB;
+    m_drawPoint: DrawPointCB;
+}
+
+DrawPolygonCB :: #type (vertices: *Vector2, vertexCount: s32, color: b2Color) -> void #c_call;
+
+DrawSolidPolygonCB :: #type (vertices: *Vector2, vertexCount: s32, color: b2Color) -> void #c_call;
+
+DrawCircleCB :: #type (center: Vector2, radius: float32, color: b2Color) -> void #c_call;
+
+DrawSolidCircleCB :: #type (center: Vector2, radius: float32, color: b2Color) -> void #c_call;
+
+DrawSegmentCB :: #type (p1: Vector2, p2: Vector2, color: b2Color) -> void #c_call;
+
+DrawTransformCB :: #type (xf: b2Transform) -> void #c_call;
+
+DrawPointCB :: #type (p: Vector2, size: float, color: b2Color) -> void #c_call;
+
+DestructionListener :: struct {
+    using listener: b2DestructionListener;
+
+    m_sayGoodbyeJoint: SayGoodbyeJointCB;
+    m_sayGoodbyeFixture: SayGoodbyeFixtureCB;
+}
+
+SayGoodbyeJointCB :: #type (joint: *b2Joint) -> void #c_call;
+
+SayGoodbyeFixtureCB :: #type (fixture: *b2Fixture) -> void #c_call;
+
+ContactFilter :: struct {
+    using filter: b2ContactFilter;
+
+    m_shouldCollide: ShouldCollideCB;
+}
+
+ShouldCollideCB :: #type (fixtureA: *b2Fixture, fixtureB: *b2Fixture) -> bool #c_call;
+
+ContactListener :: struct {
+    using listener: b2ContactListener;
+    
+    m_beginContact: BeginContactCB;
+    m_endContact: EndContactCB;
+    m_preSolve: PreSolveCB;
+    m_postSolve: PostSolveCB;
+}
+
+BeginContactCB :: #type (contact: *b2Contact) -> bool #c_call;
+EndContactCB :: #type (contact: *b2Contact) -> bool #c_call;
+PreSolveCB :: #type (contact: *b2Contact, oldManifold: *b2Manifold) -> bool #c_call;
+PostSolveCB :: #type (contact: *b2Contact, impulse: *b2ContactImpulse) -> bool #c_call;
+
+QueryCallback :: struct {
+    using callback: b2QueryCallback;
+    
+    m_reportFixture: ReportFixtureQueryCB;
+}
+
+ReportFixtureQueryCB :: #type (fixture: *b2Fixture) -> bool #c_call;
+
+RayCastCallback :: struct {
+    using callback: b2RayCastCallback;
+    
+    m_reportFixture: ReportFixtureRayCastCB;
+}
+
+ReportFixtureRayCastCB :: #type (fixture: *b2Fixture, point: Vector2, normal: Vector2, fraction: float) -> float #c_call;
+
+b2GearJointDef :: struct {
+    using joint_def: b2JointDef;
+
+    joint1: *b2Joint;
+    joint2: *b2Joint;
+    ratio: float32;
+}
+
+b2MouseJointDef :: struct {
+    using joint_def: b2JointDef;
+
+    target: Vector2;
+    maxForce: float32;
+    stiffness: float32;
+    damping: float32;
+}
+
+b2RopeTuning :: struct {
+    stretchingModel: b2StretchingModel;
+    bendingModel: b2BendingModel;
+    damping: float32;
+    stretchStiffness: float32;
+    stretchHertz: float32;
+    stretchDamping: float32;
+    bendStiffness: float32;
+    bendHertz: float32;
+    bendDamping: float32;
+    isometric: bool;
+    fixedEffectiveMass: bool;
+    warmStart: bool;
+}
+
+b2RopeDef :: struct {
+    position: Vector2;
+    vertices: *Vector2;
+    count: s32;
+    masses: *float32;
+    gravity: Vector2;
+    tuning: b2RopeTuning;
+}
+
+b2Rope :: struct {
+    m_position: Vector2;
+    m_count: s32;
+    m_stretchCount: s32;
+    m_bendCount: s32;
+    m_stretchConstraints: *b2RopeStretch;
+    m_bendConstraints: *b2RopeBend;
+    m_bindPositions: *Vector2;
+    m_ps: *Vector2;
+    m_p0s: *Vector2;
+    m_vs: *Vector2;
+    m_invMasses: *float;
+    m_gravity: Vector2;
+    m_tuning: b2RopeTuning;
+}
+
+b2StretchingModel :: enum u32 {
+    b2_pbdStretchingModel;
+    b2_xpbdStretchingModel;
+}
+
+b2BendingModel :: enum u32 {
+    b2_springAngleBendingModel :: 0;
+	b2_pbdAngleBendingModel;
+	b2_xpbdAngleBendingModel;
+	b2_pbdDistanceBendingModel;
+	b2_pbdHeightBendingModel;
+	b2_pbdTriangleBendingModel;
+}
+
+b2RopeStretch :: struct {
+	i1: s32;
+    i2: s32;
+	invMass1: float;
+    invMass2: float;
+	L: float;
+	lambda: float;
+	spring: float;
+	damper: float;
+}
+
+b2RopeBend :: struct {
+	i1: s32;
+    i2: s32;
+    i3: s32;
+	invMass1: float;
+    invMass2: float;
+    invMass3: float;
+	invEffectiveMass: float;
+	lambda: float;
+	L1: float;
+    L2: float;
+	alpha1: float;
+    alpha2: float;
+	spring: float;
+	damper: float;
+}
+
+b2Color :: struct {
+    r: float;
+    g: float;
+    b: float;
+    a: float;
 }
 
 #scope_file
