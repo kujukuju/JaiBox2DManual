@@ -88,7 +88,7 @@ struct b2Block
 
 b2BlockAllocator::b2BlockAllocator()
 {
-	b2Assert(b2_blockSizeCount < UCHAR_MAX);
+	b2Assert((uint32) b2_blockSizeCount < UCHAR_MAX);
 
 	m_chunkSpace = b2_chunkArrayIncrement;
 	m_chunkCount = 0;
@@ -108,6 +108,11 @@ b2BlockAllocator::~b2BlockAllocator()
 	b2Free(m_chunks);
 }
 
+uint32 b2BlockAllocator::GetNumGiantAllocations() const
+{
+	return m_giants.GetList().GetLength();
+}
+
 void* b2BlockAllocator::Allocate(int32 size)
 {
 	if (size == 0)
@@ -119,7 +124,7 @@ void* b2BlockAllocator::Allocate(int32 size)
 
 	if (size > b2_maxBlockSize)
 	{
-		return b2Alloc(size);
+		return m_giants.Allocate(size);
 	}
 
 	int32 index = b2_sizeMap.values[size];
@@ -179,7 +184,7 @@ void b2BlockAllocator::Free(void* p, int32 size)
 
 	if (size > b2_maxBlockSize)
 	{
-		b2Free(p);
+		m_giants.Free(p);
 		return;
 	}
 

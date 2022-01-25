@@ -25,6 +25,7 @@
 
 #include "b2_api.h"
 #include "b2_settings.h"
+#include "b2_tracked_block.h"
 
 const int32 b2_blockSizeCount = 14;
 
@@ -55,6 +56,9 @@ private:
 	int32 m_chunkSpace;
 
 	b2Block* m_freeLists[b2_blockSizeCount];
+
+	// Record giant allocations--ones bigger than the max block size
+	b2TrackedBlockAllocator m_giants;
 };
 
 #endif

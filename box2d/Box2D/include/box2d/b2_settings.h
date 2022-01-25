@@ -52,6 +52,24 @@
 /// this too much because b2BlockAllocator has a maximum object size.
 #define b2_maxPolygonVertices	8
 
+#if DEBUG && !defined(NDEBUG)
+#define b2Assert(A) assert(A)
+#define B2_ASSERT_ENABLED 1
+#else
+#define b2Assert(A)
+#define B2_ASSERT_ENABLED 0
+#endif
+
+// Statement which is compiled out when DEBUG isn't defined.
+#if DEBUG
+#define B2_DEBUG_STATEMENT(A) A
+#else
+#define B2_DEBUG_STATEMENT(A)
+#endif  // DEBUG
+
+// Calculate the size of a static array.
+#define B2_ARRAY_SIZE(x) (sizeof(x) / sizeof((x)[0]))
+
 // User data
 
 /// You can define this to inject whatever data you want in b2Body

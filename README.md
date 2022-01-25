@@ -34,3 +34,8 @@ Body_create_fixture(body, *fixture_def);
 
 World_step(*world, 0.01667, 8, 3);
 ```
+
+
+### Note
+
+You can update b2_lengthUnitsPerMEter in b2_settings.h to change the scale and run `jai generate.jai` to rebuild the dll. But I'm not sure how this will work with liquidfun since this didn't exist in box2d 1.3.0.

@@ -61,6 +61,8 @@ public:
 
 	/// @see b2Shape::TestPoint
 	bool TestPoint(const b2Transform& transform, const b2Vec2& p) const override;
+	
+	void ComputeDistance(const b2Transform& xf, const b2Vec2& p, float32* distance, b2Vec2* normal, int32 childIndex) const;
 
 	/// Implement b2Shape.
 	/// @note because the polygon is solid, rays that start inside do not hit because the normal is
@@ -78,6 +80,10 @@ public:
 	/// @returns true if valid
 	bool Validate() const;
 
+	void SetCentroid(float32 x, float32 y);
+
+	void SetAsBox(float32 hx, float32 hy, float32 centerX, float32 centerY, float32 angle);
+
 	b2Vec2 m_centroid;
 	b2Vec2 m_vertices[b2_maxPolygonVertices];
 	b2Vec2 m_normals[b2_maxPolygonVertices];
@@ -90,6 +96,15 @@ inline b2PolygonShape::b2PolygonShape()
 	m_radius = b2_polygonRadius;
 	m_count = 0;
 	m_centroid.SetZero();
+}
+
+inline void b2PolygonShape::SetCentroid(float32 x, float32 y)
+{
+	m_centroid.Set(x, y);
+}
+
+inline void b2PolygonShape::SetAsBox(float32 hx, float32 hy, float32 centerX, float32 centerY, float32 angle) {
+	SetAsBox(hx, hy, b2Vec2(centerX, centerY), angle);
 }
 
 #endif

@@ -41,6 +41,8 @@ public:
 	/// Implement b2Shape.
 	bool TestPoint(const b2Transform& transform, const b2Vec2& p) const override;
 
+	void ComputeDistance(const b2Transform& xf, const b2Vec2& p, float32* distance, b2Vec2* normal, int32 childIndex) const;
+
 	/// Implement b2Shape.
 	/// @note because the circle is solid, rays that start inside do not hit because the normal is
 	/// not defined.
@@ -52,6 +54,12 @@ public:
 
 	/// @see b2Shape::ComputeMass
 	void ComputeMass(b2MassData* massData, float density) const override;
+
+	void SetPosition(float32 x, float32 y) { m_p.Set(x, y); }
+
+	float32 GetPositionX() const { return m_p.x; }
+
+	float32 GetPositionY() const { return m_p.y; }
 
 	/// Position
 	b2Vec2 m_p;

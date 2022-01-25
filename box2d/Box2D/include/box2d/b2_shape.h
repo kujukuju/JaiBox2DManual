@@ -75,6 +75,8 @@ public:
 	/// @param p a point in world coordinates.
 	virtual bool TestPoint(const b2Transform& xf, const b2Vec2& p) const = 0;
 
+	virtual void ComputeDistance(const b2Transform& xf, const b2Vec2& p, float32* distance, b2Vec2* normal, int32 childIndex) const= 0;
+
 	/// Cast a ray against a child shape.
 	/// @param output the ray-cast results.
 	/// @param input the ray-cast input parameters.

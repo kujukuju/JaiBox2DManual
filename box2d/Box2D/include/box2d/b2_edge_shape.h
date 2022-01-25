@@ -52,6 +52,8 @@ public:
 	/// @see b2Shape::TestPoint
 	bool TestPoint(const b2Transform& transform, const b2Vec2& p) const override;
 
+	void ComputeDistance(const b2Transform& xf, const b2Vec2& p, float32* distance, b2Vec2* normal, int32 childIndex) const;
+
 	/// Implement b2Shape.
 	bool RayCast(b2RayCastOutput* output, const b2RayCastInput& input,
 				const b2Transform& transform, int32 childIndex) const override;
@@ -61,6 +63,9 @@ public:
 
 	/// @see b2Shape::ComputeMass
 	void ComputeMass(b2MassData* massData, float density) const override;
+
+	/// Set this as an isolated edge, with direct floats.
+	void Set(float32 vx1, float32 vy1, float32 vx2, float32 vy2);
 
 	/// These are the edge vertices
 	b2Vec2 m_vertex1, m_vertex2;
@@ -81,6 +86,10 @@ inline b2EdgeShape::b2EdgeShape()
 	m_vertex3.x = 0.0f;
 	m_vertex3.y = 0.0f;
 	m_oneSided = false;
+}
+
+inline void b2EdgeShape::Set(float32 vx1, float32 vy1, float32 vx2, float32 vy2) {
+	Set(b2Vec2(vx1, vy1), b2Vec2(vx2, vy2));
 }
 
 #endif

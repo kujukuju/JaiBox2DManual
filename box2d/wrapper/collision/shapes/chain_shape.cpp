@@ -32,6 +32,10 @@ void ChainShape_get_child_edge(b2ChainShape* self, b2EdgeShape* edge, int32_t in
     self->GetChildEdge(edge, index);
 }
 
+void ChainShape_compute_distance(b2ChainShape* self, b2Transform* xf, const b2Vec2* p, float32* distance, b2Vec2* normal, int32 childIndex) {
+    self->ComputeDistance(*xf, *p, distance, normal, childIndex);
+}
+
 bool ChainShape_test_point(b2ChainShape* self, b2Transform* transform, b2Vec2* p) {
     return self->TestPoint(*transform, *p);
 }

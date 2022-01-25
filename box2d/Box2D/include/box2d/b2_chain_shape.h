@@ -66,6 +66,8 @@ public:
 	/// Get a child edge.
 	void GetChildEdge(b2EdgeShape* edge, int32 index) const;
 
+	void ComputeDistance(const b2Transform& xf, const b2Vec2& p, float32* distance, b2Vec2* normal, int32 childIndex) const;
+
 	/// This always return false.
 	/// @see b2Shape::TestPoint
 	bool TestPoint(const b2Transform& transform, const b2Vec2& p) const override;

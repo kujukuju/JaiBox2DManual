@@ -531,7 +531,7 @@ void b2ContactSolver::SolveVelocityConstraints()
 				x.x = 0.0f;
 				x.y = - cp2->normalMass * b.y;
 				vn1 = vc->K.ey.x * x.y + b.x;
-				vn2 = 0.0f;
+				// vn2 = 0.0f; TODO liquidfun deleted this in box2d 1.3.0
 
 				if (x.y >= 0.0f && vn1 >= 0.0f)
 				{
@@ -664,6 +664,15 @@ struct b2PositionSolverManifold
 				normal = -normal;
 			}
 			break;
+
+		default:
+			{
+				// This shouldn't be executed if pc->type is valid.
+				separation = 0.0f;
+				normal = b2Vec2_zero;
+				point = b2Vec2_zero;
+				b2Assert(false);
+			}
 		}
 	}
 

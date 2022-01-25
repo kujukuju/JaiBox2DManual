@@ -28,6 +28,10 @@ bool EdgeShape_test_point(b2EdgeShape* self, const b2Transform* transform, const
     return self->TestPoint(*transform, *p);
 }
 
+void EdgeShape_compute_distance(b2EdgeShape* self, const b2Transform* xf, const b2Vec2* p, float32* distance, b2Vec2* normal, int32 childIndex) {
+    self->ComputeDistance(*xf, *p, distance, normal, childIndex);
+}
+
 bool EdgeShape_ray_cast(b2EdgeShape* self, b2RayCastOutput* output, const b2RayCastInput* input, const b2Transform* transform, int32 childIndex) {
     return self->RayCast(output, *input, *transform, childIndex);
 }
@@ -38,4 +42,8 @@ void EdgeShape_compute_aabb(b2EdgeShape* self, b2AABB* aabb, const b2Transform* 
 
 void EdgeShape_compute_mass(b2EdgeShape* self, b2MassData* massData, float density) {
     self->ComputeMass(massData, density);
+}
+
+void EdgeShape_set(b2EdgeShape* self, float32 vx1, float32 vy1, float32 vx2, float32 vy2) {
+    self->Set(vx1, vy1, vx2, vy2);
 }
