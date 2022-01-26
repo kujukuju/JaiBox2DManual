@@ -39,6 +39,7 @@
 #include "box2d/b2_world.h"
 
 #include <new>
+#include <cstdio>
 
 b2World::b2World(const b2Vec2& gravity)
 {
@@ -500,17 +501,20 @@ void b2World::Solve(const b2TimeStep& step)
 	{
 		if (seed->m_flags & b2Body::e_islandFlag)
 		{
+			printf("skipping because its an island\n");
 			continue;
 		}
 
 		if (seed->IsAwake() == false || seed->IsEnabled() == false)
 		{
+			printf("skipping because its not awake or not enabled\n");
 			continue;
 		}
 
 		// The seed can be dynamic or kinematic.
 		if (seed->GetType() == b2_staticBody)
 		{
+			printf("skipping because its static\n");
 			continue;
 		}
 
@@ -532,6 +536,7 @@ void b2World::Solve(const b2TimeStep& step)
 			// propagate islands across static bodies.
 			if (b->GetType() == b2_staticBody)
 			{
+				printf("skipping because its static 2\n");
 				continue;
 			}
 
@@ -546,6 +551,7 @@ void b2World::Solve(const b2TimeStep& step)
 				// Has this contact already been added to an island?
 				if (contact->m_flags & b2Contact::e_islandFlag)
 				{
+					printf("skipping because contact is an island\n");
 					continue;
 				}
 
@@ -553,6 +559,7 @@ void b2World::Solve(const b2TimeStep& step)
 				if (contact->IsEnabled() == false ||
 					contact->IsTouching() == false)
 				{
+					printf("skipping because contact is not enabled or not touching %i %i\n", contact->IsEnabled() ? 1 : 0, contact->IsTouching() ? 1 : 0);
 					continue;
 				}
 
@@ -561,6 +568,7 @@ void b2World::Solve(const b2TimeStep& step)
 				bool sensorB = contact->m_fixtureB->m_isSensor;
 				if (sensorA || sensorB)
 				{
+					printf("skipping because no sensor a or sensor b\n");
 					continue;
 				}
 
@@ -572,6 +580,7 @@ void b2World::Solve(const b2TimeStep& step)
 				// Was the other body already added to this island?
 				if (other->m_flags & b2Body::e_islandFlag)
 				{
+					printf("skipping because its an island\n");
 					continue;
 				}
 

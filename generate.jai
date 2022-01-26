@@ -63,8 +63,6 @@ generate :: () {
         defer i += 1;
         character = 0;
 
-        print("%\n", lines[i]);
-
         line := lines[i];
         line = replace(line, "const", "");
 
@@ -232,7 +230,7 @@ generate :: () {
         append(*file_builder, " #foreign box2d;\n");
     }
 
-    append(*file_builder, "\n#scope_file\n\nbox2d :: #foreign_library,no_dll \"bin/win/box2djai\";\n");
+    append(*file_builder, "\n#scope_file\n\nbox2d :: #foreign_library \"bin/win/box2djai\";\n");
 
     write_entire_file("functions.jai", builder_to_string(*file_builder));
 
@@ -349,7 +347,6 @@ generate :: () {
         already_written_structs: [..] string;
         lines := split(existing_structs_contents, "\n");
 
-        print("ALREADY WRITTEN\n");
         for line: lines {
             found_valid_type := false;
             valid_type_length := 0;
@@ -373,8 +370,6 @@ generate :: () {
             type_name: string = line;
             type_name.count = valid_type_length;
             array_add(*already_written_structs, type_name);
-            
-            print("%\n", type_name);
         }
 
 

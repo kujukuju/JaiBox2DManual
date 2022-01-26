@@ -29,13 +29,13 @@ Body_create_fixture :: (self: *b2Body, def: *b2FixtureDef) -> *b2Fixture #foreig
 Body_create_fixture_density :: (self: *b2Body, shape: *b2Shape, density: float) -> *b2Fixture #foreign box2d;
 Body_destroy_fixture :: (self: *b2Body, fixture: *b2Fixture) -> void #foreign box2d;
 Body_set_transform :: (self: *b2Body, pos: *Vector2, angle: float) -> void #foreign box2d;
-Body_get_transform :: (self: *b2Body) -> b2Transform #foreign box2d;
-Body_get_position :: (self: *b2Body) -> Vector2 #foreign box2d;
+Body_get_transform :: (self: *b2Body) -> *b2Transform #foreign box2d;
+Body_get_position :: (self: *b2Body) -> *Vector2 #foreign box2d;
 Body_get_angle :: (self: *b2Body) -> float #foreign box2d;
-Body_get_world_center :: (self: *b2Body) -> Vector2 #foreign box2d;
-Body_get_local_center :: (self: *b2Body) -> Vector2 #foreign box2d;
+Body_get_world_center :: (self: *b2Body) -> *Vector2 #foreign box2d;
+Body_get_local_center :: (self: *b2Body) -> *Vector2 #foreign box2d;
 Body_set_linear_velocity :: (self: *b2Body, v: *Vector2) -> void #foreign box2d;
-Body_get_linear_velocity :: (self: *b2Body) -> Vector2 #foreign box2d;
+Body_get_linear_velocity :: (self: *b2Body) -> *Vector2 #foreign box2d;
 Body_set_angular_velocity :: (self: *b2Body, omega: float) -> void #foreign box2d;
 Body_get_angular_velocity :: (self: *b2Body) -> float #foreign box2d;
 Body_apply_force :: (self: *b2Body, force: *Vector2, point: *Vector2, wake: bool) -> void #foreign box2d;

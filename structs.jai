@@ -219,6 +219,7 @@ b2FixtureDef :: struct {
     userData: *void;
     friction: float32;
     restitution: float32;
+    restitutionThreshold: float32;
     density: float32;
     isSensor: bool;
     filter: b2Filter;
@@ -314,7 +315,7 @@ b2BodyDef :: struct {
     awake: bool;
     fixedRotation: bool;
     bullet: bool;
-    active: bool;
+    enabled: bool;
     userData: *void;
     gravityScale: float32;
 }

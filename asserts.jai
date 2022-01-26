@@ -1,9 +1,4 @@
 #run {
-    assert(size_of(b2TrackedBlockAllocator) == 16, tprint("b2TrackedBlockAllocator must be of size 16. Instead it's %.", size_of(b2TrackedBlockAllocator)));
-    assert(size_of(b2StackAllocator) == 102936, "b2StackAllocator must be of size 102936.");
-    assert(size_of(b2BroadPhase) == 80, "b2BroadPhase must be of size 80.");
-    assert(size_of(b2ContactManager) == 120, "b2ContactManager must be of size 120.");
-    assert(size_of(b2Profile) == 32, "b2Profile must be of size 32.");
     assert(size_of(b2WorldManifold) == 32, "b2WorldManifold must be of size 32.");
     assert(size_of(b2Manifold) == 64, "b2Manifold must be of size 64.");
     assert(size_of(b2Transform) == 16, "b2Transform must be of size 16.");
@@ -46,6 +41,8 @@
     assert(size_of(b2QueryCallback) == 8, "b2QueryCallback must be of size 8.");
     assert(size_of(b2RayCastCallback) == 8, "b2RayCastCallback must be of size 8.");
     assert(size_of(b2Contact) == 208, "b2Contact must be of size 208.");
+    assert(size_of(b2ContactManager) == 120, "b2ContactManager must be of size 120.");
+    assert(size_of(b2Profile) == 32, "b2Profile must be of size 32.");
     assert(size_of(DestructionListener) == 32, "DestructionListener must be of size 32.");
     assert(size_of(SayGoodbyeJointCB) == 8, "SayGoodbyeJointCB must be of size 8.");
     assert(size_of(SayGoodbyeFixtureCB) == 8, "SayGoodbyeFixtureCB must be of size 8.");
@@ -112,8 +109,10 @@
     assert(size_of(b2ContactImpulse) == 20, "b2ContactImpulse must be of size 20.");
     assert(size_of(b2BlockAllocator) == 144, "b2BlockAllocator must be of size 144.");
     assert(size_of(b2FixtureProxy) == 32, "b2FixtureProxy must be of size 32.");
+    assert(size_of(b2StackAllocator) == 102936, "b2StackAllocator must be of size 102936.");
     assert(size_of(b2StackEntry) == 16, "b2StackEntry must be of size 16.");
     assert(size_of(b2JointType) == 4, "b2JointType must be of size 4.");
+    assert(size_of(b2BroadPhase) == 80, "b2BroadPhase must be of size 80.");
     assert(size_of(b2DynamicTree) == 32, "b2DynamicTree must be of size 32.");
     assert(size_of(b2Pair) == 8, "b2Pair must be of size 8.");
     assert(size_of(b2TreeNode) == 48, "b2TreeNode must be of size 48.");
@@ -126,6 +125,7 @@
     assert(size_of(b2Color) == 16, "b2Color must be of size 16.");
     assert(size_of(b2IntrusiveListNode) == 16, "b2IntrusiveListNode must be of size 16.");
     assert(size_of(b2FreeList) == 32, "b2FreeList must be of size 32.");
+    assert(size_of(b2TrackedBlockAllocator) == 16, "b2TrackedBlockAllocator must be of size 16.");
 }
 
 #scope_file
