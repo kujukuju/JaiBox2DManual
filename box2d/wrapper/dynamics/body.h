@@ -1,5 +1,6 @@
 EXPORT b2BodyDef* BodyDef_new();
 EXPORT b2BodyDef BodyDef_create();
+EXPORT void BodyDef_set_position(b2BodyDef* self, float32 positionX, float32 positionY);
 EXPORT b2Fixture* Body_create_fixture(b2Body* self, const b2FixtureDef* def);
 EXPORT b2Fixture* Body_create_fixture_density(b2Body* self, const b2Shape* shape, float density);
 EXPORT void Body_destroy_fixture(b2Body* self, b2Fixture* fixture);
@@ -56,3 +57,5 @@ EXPORT void* Body_get_user_data(const b2Body* self);
 EXPORT void Body_set_user_data(b2Body* self, void* data);
 EXPORT b2World* Body_get_world(b2Body* self);
 EXPORT void Body_dump(b2Body* self);
+EXPORT float32 Body_get_position_x(b2Body* self);
+EXPORT float32 Body_get_position_y(b2Body* self);

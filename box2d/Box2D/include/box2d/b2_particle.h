@@ -28,7 +28,7 @@ class b2ParticleGroup;
 /// @file
 
 /// The particle type. Can be combined with the | operator.
-enum b2ParticleFlag
+enum B2_API b2ParticleFlag
 {
 	/// Water particle.
 	b2_waterParticle = 0,
@@ -78,7 +78,7 @@ enum b2ParticleFlag
 };
 
 /// Small color object for each particle
-class b2ParticleColor
+class B2_API b2ParticleColor
 {
 public:
 	b2ParticleColor() {}
@@ -269,7 +269,7 @@ extern b2ParticleColor b2ParticleColor_zero;
 
 /// A particle definition holds all the data needed to construct a particle.
 /// You can safely re-use these definitions.
-struct b2ParticleDef
+struct B2_API b2ParticleDef
 {
 	b2ParticleDef()
 	{
@@ -319,7 +319,7 @@ struct b2ParticleDef
 };
 
 /// A helper function to calculate the optimal number of iterations.
-int32 b2CalculateParticleIterations(
+B2_API int32 b2CalculateParticleIterations(
 	float32 gravity, float32 radius, float32 timeStep);
 
 /// Handle to a particle. Particle indices are ephemeral: the same index might
@@ -327,7 +327,7 @@ int32 b2CalculateParticleIterations(
 /// reference to a particular particle across frames, you should acquire a
 /// b2ParticleHandle. Use #b2ParticleSystem::GetParticleHandleFromIndex() to
 /// retrieve the b2ParticleHandle of a particle from the particle system.
-class b2ParticleHandle : public b2TypedIntrusiveListNode<b2ParticleHandle>
+class B2_API b2ParticleHandle : public b2TypedIntrusiveListNode<b2ParticleHandle>
 {
 	// Allow b2ParticleSystem to use SetIndex() to associate particle handles
 	// with particle indices.

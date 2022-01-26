@@ -5,12 +5,6 @@
 
 extern "C" {
 
-typedef void* RustObject;
-struct RustFatObject {
-   void* raw1;
-   void* raw2;
-};
-
 #include "wrapper/common/draw.cpp"
 
 #include "wrapper/dynamics/body.cpp"
@@ -37,5 +31,10 @@ struct RustFatObject {
 #include "wrapper/dynamics/joints/rope_joint.cpp"
 #include "wrapper/dynamics/joints/weld_joint.cpp"
 #include "wrapper/dynamics/joints/wheel_joint.cpp"
+
+#include "wrapper/particle/particle_group.cpp"
+#include "wrapper/particle/particle_system.cpp"
+#include "wrapper/particle/particle.cpp"
+
 
 }

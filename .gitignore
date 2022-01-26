@@ -2,9 +2,11 @@
 assertgen/build/
 assertgen/box2d/
 *.idea/
-box2d/cmake-build-*
+box2d/cmake-*
 *.exe
 *.pdb
 build/
 box2d/.vscode/
 box2d/wrapper/.vscode/
+assertgen/cmake-*
+box2d/Box2D/src/cmake-*

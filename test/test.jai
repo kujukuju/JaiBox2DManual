@@ -10,7 +10,7 @@ main :: () {
     circle_shape := CircleShape_new();
     print("address %\n", circle_shape);
 
-    print("circle %\n", << circle_shape);
+    // print("circle %\n", << circle_shape);
 }
 
 #scope_file

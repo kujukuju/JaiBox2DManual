@@ -14,6 +14,7 @@ EXPORT b2Fixture* Fixture_get_next(b2Fixture* self);
 EXPORT void* Fixture_get_user_data(b2Fixture* self);
 EXPORT void Fixture_set_user_data(b2Fixture* self, void* data);
 EXPORT bool Fixture_test_point(b2Fixture* self, const b2Vec2* p);
+EXPORT void Fixture_compute_distance(b2Fixture* self, const b2Vec2* p, float32* distance, b2Vec2* normal, int32 childIndex);
 EXPORT bool Fixture_ray_cast(b2Fixture* self, b2RayCastOutput* output, const b2RayCastInput* input, int32_t child_id);
 EXPORT void Fixture_get_mass_data(b2Fixture* self, b2MassData* data);
 EXPORT void Fixture_set_density(b2Fixture* self, float density);

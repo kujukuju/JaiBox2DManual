@@ -40,8 +40,20 @@ void World_destroy_joint(b2World* self, b2Joint* joint) {
     self->DestroyJoint(joint);
 }
 
-void World_step(b2World* self, float timeStep, int32_t velocityIterations, int32_t positionIterations) {
-    self->Step(timeStep, velocityIterations, positionIterations);
+b2ParticleSystem* World_create_particle_system(b2World* self, const b2ParticleSystemDef* def) {
+    return self->CreateParticleSystem(def);
+}
+
+void World_destroy_particle_system(b2World* self, b2ParticleSystem* p) {
+    self->DestroyParticleSystem(p);
+}
+
+void World_step(b2World* self, float timeStep, int32_t velocityIterations, int32_t positionIterations, int32_t particleIterations) {
+    self->Step(timeStep, velocityIterations, positionIterations, particleIterations);
+}
+
+int World_calculate_reasonable_particle_iterations(b2World* self, float32 timeStep) {
+    return self->CalculateReasonableParticleIterations(timeStep);
 }
 
 void World_clear_forces(b2World* self) {
@@ -52,11 +64,15 @@ void World_debug_draw(b2World* self) {
     self->DebugDraw();
 }
 
-void World_query_aabb(const b2World* self, b2QueryCallback* callback, const b2AABB* aabb) {
+void World_query_aabb(b2World* self, b2QueryCallback* callback, const b2AABB* aabb) {
     self->QueryAABB(callback, *aabb);
 }
 
-void World_ray_cast(const b2World* self, b2RayCastCallback* callback, const b2Vec2* p1, const b2Vec2* p2) {
+void World_query_shape_aabb(b2World* self, b2QueryCallback* callback, const b2Shape* shape, const b2Transform* xf) {
+    self->QueryShapeAABB(callback, *shape, *xf);
+}
+
+void World_ray_cast(b2World* self, b2RayCastCallback* callback, const b2Vec2* p1, const b2Vec2* p2) {
     self->RayCast(callback, *p1, *p2);
 }
 
@@ -68,6 +84,10 @@ b2Joint* World_get_joint_list(b2World* self) {
     return self->GetJointList();
 }
 
+b2ParticleSystem* World_get_particle_system_list(b2World* self) {
+    return self->GetParticleSystemList();
+}
+
 b2Contact* World_get_contact_list(b2World* self) {
     return self->GetContactList();
 }
@@ -76,7 +96,7 @@ void World_set_allow_sleeping(b2World* self, bool flag) {
     self->SetAllowSleeping(flag);
 }
 
-bool World_get_allow_sleeping(const b2World* self) {
+bool World_get_allow_sleeping(b2World* self) {
     return self->GetAllowSleeping();
 }
 
@@ -84,7 +104,7 @@ void World_set_warm_starting(b2World* self, bool flag) {
     self->SetWarmStarting(flag);
 }
 
-bool World_get_warm_starting(const b2World* self) {
+bool World_get_warm_starting(b2World* self) {
     return self->GetWarmStarting();
 }
 
@@ -92,7 +112,7 @@ void World_set_continuous_physics(b2World* self, bool flag) {
     self->SetContinuousPhysics(flag);
 }
 
-bool World_get_continuous_physics(const b2World* self) {
+bool World_get_continuous_physics(b2World* self) {
     return self->GetContinuousPhysics();
 }
 
@@ -100,35 +120,35 @@ void World_set_sub_stepping(b2World* self, bool flag) {
     self->SetSubStepping(flag);
 }
 
-bool World_get_sub_stepping(const b2World* self) {
+bool World_get_sub_stepping(b2World* self) {
     return self->GetSubStepping();
 }
 
-int32_t World_get_proxy_count(const b2World* self) {
+int32_t World_get_proxy_count(b2World* self) {
     return self->GetProxyCount();
 }
 
-int32_t World_get_body_count(const b2World* self) {
+int32_t World_get_body_count(b2World* self) {
     return self->GetBodyCount();
 }
 
-int32_t World_get_joint_count(const b2World* self) {
+int32_t World_get_joint_count(b2World* self) {
     return self->GetJointCount();
 }
 
-int32_t World_get_contact_count(const b2World* self) {
+int32_t World_get_contact_count(b2World* self) {
     return self->GetContactCount();
 }
 
-int32_t World_get_tree_height(const b2World* self) {
+int32_t World_get_tree_height(b2World* self) {
     return self->GetTreeHeight();
 }
 
-int32_t World_get_tree_balance(const b2World* self) {
+int32_t World_get_tree_balance(b2World* self) {
     return self->GetTreeBalance();
 }
 
-float World_get_tree_quality(const b2World* self) {
+float World_get_tree_quality(b2World* self) {
     return self->GetTreeQuality();
 }
 
@@ -136,11 +156,11 @@ void World_set_gravity(b2World* self, const b2Vec2* gravity) {
     self->SetGravity(*gravity);
 }
 
-b2Vec2 World_get_gravity(const b2World* self) {
+b2Vec2 World_get_gravity(b2World* self) {
     return self->GetGravity();
 }
 
-bool World_is_locked(const b2World* self) {
+bool World_is_locked(b2World* self) {
     return self->IsLocked();
 }
 
@@ -148,7 +168,7 @@ void World_set_auto_clear_forces(b2World* self, bool flag) {
     self->SetAutoClearForces(flag);
 }
 
-bool World_get_auto_clear_forces(const b2World* self) {
+bool World_get_auto_clear_forces(b2World* self) {
     return self->GetAutoClearForces();
 }
 
@@ -156,11 +176,11 @@ void World_shift_origin(b2World* self, const b2Vec2* origin) {
     self->ShiftOrigin(*origin);
 }
 
-b2ContactManager World_get_contact_manager(const b2World* self) {
+b2ContactManager World_get_contact_manager(b2World* self) {
     return self->GetContactManager();
 }
 
-b2Profile World_get_profile(const b2World* self) {
+b2Profile World_get_profile(b2World* self) {
     return self->GetProfile();
 }
 

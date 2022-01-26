@@ -27,7 +27,7 @@
 /// A simple array-like container, similar to std::vector.
 /// If we ever start using stl, we should replace this with std::vector.
 template <typename T>
-class b2GrowableBuffer
+class B2_API b2GrowableBuffer
 {
 public:
 	b2GrowableBuffer(b2BlockAllocator& allocator) :

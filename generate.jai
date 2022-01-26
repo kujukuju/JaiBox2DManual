@@ -155,6 +155,7 @@ generate :: () {
         string.["b2Vec2", "Vector2"],
         string.["b2Shape::Type", "b2ShapeType"],
         string.["uint32_t", "u32"],
+        string.["uint32", "u32"],
     ];
 
     // fix pointers
@@ -165,7 +166,16 @@ generate :: () {
             }
         }
 
-        if ends_with(data.type, "*") {
+        if ends_with(data.type, "**") {
+            i := data.type.count - 1;
+            while i > 1 {
+                data.type.data[i] = data.type.data[i - 2];
+                i -= 1;
+            }
+
+            data.type.data[0] = #char "*";
+            data.type.data[1] = #char "*";
+        } else if ends_with(data.type, "*") {
             i := data.type.count - 1;
             while i > 0 {
                 data.type.data[i] = data.type.data[i - 1];
@@ -182,7 +192,16 @@ generate :: () {
                 }
             }
 
-            if ends_with((<< parameter)[0], "*") {
+            if ends_with((<< parameter)[0], "**") {
+                i := (<< parameter)[0].count - 1;
+                while i > 1 {
+                    (<< parameter)[0].data[i] = (<< parameter)[0].data[i - 2];
+                    i -= 1;
+                }
+
+                (<< parameter)[0].data[0] = #char "*";
+                (<< parameter)[0].data[1] = #char "*";
+            } else if ends_with((<< parameter)[0], "*") {
                 i := (<< parameter)[0].count - 1;
                 while i > 0 {
                     (<< parameter)[0].data[i] = (<< parameter)[0].data[i - 1];
@@ -213,7 +232,7 @@ generate :: () {
         append(*file_builder, " #foreign box2d;\n");
     }
 
-    append(*file_builder, "\n#scope_file\n\nbox2d :: #foreign_library \"bin/win/box2djai\";\n");
+    append(*file_builder, "\n#scope_file\n\nbox2d :: #foreign_library,no_dll \"bin/win/box2djai\";\n");
 
     write_entire_file("functions.jai", builder_to_string(*file_builder));
 
@@ -221,7 +240,9 @@ generate :: () {
     for data: function_data {
         {
             type := data.type;
-            if starts_with(type, "*") {
+            if starts_with(type, "**") {
+                type = slice(type, 2, type.count - 2);
+            } else if starts_with(type, "*") {
                 type = slice(type, 1, type.count - 1);
             }
 
@@ -233,7 +254,9 @@ generate :: () {
 
         for parameters: data.parameters {
             type := parameters[0];
-            if starts_with(type, "*") {
+            if starts_with(type, "**") {
+                type = slice(type, 2, type.count - 2);
+            } else if starts_with(type, "*") {
                 type = slice(type, 1, type.count - 1);
             }
 
@@ -276,6 +299,15 @@ generate :: () {
     array_add(*found_types, "b2RopeStretch");
     array_add(*found_types, "b2RopeBend");
     array_add(*found_types, "b2Color");
+    array_add(*found_types, "b2SlabAllocator");
+    array_add(*found_types, "UserOverridableBuffer");
+    array_add(*found_types, "b2GrowableBuffer");
+    array_add(*found_types, "b2TypedIntrusiveListNode");
+    array_add(*found_types, "b2IntrusiveListNode");
+    array_add(*found_types, "b2TypedFreeList");
+    array_add(*found_types, "b2FreeList");
+    array_add(*found_types, "Proxy");
+    array_add(*found_types, "b2TrackedBlockAllocator");
 
     IGNORE_TYPES :: string.[
         "void",
@@ -284,6 +316,10 @@ generate :: () {
         "Vector2",
         "float",
         "bool",
+        "float32",
+        "int",
+        "void*",
+        "uint32",
     ];
 
     IGNORE_FOR_ASSSERTS :: string.[
@@ -300,6 +336,12 @@ generate :: () {
         "b2_maxPolygonVertices",
         "b2_stackSize",
         "b2_maxStackEntries",
+        "b2SlabAllocator",
+        "UserOverridableBuffer",
+        "b2GrowableBuffer",
+        "b2TypedIntrusiveListNode",
+        "b2TypedFreeList",
+        "Proxy",
     ];
 
     existing_structs_contents, read_existing_structs_file := read_entire_file("structs.jai");

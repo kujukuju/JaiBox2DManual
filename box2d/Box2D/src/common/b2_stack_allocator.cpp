@@ -22,6 +22,7 @@
 
 #include "box2d/b2_stack_allocator.h"
 #include "box2d/b2_math.h"
+#include <string.h>
 
 b2StackAllocator::b2StackAllocator()
 {

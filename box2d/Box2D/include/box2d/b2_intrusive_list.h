@@ -61,7 +61,7 @@
 /// 	}
 /// 	return 0;
 /// }
-class b2IntrusiveListNode
+class B2_API b2IntrusiveListNode
 {
 public:
 	/// Initialize the node.

@@ -108,10 +108,10 @@ b2BlockAllocator::~b2BlockAllocator()
 	b2Free(m_chunks);
 }
 
-uint32 b2BlockAllocator::GetNumGiantAllocations() const
-{
-	return m_giants.GetList().GetLength();
-}
+//uint32 b2BlockAllocator::GetNumGiantAllocations() const
+//{
+//	return m_giants.GetList().GetLength();
+//}
 
 void* b2BlockAllocator::Allocate(int32 size)
 {

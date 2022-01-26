@@ -13,7 +13,7 @@ if (WIN32)
   find_package(Threads)
 endif()
 
-add_definitions( -DLIQUIDFUN_EXTERNAL_LANGUAGE_API=1 )
+add_definitions(-DLIQUIDFUN_EXTERNAL_LANGUAGE_API=1)
 
 # set(CMAKE_CONFIGURATION_TYPES "Debug;RelWithDebInfo" CACHE STRING "" FORCE)
 
@@ -77,3 +77,5 @@ install(
   DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/include/box2d"
   DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
 )
+
+message("copeied from ${CMAKE_CURRENT_SOURCE_DIR}/include/box2d to ${CMAKE_INSTALL_INCLUDEDIR}")

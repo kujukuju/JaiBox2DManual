@@ -1,10 +1,12 @@
 typedef void (*SayGoodbyeJointCB)(b2Joint*);
 typedef void (*SayGoodbyeFixtureCB)(b2Fixture*);
+typedef void (*SayGoodbyeParticleGroupCB)(b2ParticleGroup*);
 
 struct DestructionListener : public b2DestructionListener {
-    DestructionListener(SayGoodbyeJointCB sayGoodbyeJoint, SayGoodbyeFixtureCB sayGoodbyeFixture)
+    DestructionListener(SayGoodbyeJointCB sayGoodbyeJoint, SayGoodbyeFixtureCB sayGoodbyeFixture, SayGoodbyeParticleGroupCB sayGoodbyeParticleGroup)
         : m_sayGoodbyeJoint(*sayGoodbyeJoint),
-          m_sayGoodbyeFixture(*sayGoodbyeFixture) {}
+          m_sayGoodbyeFixture(*sayGoodbyeFixture),
+          m_sayGoodbyeParticleGroup(*sayGoodbyeParticleGroup) {}
 
     ~DestructionListener() {}
 
@@ -16,18 +18,27 @@ struct DestructionListener : public b2DestructionListener {
         m_sayGoodbyeFixture(fixture);
     }
 
+    void SayGoodbye(b2ParticleGroup* group) override {
+        m_sayGoodbyeParticleGroup(group);
+    }
+
     SayGoodbyeJointCB m_sayGoodbyeJoint;
     SayGoodbyeFixtureCB m_sayGoodbyeFixture;
+    SayGoodbyeParticleGroupCB m_sayGoodbyeParticleGroup;
 };
 
-EXPORT DestructionListener* DestructionListener_new(SayGoodbyeJointCB sayGoodbyeJoint, SayGoodbyeFixtureCB sayGoodbyeFixture);
-EXPORT DestructionListener DestructionListener_create(SayGoodbyeJointCB sayGoodbyeJoint, SayGoodbyeFixtureCB sayGoodbyeFixture);
+EXPORT DestructionListener* DestructionListener_new(SayGoodbyeJointCB sayGoodbyeJoint, SayGoodbyeFixtureCB sayGoodbyeFixture, SayGoodbyeParticleGroupCB sayGoodbyeParticleGroup);
+EXPORT DestructionListener DestructionListener_create(SayGoodbyeJointCB sayGoodbyeJoint, SayGoodbyeFixtureCB sayGoodbyeFixture, SayGoodbyeParticleGroupCB sayGoodbyeParticleGroup);
 
 typedef bool (*ShouldCollideCB)(b2Fixture*, b2Fixture*);
+typedef bool (*ShouldCollideFixtureParticleCB)(b2Fixture*, b2ParticleSystem*, int32);
+typedef bool (*ShouldCollideParticleParticleCB)(b2ParticleSystem*, int32, int32);
 
 struct ContactFilter : public b2ContactFilter {
-    ContactFilter(ShouldCollideCB shouldCollide)
-        : m_shouldCollide(*shouldCollide) {}
+    ContactFilter(ShouldCollideCB shouldCollide, ShouldCollideFixtureParticleCB shouldCollideFixtureParticle, ShouldCollideParticleParticleCB shouldCollideParticleParticle)
+        : m_shouldCollide(*shouldCollide),
+          m_shouldCollideFixtureParticle(*shouldCollideFixtureParticle),
+          m_shouldCollideParticleParticle(*shouldCollideParticleParticle) {}
 
     ~ContactFilter() {}
 
@@ -35,62 +46,47 @@ struct ContactFilter : public b2ContactFilter {
         return m_shouldCollide(fixtureA, fixtureB);
     }
 
+    bool ShouldCollide(b2Fixture* fixture, b2ParticleSystem* particleSystem, int32 particleIndex) override {
+        return m_shouldCollideFixtureParticle(fixture, particleSystem, particleIndex);
+    }
+
+    bool ShouldCollide(b2ParticleSystem* particleSystem, int32 particleIndexA, int32 particleIndexB) {
+        return m_shouldCollideParticleParticle(particleSystem, particleIndexA, particleIndexB);
+    }
+
     ShouldCollideCB m_shouldCollide;
+    ShouldCollideFixtureParticleCB m_shouldCollideFixtureParticle;
+    ShouldCollideParticleParticleCB m_shouldCollideParticleParticle;
 };
 
-EXPORT ContactFilter* ContactFilter_new(ShouldCollideCB shouldCollide);
-EXPORT ContactFilter ContactFilter_create(ShouldCollideCB shouldCollide);
+EXPORT ContactFilter* ContactFilter_new(ShouldCollideCB shouldCollide, ShouldCollideFixtureParticleCB shouldCollideFixtureParticle, ShouldCollideParticleParticleCB shouldCollideParticleParticle);
+EXPORT ContactFilter ContactFilter_create(ShouldCollideCB shouldCollide, ShouldCollideFixtureParticleCB shouldCollideFixtureParticle, ShouldCollideParticleParticleCB shouldCollideParticleParticle);
 
-// typedef void (*SayGoodbyeToJointCB)(RustObject, b2Joint*);
-// typedef void (*SayGoodbyeToFixtureCB)(RustObject, b2Fixture*);
-
-// struct DestructionListenerLink: public b2DestructionListener {
-//     DestructionListenerLink() {}
-//     ~DestructionListenerLink() {}
-
-//     void SayGoodbye(b2Joint* joint) {
-//         say_goodbye_to_joint(object, joint);
-//     }
-//     void SayGoodbye(b2Fixture* fixture) {
-//         say_goodbye_to_fixture(object, fixture);
-//     }
-
-//     RustObject object;
-//     SayGoodbyeToJointCB say_goodbye_to_joint;
-//     SayGoodbyeToFixtureCB say_goodbye_to_fixture;
-// };
-
-// EXPORT DestructionListenerLink* DestructionListenerLink_alloc();
-// EXPORT void DestructionListenerLink_bind(DestructionListenerLink* self,
-//                                   RustObject o,
-//                                   SayGoodbyeToJointCB sgtj,
-//                                   SayGoodbyeToFixtureCB sgtf);
-// EXPORT b2DestructionListener* DestructionListenerLink_as_base(DestructionListenerLink* self);
-// EXPORT void DestructionListenerLink_drop(DestructionListenerLink* self);
-
-// typedef bool (*ShouldCollideCB)(RustObject, b2Fixture*, b2Fixture*);
-
-// struct ContactFilterLink: public b2ContactFilter {
-//     ContactFilterLink() {}
-//     ~ContactFilterLink() {}
-
-//     bool ShouldCollide(b2Fixture* fixture_a, b2Fixture* fixture_b) {
-//         return should_collide(object, fixture_a, fixture_b);
-//     }
-
-//     RustObject object;
-//     ShouldCollideCB should_collide;
-// };
-
-typedef bool (*BeginContactCB)(b2Contact*);
-typedef bool (*EndContactCB)(b2Contact*);
-typedef bool (*PreSolveCB)(b2Contact*, const b2Manifold*);
-typedef bool (*PostSolveCB)(b2Contact*, const b2ContactImpulse*);
+typedef void (*BeginContactCB)(b2Contact*);
+typedef void (*EndContactCB)(b2Contact*);
+typedef void (*BeginContactParticleBodyCB)(b2ParticleSystem*, b2ParticleBodyContact*);
+typedef void (*EndContactFixtureParticleCB)(b2Fixture*, b2ParticleSystem*, int32);
+typedef void (*BeginContactParticleCB)(b2ParticleSystem*, b2ParticleContact*);
+typedef void (*EndContactParticleCB)(b2ParticleSystem*, int32, int32);
+typedef void (*PreSolveCB)(b2Contact*, const b2Manifold*);
+typedef void (*PostSolveCB)(b2Contact*, const b2ContactImpulse*);
 
 struct ContactListener : public b2ContactListener {
-    ContactListener(BeginContactCB beginContact, EndContactCB endContact, PreSolveCB preSolve, PostSolveCB postSolve)
+    ContactListener(
+        BeginContactCB beginContact,
+        EndContactCB endContact,
+        BeginContactParticleBodyCB beginContactParticleBody,
+        EndContactFixtureParticleCB endContactFixtureParticle,
+        BeginContactParticleCB beginContactParticle,
+        EndContactParticleCB endContactParticle,
+        PreSolveCB preSolve,
+        PostSolveCB postSolve)
         : m_beginContact(*beginContact),
           m_endContact(*endContact),
+          m_beginContactParticleBody(*beginContactParticleBody),
+          m_endContactFixtureParticle(*endContactFixtureParticle),
+          m_beginContactParticle(*beginContactParticle),
+          m_endContactParticle(*endContactParticle),
           m_preSolve(*preSolve),
           m_postSolve(*postSolve) {}
 
@@ -104,6 +100,22 @@ struct ContactListener : public b2ContactListener {
         m_endContact(contact);
     }
 
+    void BeginContact(b2ParticleSystem* particleSystem, b2ParticleBodyContact* particleBodyContact) override {
+        m_beginContactParticleBody(particleSystem, particleBodyContact);
+    }
+
+    void EndContact(b2Fixture* fixture, b2ParticleSystem* particleSystem, int32 index) override {
+        m_endContactFixtureParticle(fixture, particleSystem, index);
+    }
+
+    void BeginContact(b2ParticleSystem* particleSystem, b2ParticleContact* particleContact) override {
+        m_beginContactParticle(particleSystem, particleContact);
+    }
+
+    void EndContact(b2ParticleSystem* particleSystem, int32 indexA, int32 indexB) override {
+        m_endContactParticle(particleSystem, indexA, indexB);
+    }
+
     void PreSolve(b2Contact* contact, const b2Manifold* oldManifold) override {
         m_preSolve(contact, oldManifold);
     }
@@ -114,64 +126,26 @@ struct ContactListener : public b2ContactListener {
 
     BeginContactCB m_beginContact;
     EndContactCB m_endContact;
+    BeginContactParticleBodyCB m_beginContactParticleBody;
+    EndContactFixtureParticleCB m_endContactFixtureParticle;
+    BeginContactParticleCB m_beginContactParticle;
+    EndContactParticleCB m_endContactParticle;
     PreSolveCB m_preSolve;
     PostSolveCB m_postSolve;
 };
 
-EXPORT ContactListener* ContactListener_new(BeginContactCB beginContact, EndContactCB endContact, PreSolveCB preSolve, PostSolveCB postSolve);
-EXPORT ContactListener ContactListener_create(BeginContactCB beginContact, EndContactCB endContact, PreSolveCB preSolve, PostSolveCB postSolve);
+EXPORT ContactListener* ContactListener_new(BeginContactCB beginContact, EndContactCB endContact, BeginContactParticleBodyCB beginContactParticleBody, EndContactFixtureParticleCB endContactFixtureParticle, BeginContactParticleCB beginContactParticle, EndContactParticleCB endContactParticle, PreSolveCB preSolve, PostSolveCB postSolve);
+EXPORT ContactListener ContactListener_create(BeginContactCB beginContact, EndContactCB endContact, BeginContactParticleBodyCB beginContactParticleBody, EndContactFixtureParticleCB endContactFixtureParticle, BeginContactParticleCB beginContactParticle, EndContactParticleCB endContactParticle, PreSolveCB preSolve, PostSolveCB postSolve);
 
-// EXPORT ContactFilterLink* ContactFilterLink_alloc();
-// EXPORT void ContactFilterLink_bind(ContactFilterLink* self,
-//                             RustObject o,
-//                             ShouldCollideCB sc);
-// EXPORT b2ContactFilter* ContactFilterLink_as_base(ContactFilterLink* self);
-// EXPORT void ContactFilterLink_drop(ContactFilterLink* self);
-
-// typedef void (*BeginContactCB)(RustObject, b2Contact*);
-// typedef void (*EndContactCB)(RustObject, b2Contact*);
-// typedef void (*PreSolveCB)(RustObject, b2Contact*, const b2Manifold*);
-// typedef void (*PostSolveCB)(RustObject, b2Contact*, const b2ContactImpulse*);
-
-// struct ContactListenerLink: public b2ContactListener {
-//     ContactListenerLink() {}
-//     ~ContactListenerLink() {}
-
-//     void BeginContact(b2Contact* contact) {
-//         begin_contact(object, contact);
-//     }
-//     void EndContact(b2Contact* contact) {
-//         end_contact(object, contact);
-//     }
-//     void PreSolve(b2Contact* contact, const b2Manifold* old_manifold) {
-//         pre_solve(object, contact, old_manifold);
-//     }
-//     void PostSolve(b2Contact* contact, const b2ContactImpulse* impulse) {
-//         post_solve(object, contact, impulse);
-//     }
-
-//     RustObject object;
-//     BeginContactCB begin_contact;
-//     EndContactCB end_contact;
-//     PreSolveCB pre_solve;
-//     PostSolveCB post_solve;
-// };
-
-// EXPORT ContactListenerLink* ContactListenerLink_alloc();
-// EXPORT void ContactListenerLink_bind(ContactListenerLink* self,
-//                               RustObject o,
-//                               BeginContactCB bc,
-//                               EndContactCB ec,
-//                               PreSolveCB pres,
-//                               PostSolveCB posts);
-// EXPORT b2ContactListener* ContactListenerLink_as_base(ContactListenerLink* self);
-// EXPORT void ContactListenerLink_drop(ContactListenerLink* self);
-
-typedef bool (*ReportFixtureQueryCB)(b2Fixture*);
+typedef bool (*ReportFixtureCB)(b2Fixture*);
+typedef bool (*ReportParticleCB)(const b2ParticleSystem*, int32);
+typedef bool (*ShouldQueryParticleSystemCB)(const b2ParticleSystem*);
 
 struct QueryCallback : public b2QueryCallback {
-    QueryCallback(ReportFixtureQueryCB reportFixture)
-        : m_reportFixture(*reportFixture) {}
+    QueryCallback(ReportFixtureCB reportFixture, ReportParticleCB reportParticle, ShouldQueryParticleSystemCB shouldQueryParticleSystem)
+        : m_reportFixture(*reportFixture),
+          m_reportParticle(*reportParticle),
+          m_shouldQueryParticleSystem(*shouldQueryParticleSystem) {}
 
     ~QueryCallback() {}
 
@@ -179,38 +153,31 @@ struct QueryCallback : public b2QueryCallback {
         return m_reportFixture(fixture);
     }
 
-    ReportFixtureQueryCB m_reportFixture;
+    bool ReportParticle(const b2ParticleSystem* particleSystem, int32 index) override {
+        return m_reportParticle(particleSystem, index);
+    }
+
+    bool ShouldQueryParticleSystem(const b2ParticleSystem* particleSystem) override {
+        return m_shouldQueryParticleSystem(particleSystem);
+    }
+
+    ReportFixtureCB m_reportFixture;
+    ReportParticleCB m_reportParticle;
+    ShouldQueryParticleSystemCB m_shouldQueryParticleSystem;
 };
 
-EXPORT QueryCallback* QueryCallback_new(ReportFixtureQueryCB reportFixture);
-EXPORT QueryCallback QueryCallback_create(ReportFixtureQueryCB reportFixture);
-
-// typedef bool (*QCReportFixtureCB)(RustObject, b2Fixture*);
-
-// struct QueryCallbackLink: public b2QueryCallback {
-//     QueryCallbackLink() {}
-//     ~QueryCallbackLink() {}
-
-//     bool ReportFixture(b2Fixture* fixture) {
-//         return report_fixture(object, fixture);
-//     }
-
-//     RustObject object;
-//     QCReportFixtureCB report_fixture;
-// };
-
-// EXPORT QueryCallbackLink* QueryCallbackLink_alloc();
-// EXPORT void QueryCallbackLink_bind(QueryCallbackLink* self,
-//                             RustObject object,
-//                             QCReportFixtureCB rf);
-// EXPORT b2QueryCallback* QueryCallbackLink_as_base(QueryCallbackLink* self);
-// EXPORT void QueryCallbackLink_drop(QueryCallbackLink* self);
+EXPORT QueryCallback* QueryCallback_new(ReportFixtureCB reportFixture, ReportParticleCB reportParticle, ShouldQueryParticleSystemCB shouldQueryParticleSystem);
+EXPORT QueryCallback QueryCallback_create(ReportFixtureCB reportFixture, ReportParticleCB reportParticle, ShouldQueryParticleSystemCB shouldQueryParticleSystem);
 
 typedef float (*ReportFixtureRayCastCB)(b2Fixture*, b2Vec2, b2Vec2, float);
+typedef float32 (*ReportParticleRayCastCB)(const b2ParticleSystem*, int32, const b2Vec2*, const b2Vec2*, float32);
+typedef bool (*ShouldQueryParticleSystemRayCastCB)(const b2ParticleSystem*);
 
 struct RayCastCallback : public b2RayCastCallback {
-    RayCastCallback(ReportFixtureRayCastCB reportFixture)
-        : m_reportFixture(*reportFixture) {}
+    RayCastCallback(ReportFixtureRayCastCB reportFixture, ReportParticleRayCastCB reportParticle, ShouldQueryParticleSystemRayCastCB shouldQueryParticleSystem)
+        : m_reportFixture(*reportFixture),
+          m_reportParticle(*reportParticle),
+          m_shouldQueryParticleSystem(*shouldQueryParticleSystem) {}
 
     ~RayCastCallback() {}
 
@@ -218,33 +185,18 @@ struct RayCastCallback : public b2RayCastCallback {
         return m_reportFixture(fixture, point, normal, fraction);
     }
 
+    float32 ReportParticle(const b2ParticleSystem* particleSystem, int32 index, const b2Vec2& point, const b2Vec2& normal, float32 fraction) override {
+        return m_reportParticle(particleSystem, index, &point, &normal, fraction);
+    }
+
+    bool ShouldQueryParticleSystem(const b2ParticleSystem* particleSystem) override {
+        return m_shouldQueryParticleSystem(particleSystem);
+    }
+
     ReportFixtureRayCastCB m_reportFixture;
+    ReportParticleRayCastCB m_reportParticle;
+    ShouldQueryParticleSystemRayCastCB m_shouldQueryParticleSystem;
 };
 
-EXPORT RayCastCallback* RayCastCallback_new(ReportFixtureRayCastCB reportFixture);
-EXPORT RayCastCallback RayCastCallback_create(ReportFixtureRayCastCB reportFixture);
-
-// typedef float (*RCCReportFixtureCB)(RustObject, b2Fixture*,
-//                                   const b2Vec2*, const b2Vec2*, float);
-
-// struct RayCastCallbackLink: public b2RayCastCallback {
-//     RayCastCallbackLink() {}
-//     ~RayCastCallbackLink() {}
-
-//     float ReportFixture(b2Fixture* fixture,
-//                       const b2Vec2& point,
-//                       const b2Vec2& normal,
-//                       float fraction) {
-//         return report_fixture(object, fixture, &point, &normal, fraction);
-//     }
-
-//     RustObject object;
-//     RCCReportFixtureCB report_fixture;
-// };
-
-// EXPORT RayCastCallbackLink* RayCastCallbackLink_alloc();
-// EXPORT void RayCastCallbackLink_bind(RayCastCallbackLink* self,
-//                               RustObject object,
-//                               RCCReportFixtureCB rf);
-// EXPORT b2RayCastCallback* RayCastCallbackLink_as_base(RayCastCallbackLink* self);
-// EXPORT void RayCastCallbackLink_drop(RayCastCallbackLink* self);
+EXPORT RayCastCallback* RayCastCallback_new(ReportFixtureRayCastCB reportFixture, ReportParticleRayCastCB reportParticle, ShouldQueryParticleSystemRayCastCB shouldQueryParticleSystem);
+EXPORT RayCastCallback RayCastCallback_create(ReportFixtureRayCastCB reportFixture, ReportParticleRayCastCB reportParticle, ShouldQueryParticleSystemRayCastCB shouldQueryParticleSystem);

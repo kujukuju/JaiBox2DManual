@@ -8,6 +8,10 @@ b2BodyDef BodyDef_create() {
     return b2BodyDef();
 }
 
+void BodyDef_set_position(b2BodyDef* self, float32 positionX, float32 positionY) {
+    self->SetPosition(positionX, positionY);
+}
+
 b2Fixture* Body_create_fixture(b2Body* self, const b2FixtureDef* def) {
     return self->CreateFixture(def);
 }
@@ -230,4 +234,12 @@ b2World* Body_get_world(b2Body* self) {
 
 void Body_dump(b2Body* self) {
     self->Dump();
+}
+
+float32 Body_get_position_x(b2Body* self) {
+    return self->GetPositionX();
+}
+
+float32 Body_get_position_y(b2Body* self) {
+    return self->GetPositionY();
 }

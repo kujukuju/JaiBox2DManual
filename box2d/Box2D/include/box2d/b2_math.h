@@ -34,6 +34,24 @@ inline bool b2IsValid(float x)
 	return isfinite(x);
 }
 
+/// This is a approximate yet fast inverse square-root.
+inline float32 b2InvSqrt(float32 x)
+{
+    // TODO im pretty sure 1 / sqrt is now faster... but what is the behavior at 0?
+    union
+    {
+        float32 x;
+        int32 i;
+    } convert;
+
+    convert.x = x;
+    float32 xhalf = 0.5f * x;
+    convert.i = 0x5f3759df - (convert.i >> 1);
+    x = convert.x;
+    x = x * (1.5f - xhalf * x * x);
+    return x;
+}
+
 #define	b2Sqrt(x)	sqrtf(x)
 #define	b2Atan2(y, x)	atan2f(y, x)
 

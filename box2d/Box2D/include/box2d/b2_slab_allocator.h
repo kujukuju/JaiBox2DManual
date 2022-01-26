@@ -21,10 +21,10 @@
 #include <stddef.h>
 #include <stdint.h>
 #include <new>
-#include "b2IntrusiveList.h"
-#include "b2FreeList.h"
-#include "b2Settings.h"
-#include "b2TrackedBlock.h"
+#include "b2_intrusive_list.h"
+#include "b2_free_list.h"
+#include "b2_settings.h"
+#include "b2_tracked_block.h"
 
 /// Freelist based allocator for fixed sized items from slabs (memory
 /// preallocated from the heap).
@@ -33,7 +33,7 @@
 /// All objects in a slab are constructed when a slab is created and destructed
 /// when a slab is freed.
 template<typename T>
-class b2SlabAllocator
+class B2_API b2SlabAllocator
 {
 private:
 	// Information about a slab.

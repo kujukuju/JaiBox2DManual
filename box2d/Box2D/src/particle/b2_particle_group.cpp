@@ -15,12 +15,12 @@
 * misrepresented as being the original software.
 * 3. This notice may not be removed or altered from any source distribution.
 */
-#include "b2_particle_group.h"
-#include "b2_particle_system.h"
-#include "b2_world.h"
+#include "box2d/b2_particle_group.h"
+#include "box2d/b2_particle_system.h"
+#include "box2d/b2_world.h"
 
 #if LIQUIDFUN_EXTERNAL_LANGUAGE_API
-#include "b2_circle_shape.h"
+#include "box2d/b2_circle_shape.h"
 #endif //LIQUIDFUN_EXTERNAL_LANGUAGE_API
 
 b2ParticleGroup::b2ParticleGroup()

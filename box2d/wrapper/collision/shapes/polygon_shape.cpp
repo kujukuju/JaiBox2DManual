@@ -32,6 +32,10 @@ bool PolygonShape_test_point(b2PolygonShape* self, const b2Transform* transform,
     return self->TestPoint(*transform, *p);
 }
 
+void PolygonShape_compute_distance(b2PolygonShape* self, const b2Transform* xf, const b2Vec2* p, float32* distance, b2Vec2* normal, int32 childIndex) {
+    self->ComputeDistance(*xf, *p, distance, normal, childIndex);
+}
+
 bool PolygonShape_ray_cast(b2PolygonShape* self, b2RayCastOutput* output, const b2RayCastInput* input, const b2Transform* transform, int32 childIndex) {
     return self->RayCast(output, *input, *transform, childIndex);
 }
@@ -46,4 +50,8 @@ void PolygonShape_compute_mass(b2PolygonShape* self, b2MassData* massData, float
 
 bool PolygonShape_validate(b2PolygonShape* self) {
     return self->Validate();
+}
+
+void PolygonShape_set_centroid(b2PolygonShape* self, float32 x, float32 y) {
+    self->SetCentroid(x, y);
 }

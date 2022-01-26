@@ -64,6 +64,10 @@ bool Fixture_test_point(b2Fixture* self, const b2Vec2* p) {
     return self->TestPoint(*p);
 }
 
+void Fixture_compute_distance(b2Fixture* self, const b2Vec2* p, float32* distance, b2Vec2* normal, int32 childIndex) {
+    self->ComputeDistance(*p, distance, normal, childIndex);
+}
+
 bool Fixture_ray_cast(b2Fixture* self, b2RayCastOutput* output, const b2RayCastInput* input, int32_t child_id) {
     return self->RayCast(output, *input, child_id);
 }

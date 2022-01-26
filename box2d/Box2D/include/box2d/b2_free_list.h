@@ -30,7 +30,7 @@
 
 /// Fast - O(1) - list based allocator for items that can be inserted into
 /// b2IntrusiveListNode lists.
-class b2FreeList
+class B2_API b2FreeList
 {
 public:
 	/// Construct the free list.
@@ -73,7 +73,7 @@ protected:
 /// Typed b2FreeList which manages items of type T assuming T implements
 /// the GetInstanceFromListNode() and GetListNode() methods.
 template<typename T>
-class b2TypedFreeList {
+class B2_API b2TypedFreeList {
 public:
 	/// Construct the free list.
 	b2TypedFreeList() { }

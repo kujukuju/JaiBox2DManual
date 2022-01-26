@@ -18,14 +18,14 @@
 #ifndef B2_TRACKED_BLOCK_H
 #define B2_TRACKED_BLOCK_H
 
-#include <Box2D/Common/b2IntrusiveList.h>
-#include <Box2D/Common/b2Settings.h>
+#include "b2_intrusive_list.h"
+#include "b2_settings.h"
 
 /// Alignment (in bytes) of user memory associated with b2TrackedBlock.
 const int32 b2_mallocAlignment = 32;
 
 /// Allocated block of memory that can be tracked in a b2IntrusiveList.
-class b2TrackedBlock : public b2TypedIntrusiveListNode<b2TrackedBlock>
+class B2_API b2TrackedBlock : public b2TypedIntrusiveListNode<b2TrackedBlock>
 {
 private:
 	// Initialize this block with a reference to "this".
@@ -59,7 +59,7 @@ public:
 };
 
 /// Allocator of blocks which are tracked in a list.
-class b2TrackedBlockAllocator
+class B2_API b2TrackedBlockAllocator
 {
 public:
 	/// Initialize.

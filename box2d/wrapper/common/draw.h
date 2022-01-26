@@ -2,16 +2,18 @@ typedef void (*DrawPolygonCB)(const b2Vec2*, int32_t, b2Color);
 typedef void (*DrawSolidPolygonCB)(const b2Vec2*, int32_t, b2Color);
 typedef void (*DrawCircleCB)(b2Vec2, float, b2Color);
 typedef void (*DrawSolidCircleCB)(b2Vec2, float, b2Vec2, b2Color);
+typedef void (*DrawParticlesCB)(const b2Vec2*, float32, const b2ParticleColor*, int32);
 typedef void (*DrawSegmentCB)(b2Vec2, b2Vec2, b2Color);
 typedef void (*DrawTransformCB)(b2Transform);
 typedef void (*DrawPointCB)(b2Vec2, float, b2Color);
 
 struct Draw : public b2Draw {
-    Draw(DrawPolygonCB drawPolygon, DrawSolidPolygonCB drawSolidPolygon, DrawCircleCB drawCircle, DrawSolidCircleCB drawSolidCircle, DrawSegmentCB drawSegment, DrawTransformCB drawTransform, DrawPointCB drawPoint)
+    Draw(DrawPolygonCB drawPolygon, DrawSolidPolygonCB drawSolidPolygon, DrawCircleCB drawCircle, DrawSolidCircleCB drawSolidCircle, DrawParticlesCB drawParticles, DrawSegmentCB drawSegment, DrawTransformCB drawTransform, DrawPointCB drawPoint)
         : m_drawPolygon(*drawPolygon),
           m_drawSolidPolygon(*drawSolidPolygon),
           m_drawCircle(*drawCircle),
           m_drawSolidCircle(*drawSolidCircle),
+          m_drawParticles(*drawParticles),
           m_drawSegment(*drawSegment),
           m_drawTransform(*drawTransform),
           m_drawPoint(*drawPoint) {}
@@ -34,6 +36,10 @@ struct Draw : public b2Draw {
         m_drawSolidCircle(center, radius, axis, color);
     }
 
+    void DrawParticles(const b2Vec2 *centers, float32 radius, const b2ParticleColor *colors, int32 count) override {
+        m_drawParticles(centers, radius, colors, count);
+    }
+
     void DrawSegment(const b2Vec2& p1, const b2Vec2& p2, const b2Color& color) override {
         m_drawSegment(p1, p2, color);
     }
@@ -50,13 +56,14 @@ struct Draw : public b2Draw {
     DrawSolidPolygonCB m_drawSolidPolygon;
     DrawCircleCB m_drawCircle;
     DrawSolidCircleCB m_drawSolidCircle;
+    DrawParticlesCB m_drawParticles;
     DrawSegmentCB m_drawSegment;
     DrawTransformCB m_drawTransform;
     DrawPointCB m_drawPoint;
 };
 
-EXPORT Draw* Draw_new(DrawPolygonCB drawPolygon, DrawSolidPolygonCB drawSolidPolygon, DrawCircleCB drawCircle, DrawSolidCircleCB drawSolidCircle, DrawSegmentCB drawSegment, DrawTransformCB drawTransform, DrawPointCB drawPoint);
-EXPORT Draw Draw_create(DrawPolygonCB drawPolygon, DrawSolidPolygonCB drawSolidPolygon, DrawCircleCB drawCircle, DrawSolidCircleCB drawSolidCircle, DrawSegmentCB drawSegment, DrawTransformCB drawTransform, DrawPointCB drawPoint);
+EXPORT Draw* Draw_new(DrawPolygonCB drawPolygon, DrawSolidPolygonCB drawSolidPolygon, DrawCircleCB drawCircle, DrawSolidCircleCB drawSolidCircle, DrawParticlesCB drawParticles, DrawSegmentCB drawSegment, DrawTransformCB drawTransform, DrawPointCB drawPoint);
+EXPORT Draw Draw_create(DrawPolygonCB drawPolygon, DrawSolidPolygonCB drawSolidPolygon, DrawCircleCB drawCircle, DrawSolidCircleCB drawSolidCircle, DrawParticlesCB drawParticles, DrawSegmentCB drawSegment, DrawTransformCB drawTransform, DrawPointCB drawPoint);
 EXPORT void Draw_set_flags(b2Draw* self, uint32_t flags);
 EXPORT uint32_t Draw_get_flags(b2Draw* self);
 EXPORT void Draw_append_flags(b2Draw* self, uint32_t flags);

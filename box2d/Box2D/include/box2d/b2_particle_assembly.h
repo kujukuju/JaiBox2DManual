@@ -24,13 +24,13 @@
 
 struct b2ParticleContact;
 
-struct FindContactCheck
+struct B2_API FindContactCheck
 {
     uint16 particleIndex;
     uint16 comparatorIndex;
 };
 
-struct FindContactInput
+struct B2_API FindContactInput
 {
     uint32 proxyIndex;
     b2Vec2 position;

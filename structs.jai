@@ -1,6 +1,6 @@
 b2_maxManifoldPoints :: 2;
 b2_maxPolygonVertices :: 8;
-b2_blockSizes :: 14;
+b2_blockSizeCount :: 14;
 b2_stackSize :: 100 * 1024;
 b2_maxStackEntries :: 32;
 
@@ -127,6 +127,7 @@ b2Fixture :: struct {
     m_shape: *b2Shape;
     m_friction: float32;
     m_restitution: float32;
+    m_restitutionThreshold: float32;
     m_proxies: *b2FixtureProxy;
     m_proxyCount: s32;
     m_filter: b2Filter;
@@ -145,6 +146,7 @@ b2Body :: struct {
     m_flags: u16;
     m_islandIndex: s32;
     m_xf: b2Transform;
+    m_xf0: b2Transform;
     m_sweep: b2Sweep;
     m_linearVelocity: Vector2;
     m_angularVelocity: float32;
@@ -191,17 +193,20 @@ b2ContactEdge :: struct {
 b2World :: struct {
     m_blockAllocator: b2BlockAllocator;
     m_stackAllocator: b2StackAllocator;
-    m_flags: s32;
     m_contactManager: b2ContactManager;
     m_bodyList: *b2Body;
     m_jointList: *b2Joint;
+    m_particleSystemList: *b2ParticleSystem;
     m_bodyCount: s32;
     m_jointCount: s32;
     m_gravity: Vector2;
     m_allowSleep: bool;
     m_destructionListener: *b2DestructionListener;
-    g_debugDraw: *b2Draw;
+    m_debugDraw: *b2Draw;
     m_inv_dt0: float32;
+    m_newContacts: bool;
+    m_locked: bool;
+    m_clearForces: bool;
     m_warmStarting: bool;
     m_continuousPhysics: bool;
     m_subStepping: bool;
@@ -239,7 +244,8 @@ b2BlockAllocator :: struct {
     m_chunks: *b2Chunk;
     m_chunkCount: s32;
     m_chunkSpace: s32;
-    m_freeLists: [b2_blockSizes] *b2Block;
+    m_freeLists: [b2_blockSizeCount] *b2Block;
+    m_giants: b2TrackedBlockAllocator;
 }
 
 b2StackAllocator :: struct {
@@ -365,7 +371,6 @@ b2DynamicTree :: struct {
     m_nodeCount: s32;
     m_nodeCapacity: s32;
     m_freeList: s32;
-    m_path: u32;
     m_insertionCount: s32;
 }
 
@@ -379,6 +384,7 @@ b2TreeNode :: struct {
     child1: s32;
     child2: s32;
     height: s32;
+    moved: bool;
 }
 
 b2Pair :: struct {
@@ -461,21 +467,27 @@ b2DistanceJointDef :: struct {
     localAnchorA: Vector2;
     localAnchorB: Vector2;
     length: float32;
-    frequencyHz: float32;
-    dampingRatio: float32;
+    minLength: float32;
+    maxLength: float32;
+    stiffness: float32;
+    damping: float32;
 }
 
 b2DistanceJoint :: struct {
     using joint: b2Joint;
 
-    m_frequencyHz: float32;
-    m_dampingRatio: float32;
+    m_stiffness: float32;
+    m_damping: float32;
     m_bias: float32;
+    m_length: float32;
+    m_minLength: float32;
+    m_maxLength: float32;
     m_localAnchorA: Vector2;
     m_localAnchorB: Vector2;
     m_gamma: float32;
     m_impulse: float32;
-    m_length: float32;
+    m_lowerImpulse: float32;
+    m_upperImpulse: float32;
     m_indexA: s32;
     m_indexB: s32;
     m_u: Vector2;
@@ -483,10 +495,12 @@ b2DistanceJoint :: struct {
     m_rB: Vector2;
     m_localCenterA: Vector2;
     m_localCenterB: Vector2;
+    m_currentLength: float32;
     m_invMassA: float32;
     m_invMassB: float32;
     m_invIA: float32;
     m_invIB: float32;
+    m_softMass: float32;
     m_mass: float32;
 }
 
@@ -541,6 +555,7 @@ b2GearJoint :: struct {
     m_referenceAngleB: float32;
     m_constant: float32;
     m_ratio: float32;
+    m_tolerance: float32;
     m_impulse: float32;
     m_indexA: s32;
     m_indexB: s32;
@@ -608,8 +623,8 @@ b2MouseJoint :: struct {
 
     m_localAnchorB: Vector2;
     m_targetA: Vector2;
-    m_frequencyHz: float32;
-    m_dampingRatio: float32;
+    m_stiffness: float32;
+    m_damping: float32;
     m_beta: float32;
     m_impulse: Vector2;
     m_maxForce: float32;
@@ -649,13 +664,15 @@ b2PrismaticJoint :: struct {
     m_referenceAngle: float32;
     m_impulse: Vector3;
     m_motorImpulse: float32;
+    m_lowerImpulse: float32;
+    m_upperImpulse: float32;
     m_lowerTranslation: float32;
     m_upperTranslation: float32;
     m_maxMotorForce: float32;
     m_motorSpeed: float32;
     m_enableLimit: bool;
     m_enableMotor: bool;
-    m_limitState: b2LimitState;
+    
     m_indexA: s32;
     m_indexB: s32;
     m_localCenterA: Vector2;
@@ -664,13 +681,14 @@ b2PrismaticJoint :: struct {
     m_invMassB: float32;
     m_invIA: float32;
     m_invIB: float32;
-    m_axi: Vector2;
+    m_axis: Vector2;
     m_perp: Vector2;
-    m_s: float32;
+    m_s1: float32;
     m_s2: float32;
-    m_a: float32;
+    m_a1: float32;
     m_a2: float32;
-    m_K: b2Mat33;
+    m_K: b2Mat22;
+    m_translation: float32;
     m_motorMass: float32;
 }
 
@@ -716,15 +734,15 @@ b2PulleyJoint :: struct {
 b2RevoluteJointDef :: struct {
     using joint_def: b2JointDef;
 
-    localAnchorA: Vector2;
-    localAnchorB: Vector2;
-    referenceAngle: float32;
-    enableLimit: bool;
-    lowerAngle: float32;
-    upperAngle: float32;
-    enableMotor: bool;
-    motorSpeed: float32;
-    maxMotorTorque: float32;
+    m_localAnchorA: Vector2;
+    m_localAnchorB: Vector2;
+    m_referenceAngle: float32;
+    m_enableLimit: bool;
+    m_lowerAngle: float32;
+    m_upperAngle: float32;
+    m_enableMotor: bool;
+    m_motorSpeed: float32;
+    m_maxMotorTorque: float32;
 }
 
 b2RevoluteJoint :: struct {
@@ -732,28 +750,30 @@ b2RevoluteJoint :: struct {
 
     m_localAnchorA: Vector2;
     m_localAnchorB: Vector2;
-    m_impulse: Vector3;
-    m_motorImpulse: float32;
+    m_impulse: Vector2;
+    m_motorImpulse: float;
+    m_lowerImpulse: float;
+    m_upperImpulse: float;
     m_enableMotor: bool;
-    m_maxMotorTorque: float32;
-    m_motorSpeed: float32;
+    m_maxMotorTorque: float;
+    m_motorSpeed: float;
     m_enableLimit: bool;
-    m_referenceAngle: float32;
-    m_lowerAngle: float32;
-    m_upperAngle: float32;
+    m_referenceAngle: float;
+    m_lowerAngle: float;
+    m_upperAngle: float;
     m_indexA: s32;
     m_indexB: s32;
     m_rA: Vector2;
     m_rB: Vector2;
     m_localCenterA: Vector2;
     m_localCenterB: Vector2;
-    m_invMassA: float32;
-    m_invMassB: float32;
-    m_invIA: float32;
-    m_invIB: float32;
-    m_mass: b2Mat33;
-    m_motorMass: float32;
-    m_limitState: b2LimitState;
+    m_invMassA: float;
+    m_invMassB: float;
+    m_invIA: float;
+    m_invIB: float;
+    m_K: b2Mat22;
+    m_angle: float;
+    m_axialMass: float;
 }
 
 b2LimitState :: enum u32 {
@@ -766,18 +786,18 @@ b2LimitState :: enum u32 {
 b2WeldJointDef :: struct {
     using joint_def: b2JointDef;
 
-    localAnchorA: Vector2;
-    localAnchorB: Vector2;
-    referenceAngle: float32;
-    frequencyHz: float32;
-    dampingRatio: float32;
+    m_localAnchorA: Vector2;
+    m_localAnchorB: Vector2;
+    m_referenceAngle: float32;
+    m_stiffness: float32;
+    m_damping: float32;
 }
 
 b2WeldJoint :: struct {
     using joint: b2Joint;
 
-    m_frequencyHz: float32;
-    m_dampingRatio: float32;
+    m_stiffness: float32;
+    m_damping: float32;
     m_bias: float32;
     m_localAnchorA: Vector2;
     m_localAnchorB: Vector2;
@@ -800,50 +820,60 @@ b2WeldJoint :: struct {
 b2WheelJointDef :: struct {
     using joint_def: b2JointDef;
 
-    localAnchorA: Vector2;
-    localAnchorB: Vector2;
-    localAxisA: Vector2;
-    enableMotor: bool;
-    maxMotorTorque: float32;
-    motorSpeed: float32;
-    frequencyHz: float32;
-    dampingRatio: float32;
+    m_localAnchorA: Vector2;
+    m_localAnchorB: Vector2;
+    m_localAxisA: Vector2;
+    m_enableLimit: bool;
+    m_lowerTranslation: float32;
+    m_upperTranslation: float32;
+    m_enableMotor: bool;
+    m_maxMotorTorque: float32;
+    m_motorSpeed: float32;
+    m_stiffness: float32;
+    m_damping: float32;
 }
 
 b2WheelJoint :: struct {
     using joint: b2Joint;
 
-    m_frequencyHz: float32;
-    m_dampingRatio: float32;
     m_localAnchorA: Vector2;
     m_localAnchorB: Vector2;
     m_localXAxisA: Vector2;
     m_localYAxisA: Vector2;
-    m_impulse: float32;
-    m_motorImpulse: float32;
-    m_springImpulse: float32;
-    m_maxMotorTorque: float32;
-    m_motorSpeed: float32;
+    m_impulse: float;
+    m_motorImpulse: float;
+    m_springImpulse: float;
+    m_lowerImpulse: float;
+    m_upperImpulse: float;
+    m_translation: float;
+    m_lowerTranslation: float;
+    m_upperTranslation: float;
+    m_maxMotorTorque: float;
+    m_motorSpeed: float;
+    m_enableLimit: bool;
     m_enableMotor: bool;
+    m_stiffness: float;
+    m_damping: float;
     m_indexA: s32;
     m_indexB: s32;
     m_localCenterA: Vector2;
     m_localCenterB: Vector2;
-    m_invMassA: float32;
-    m_invMassB: float32;
-    m_invIA: float32;
-    m_invIB: float32;
+    m_invMassA: float;
+    m_invMassB: float;
+    m_invIA: float;
+    m_invIB: float;
     m_ax: Vector2;
     m_ay: Vector2;
-    m_sAx: float32;
-    m_sBx: float32;
-    m_sAy: float32;
-    m_sBy: float32;
-    m_mass: float32;
-    m_motorMass: float32;
-    m_springMass: float32;
-    m_bias: float32;
-    m_gamma: float32;
+    m_sAx: float;
+    m_sBx: float;
+    m_sAy: float;
+    m_sBy: float;
+    m_mass: float;
+    m_motorMass: float;
+    m_axialMass: float;
+    m_springMass: float;
+    m_bias: float;
+    m_gamma: float;
 }
 
 b2ClipVertex :: struct {
@@ -858,23 +888,19 @@ Draw :: struct {
     m_drawSolidPolygon: DrawSolidPolygonCB;
     m_drawCircle: DrawCircleCB;
     m_drawSolidCircle: DrawSolidCircleCB;
+    m_drawParticles: DrawParticlesCB;
     m_drawSegment: DrawSegmentCB;
     m_drawTransform: DrawTransformCB;
     m_drawPoint: DrawPointCB;
 }
 
 DrawPolygonCB :: #type (vertices: *Vector2, vertexCount: s32, color: b2Color) -> void #c_call;
-
 DrawSolidPolygonCB :: #type (vertices: *Vector2, vertexCount: s32, color: b2Color) -> void #c_call;
-
 DrawCircleCB :: #type (center: Vector2, radius: float32, color: b2Color) -> void #c_call;
-
 DrawSolidCircleCB :: #type (center: Vector2, radius: float32, color: b2Color) -> void #c_call;
-
+DrawParticlesCB :: #type (centers: *Vector2, radius: float32, colors: *b2ParticleColor, count: s32) -> void #c_call;
 DrawSegmentCB :: #type (p1: Vector2, p2: Vector2, color: b2Color) -> void #c_call;
-
 DrawTransformCB :: #type (xf: b2Transform) -> void #c_call;
-
 DrawPointCB :: #type (p: Vector2, size: float, color: b2Color) -> void #c_call;
 
 DestructionListener :: struct {
@@ -882,49 +908,70 @@ DestructionListener :: struct {
 
     m_sayGoodbyeJoint: SayGoodbyeJointCB;
     m_sayGoodbyeFixture: SayGoodbyeFixtureCB;
+    m_sayGoodbyeParticleGroup: SayGoodbyeParticleGroupCB;
 }
 
 SayGoodbyeJointCB :: #type (joint: *b2Joint) -> void #c_call;
-
 SayGoodbyeFixtureCB :: #type (fixture: *b2Fixture) -> void #c_call;
+SayGoodbyeParticleGroupCB :: #type (group: *b2ParticleGroup) -> void #c_call;
 
 ContactFilter :: struct {
     using filter: b2ContactFilter;
 
     m_shouldCollide: ShouldCollideCB;
+    m_shouldCollideFixtureParticle: ShouldCollideFixtureParticleCB;
+    m_shouldCollideParticleParticle: ShouldCollideParticleParticleCB;
 }
 
 ShouldCollideCB :: #type (fixtureA: *b2Fixture, fixtureB: *b2Fixture) -> bool #c_call;
+ShouldCollideFixtureParticleCB :: #type (fixture: *b2Fixture, particleSystem: *b2ParticleSystem, particleIndex: s32) -> bool #c_call;
+ShouldCollideParticleParticleCB :: #type (particleSystem: *b2ParticleSystem, particleIndexA: s32, particleIndexB: s32) -> bool #c_call;
 
 ContactListener :: struct {
     using listener: b2ContactListener;
     
     m_beginContact: BeginContactCB;
     m_endContact: EndContactCB;
+    m_beginContactParticleBody: BeginContactParticleBodyCB;
+    m_endContactFixtureParticle: EndContactFixtureParticleCB;
+    m_beginContactParticle: BeginContactParticleCB;
+    m_endContactParticle: EndContactParticleCB;
     m_preSolve: PreSolveCB;
     m_postSolve: PostSolveCB;
 }
 
-BeginContactCB :: #type (contact: *b2Contact) -> bool #c_call;
-EndContactCB :: #type (contact: *b2Contact) -> bool #c_call;
-PreSolveCB :: #type (contact: *b2Contact, oldManifold: *b2Manifold) -> bool #c_call;
-PostSolveCB :: #type (contact: *b2Contact, impulse: *b2ContactImpulse) -> bool #c_call;
+BeginContactCB :: #type (contact: *b2Contact) -> void #c_call;
+EndContactCB :: #type (contact: *b2Contact) -> void #c_call;
+BeginContactParticleBodyCB :: #type (particleSystem: *b2ParticleSystem, particleBodyContact: *b2ParticleBodyContact);
+EndContactFixtureParticleCB :: #type (fixture: *b2Fixture, particleSystem: *b2ParticleSystem, index: s32);
+BeginContactParticleCB :: #type (particleSystem: *b2ParticleSystem, particleContact: *b2ParticleContact);
+EndContactParticleCB :: #type (particleSystem: *b2ParticleSystem, indexA: s32, indexB: s32);
+PreSolveCB :: #type (contact: *b2Contact, oldManifold: *b2Manifold) -> void #c_call;
+PostSolveCB :: #type (contact: *b2Contact, impulse: *b2ContactImpulse) -> void #c_call;
 
 QueryCallback :: struct {
     using callback: b2QueryCallback;
     
-    m_reportFixture: ReportFixtureQueryCB;
+    m_reportFixture: ReportFixtureCB;
+    m_reportParticle: ReportParticleCB;
+    m_shouldQueryParticleSystem: ShouldQueryParticleSystemCB;
 }
 
-ReportFixtureQueryCB :: #type (fixture: *b2Fixture) -> bool #c_call;
+ReportFixtureCB :: #type (fixture: *b2Fixture) -> bool #c_call;
+ReportParticleCB :: #type (particleSystem: *b2ParticleSystem, index: s32) -> bool #c_call;
+ShouldQueryParticleSystemCB :: #type (particleSystem: *b2ParticleSystem) -> bool #c_call;
 
 RayCastCallback :: struct {
     using callback: b2RayCastCallback;
     
     m_reportFixture: ReportFixtureRayCastCB;
+    m_reportParticle: ReportParticleRayCastCB;
+    m_shouldQueryParticleSystem: ShouldQueryParticleSystemRayCastCB;
 }
 
-ReportFixtureRayCastCB :: #type (fixture: *b2Fixture, point: Vector2, normal: Vector2, fraction: float) -> float #c_call;
+ReportFixtureRayCastCB :: #type (fixture: *b2Fixture, point: Vector2, normal: Vector2, fraction: float32) -> float32 #c_call;
+ReportParticleRayCastCB :: #type (particleSystem: *b2ParticleSystem, index: s32, point: *Vector2, normal: *Vector2, fraction: float32) -> float32 #c_call;
+ShouldQueryParticleSystemRayCastCB :: #type (particleSystem: *b2ParticleSystem) -> bool #c_call;
 
 b2GearJointDef :: struct {
     using joint_def: b2JointDef;
@@ -1030,6 +1077,229 @@ b2Color :: struct {
     g: float;
     b: float;
     a: float;
+}
+
+b2ParticleSystem :: struct {
+    m_paused: bool;
+    m_timestamp: s32;
+    m_allParticleFlags: s32;
+    m_needsUpdateAllParticleFlags: bool;
+    m_allGroupFlags: s32;
+    m_needsUpdateAllGroupFlags: bool;
+    m_hasForce: bool;
+    m_iterationIndex: s32;
+    m_inverseDensity: float32;
+    m_particleDiameter: float32;
+    m_inverseDiameter: float32;
+    m_squaredDiameter: float32;
+    m_count: s32;
+    m_internalAllocatedCapacity: s32;
+    m_handleAllocator: b2SlabAllocator(b2ParticleHandle);
+    m_handleIndexBuffer: UserOverridableBuffer(*b2ParticleHandle);
+    m_flagsBuffer: UserOverridableBuffer(u32);
+    m_positionBuffer: UserOverridableBuffer(Vector2);
+    m_velocityBuffer: UserOverridableBuffer(Vector2);
+    m_forceBuffer: *Vector2;
+    m_weightBuffer: *float32;
+    m_staticPressureBuffer: *float32;
+    m_accumulationBuffer: *float32;
+    m_accumulation2Buffer: *Vector2;
+    m_depthBuffer: *float32;
+    m_colorBuffer: UserOverridableBuffer(b2ParticleColor);
+    m_groupBuffer: **b2ParticleGroup;
+    m_userDataBuffer: UserOverridableBuffer(*void);
+    m_stuckThreshold: s32;
+    m_lastBodyContactStepBuffer: UserOverridableBuffer(s32);
+    m_bodyContactCountBuffer: UserOverridableBuffer(s32);
+    m_consecutiveContactStepsBuffer: UserOverridableBuffer(s32);
+    m_stuckParticleBuffer: b2GrowableBuffer(s32);
+    m_proxyBuffer: b2GrowableBuffer(Proxy);
+    m_contactBuffer: b2GrowableBuffer(b2ParticleContact);
+    m_bodyContactBuffer: b2GrowableBuffer(b2ParticleBodyContact);
+    m_pairBuffer: b2GrowableBuffer(b2ParticlePair);
+    m_triadBuffer: b2GrowableBuffer(b2ParticleTriad);
+    m_expirationTimeBuffer: UserOverridableBuffer(s32);
+    m_indexByExpirationTimeBuffer: UserOverridableBuffer(s32);
+    m_timeElapsed: s64;
+    m_expirationTimeBufferRequiresSorting: bool;
+    m_groupCount: s32;
+    m_groupList: *b2ParticleGroup;
+    m_def: b2ParticleSystemDef;
+    m_world: *b2World;
+    m_prev: *b2ParticleSystem;
+    m_next: *b2ParticleSystem;
+}
+
+b2ParticleSystemDef :: struct {
+    strictContactCheck: bool;
+    density: float32;
+    gravityScale: float32;
+    radius: float32;
+    maxCount: s32;
+    pressureStrength: float32;
+    dampingStrength: float32;
+    elasticStrength: float32;
+    springStrength: float32;
+    viscousStrength: float32;
+    surfaceTensionPressureStrength: float32;
+    surfaceTensionNormalStrength: float32;
+    repulsiveStrength: float32;
+    powderStrength: float32;
+    ejectionStrength: float32;
+    staticPressureStrength: float32;
+    staticPressureRelaxation: float32;
+    staticPressureIterations: s32;
+    colorMixingStrength: float32;
+    destroyByAge: bool;
+    lifetimeGranularity: float32;
+}
+
+b2ParticleDef :: struct {
+    flags: u32;
+    position: Vector2;
+    velocity: Vector2;
+    color: b2ParticleColor;
+    lifetime: float32;
+    userData: *void;
+    group: *b2ParticleGroup;
+}
+
+b2ParticleGroupDef :: struct {
+    flags: u32;
+    groupFlags: u32;
+    position: Vector2;
+    angle: float32;
+    linearVelocity: Vector2;
+    angularVelocity: float32;
+    color: b2ParticleColor;
+    strength: float32;
+    shape: *b2Shape;
+    shapes: **b2Shape;
+    shapeCount: s32;
+    stride: float32;
+    particleCount: s32;
+    positionData: *Vector2;
+    lifetime: float32;
+    userData: *void;
+    group: *b2ParticleGroup;
+    circleShapes: *b2CircleShape;
+    ownShapesArray: bool;
+}
+
+b2ParticleGroup :: struct {
+    m_system: *b2ParticleSystem;
+    m_firstIndex: s32;
+    m_lastIndex: s32;
+    m_groupFlags: u32;
+    m_strength: float32;
+    m_prev: *b2ParticleGroup;
+    m_next: *b2ParticleGroup;
+    m_timestamp: s32;
+    m_mass: float32;
+    m_inertia: float32;
+    m_center: Vector2;
+    m_linearVelocity: Vector2;
+    m_angularVelocity: float32;
+    m_transform: b2Transform;
+    m_userData: *void;
+}
+
+b2ParticleContact :: struct {
+    indexA: s32;
+    indexB: s32;
+    weight: float32;
+    normal: Vector2;
+    flags: u32;
+}
+
+b2ParticleHandle :: struct {
+    using node: b2TypedIntrusiveListNode;
+
+    m_index: s32;
+}
+
+b2ParticleColor :: struct {
+    r: u8;
+    g: u8;
+    b: u8;
+    a: u8;
+}
+
+b2ParticleBodyContact :: struct {
+    index: s32;
+    body: *b2Body;
+    fixture: *b2Fixture;
+    weight: float32;
+    normal: Vector2;
+    mass: float32;
+}
+
+b2ParticlePair :: struct {
+    indexA: s32;
+    indexB: s32;
+    flags: u32;
+    strength: float32;
+    distance: float32;
+}
+
+b2ParticleTriad :: struct {
+    indexA: s32;
+    indexB: s32;
+    indexC: s32;
+    flags: u32;
+    strength: float32;
+    pa: Vector2;
+    pb: Vector2;
+    pc: Vector2;
+    ka: float32;
+    kb: float32;
+    kc: float32;
+    s: float32;
+}
+
+b2SlabAllocator :: struct (SlabAllocatorType: Type) {
+    m_slabs: b2TrackedBlockAllocator;
+    m_itemsPerSlab: u32;
+    m_freeList: b2TypedFreeList;
+}
+
+UserOverridableBuffer :: struct (UserOverridableBufferType: Type) {
+    data: *UserOverridableBufferType;
+    userSuppliedCapacity: s32;
+}
+
+b2GrowableBuffer :: struct (GrowableBufferType: Type) {
+    data: *GrowableBufferType;
+    count: s32;
+    capacity: s32;
+    allocator: *b2BlockAllocator;
+}
+
+b2TypedIntrusiveListNode :: struct {
+    m_node: b2IntrusiveListNode;
+}
+
+b2IntrusiveListNode :: struct {
+    m_prev: *b2IntrusiveListNode;
+    m_next: *b2IntrusiveListNode;
+}
+
+b2TypedFreeList :: struct {
+    m_freeList: b2FreeList;
+}
+
+b2FreeList :: struct {
+    m_allocated: b2IntrusiveListNode;
+    m_free: b2IntrusiveListNode;
+}
+
+Proxy :: struct {
+    index: s32;
+    tag: u32;
+}
+
+b2TrackedBlockAllocator :: struct {
+    m_blocks: b2TypedIntrusiveListNode;
 }
 
 #scope_file

@@ -31,7 +31,7 @@
 /// If the stack size exceeds the initial capacity, the heap is used
 /// to increase the size of the stack.
 template <typename T, int32 N>
-class b2GrowableStack
+class B2_API b2GrowableStack
 {
 public:
 	b2GrowableStack()

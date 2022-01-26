@@ -50,7 +50,7 @@ struct b2AABB;
 struct FindContactInput;
 struct FindContactCheck;
 
-struct b2ParticleContact
+struct B2_API b2ParticleContact
 {
 private:
 	// 16-bit particle indices consume less memory and thus improve
@@ -58,11 +58,7 @@ private:
 	// b2ParticleSystem::Solve, so reducing the amount of data we churn
 	// through speeds things up. Also, FindContactsFromChecks_Simd takes
 	// advantage of the reduced size for specific optimizations.
-	#ifdef B2_USE_16_BIT_PARTICLE_INDICES
-		typedef int16 b2ParticleIndex;
-	#else
-		typedef int32 b2ParticleIndex;
-	#endif
+	typedef int32 b2ParticleIndex;
 
 	/// Indices of the respective particles making contact.
 	b2ParticleIndex indexA, indexB;
@@ -96,7 +92,7 @@ public:
 	bool ApproximatelyEqual(const b2ParticleContact& rhs) const;
 };
 
-struct b2ParticleBodyContact
+struct B2_API b2ParticleBodyContact
 {
 	/// Index of the particle making contact.
 	int32 index;
@@ -118,7 +114,7 @@ struct b2ParticleBodyContact
 };
 
 /// Connection between two particles
-struct b2ParticlePair
+struct B2_API b2ParticlePair
 {
 	/// Indices of the respective particles making pair.
 	int32 indexA, indexB;
@@ -134,7 +130,7 @@ struct b2ParticlePair
 };
 
 /// Connection between three particles
-struct b2ParticleTriad
+struct B2_API b2ParticleTriad
 {
 	/// Indices of the respective particles making triad.
 	int32 indexA, indexB, indexC;
@@ -150,7 +146,7 @@ struct b2ParticleTriad
 	float32 ka, kb, kc, s;
 };
 
-struct b2ParticleSystemDef
+struct B2_API b2ParticleSystemDef
 {
 	b2ParticleSystemDef()
 	{
@@ -278,7 +274,7 @@ struct b2ParticleSystemDef
 };
 
 
-class b2ParticleSystem
+class B2_API b2ParticleSystem
 {
 public:
 	/// Create a particle whose properties have been defined.
@@ -749,7 +745,7 @@ private:
 #endif // LIQUIDFUN_UNIT_TESTS
 
 	template <typename T>
-	struct UserOverridableBuffer
+	struct B2_API UserOverridableBuffer
 	{
 		UserOverridableBuffer()
 		{
@@ -761,7 +757,7 @@ private:
 	};
 
 	/// Used for detecting particle contacts
-	struct Proxy
+	struct B2_API Proxy
 	{
 		int32 index;
 		uint32 tag;
@@ -780,7 +776,7 @@ private:
 	};
 
 	/// Class for filtering pairs or triads.
-	class ConnectionFilter
+	class B2_API ConnectionFilter
 	{
 	public:
 		virtual ~ConnectionFilter() {}
@@ -809,7 +805,7 @@ private:
 	};
 
 	/// InsideBoundsEnumerator enumerates all particles inside the given bounds.
-	class InsideBoundsEnumerator
+	class B2_API InsideBoundsEnumerator
 	{
 	public:
 		/// Construct an enumerator with bounds of tags and a range of proxies.
@@ -831,7 +827,7 @@ private:
 	};
 
 	/// Node of linked lists of connected particles
-	struct ParticleListNode
+	struct B2_API ParticleListNode
 	{
 		/// The head of the list.
 		ParticleListNode* list;

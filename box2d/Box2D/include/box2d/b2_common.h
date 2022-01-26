@@ -34,7 +34,21 @@
 #endif
 
 #define B2_NOT_USED(x) ((void)(x))
+
+#if DEBUG && !defined(NDEBUG)
 #define b2Assert(A) assert(A)
+#define B2_ASSERT_ENABLED 1
+#else
+#define b2Assert(A)
+#define B2_ASSERT_ENABLED 0
+#endif
+
+// Statement which is compiled out when DEBUG isn't defined.
+#if DEBUG
+#define B2_DEBUG_STATEMENT(A) A
+#else
+#define B2_DEBUG_STATEMENT(A)
+#endif  // DEBUG
 
 #ifdef WIN32
 typedef __int64   int64;
@@ -47,6 +61,14 @@ typedef unsigned long long uint64;
 #define	b2_maxFloat		FLT_MAX
 #define	b2_epsilon		FLT_EPSILON
 #define b2_pi			3.14159265359f
+
+#if !defined(b2Inline)
+#if defined(__GNUC__)
+#define b2Inline __attribute__((always_inline))
+#else
+#define b2Inline inline
+#endif // defined(__GNUC__)
+#endif // !defined(b2Inline)
 
 /// @file
 /// Global tuning constants based on meters-kilograms-seconds (MKS) units.

@@ -51,7 +51,7 @@ enum b2ParticleGroupFlag
 
 /// A particle group definition holds all the data needed to construct a
 /// particle group.  You can safely re-use these definitions.
-struct b2ParticleGroupDef
+struct B2_API b2ParticleGroupDef
 {
 
 	b2ParticleGroupDef()
@@ -143,7 +143,6 @@ struct b2ParticleGroupDef
 	/// An existing particle group to which the particles will be added.
 	b2ParticleGroup* group;
 
-#if LIQUIDFUN_EXTERNAL_LANGUAGE_API
 	/// Storage for constructed CircleShapes from an incoming vertex list
 	const b2CircleShape* circleShapes;
 
@@ -165,11 +164,10 @@ struct b2ParticleGroupDef
 
 	/// Set color with direct ints.
 	void SetColor(int32 r, int32 g, int32 b, int32 a);
-#endif // LIQUIDFUN_EXTERNAL_LANGUAGE_API
 };
 
 /// A group of particles. b2ParticleGroup::CreateParticleGroup creates these.
-class b2ParticleGroup
+class B2_API b2ParticleGroup
 {
 
 public:

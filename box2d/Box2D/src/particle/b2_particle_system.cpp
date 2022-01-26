@@ -15,18 +15,18 @@
 * misrepresented as being the original software.
 * 3. This notice may not be removed or altered from any source distribution.
 */
-#include "b2_particle_system.h"
-#include "b2_particle_group.h"
-#include "b2_voronoi_diagram.h"
-#include "b2_particle_assembly.h"
-#include "b2_block_allocator.h"
-#include "b2_world.h"
-#include "b2_world_callbacks.h"
-#include "b2_body.h"
-#include "b2_fixture.h"
-#include "b2_shape.h"
-#include "b2_edge_shape.h"
-#include "b2_chain_shape.h"
+#include "box2d/b2_particle_system.h"
+#include "box2d/b2_particle_group.h"
+#include "box2d/b2_voronoi_diagram.h"
+#include "box2d/b2_particle_assembly.h"
+#include "box2d/b2_block_allocator.h"
+#include "box2d/b2_world.h"
+#include "box2d/b2_world_callbacks.h"
+#include "box2d/b2_body.h"
+#include "box2d/b2_fixture.h"
+#include "box2d/b2_shape.h"
+#include "box2d/b2_edge_shape.h"
+#include "box2d/b2_chain_shape.h"
 #include <algorithm>
 
 // Define LIQUIDFUN_SIMD_TEST_VS_REFERENCE to run both SIMD and reference
@@ -2730,7 +2730,7 @@ void b2ParticleSystem::RemoveSpuriousBodyContacts()
 				b2ParticleSystem::BodyContactCompare);
 
 	int32 discarded = 0;
-	std::remove_if(m_bodyContactBuffer.Begin(),
+	auto value = std::remove_if(m_bodyContactBuffer.Begin(),
 					m_bodyContactBuffer.End(),
 					b2ParticleBodyContactRemovePredicate(this, &discarded));
 

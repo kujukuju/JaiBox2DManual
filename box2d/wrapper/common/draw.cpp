@@ -1,11 +1,11 @@
 #include "common/draw.h"
 
-Draw* Draw_new(DrawPolygonCB drawPolygon, DrawSolidPolygonCB drawSolidPolygon, DrawCircleCB drawCircle, DrawSolidCircleCB drawSolidCircle, DrawSegmentCB drawSegment, DrawTransformCB drawTransform, DrawPointCB drawPoint) {
-    return new Draw(drawPolygon, drawSolidPolygon, drawCircle, drawSolidCircle, drawSegment, drawTransform, drawPoint);
+Draw* Draw_new(DrawPolygonCB drawPolygon, DrawSolidPolygonCB drawSolidPolygon, DrawCircleCB drawCircle, DrawSolidCircleCB drawSolidCircle, DrawParticlesCB drawParticles, DrawSegmentCB drawSegment, DrawTransformCB drawTransform, DrawPointCB drawPoint) {
+    return new Draw(drawPolygon, drawSolidPolygon, drawCircle, drawSolidCircle, drawParticles, drawSegment, drawTransform, drawPoint);
 }
 
-Draw Draw_create(DrawPolygonCB drawPolygon, DrawSolidPolygonCB drawSolidPolygon, DrawCircleCB drawCircle, DrawSolidCircleCB drawSolidCircle, DrawSegmentCB drawSegment, DrawTransformCB drawTransform, DrawPointCB drawPoint) {
-    return Draw(drawPolygon, drawSolidPolygon, drawCircle, drawSolidCircle, drawSegment, drawTransform, drawPoint);
+Draw Draw_create(DrawPolygonCB drawPolygon, DrawSolidPolygonCB drawSolidPolygon, DrawCircleCB drawCircle, DrawSolidCircleCB drawSolidCircle, DrawParticlesCB drawParticles, DrawSegmentCB drawSegment, DrawTransformCB drawTransform, DrawPointCB drawPoint) {
+    return Draw(drawPolygon, drawSolidPolygon, drawCircle, drawSolidCircle, drawParticles, drawSegment, drawTransform, drawPoint);
 }
 
 void Draw_set_flags(b2Draw* self, uint32_t flags) {

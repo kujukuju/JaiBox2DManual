@@ -16,6 +16,10 @@ bool Shape_test_point(b2Shape* self, const b2Transform* xf, const b2Vec2* p) {
     return self->TestPoint(*xf, *p);
 }
 
+void Shape_compute_distance(b2Shape* self, const b2Transform* xf, const b2Vec2* p, float32* distance, b2Vec2* normal, int32 childIndex) {
+    self->ComputeDistance(*xf, *p, distance, normal, childIndex);
+}
+
 bool Shape_ray_cast(b2Shape* self, b2RayCastOutput* output, const b2RayCastInput* input, const b2Transform* transform, int32 childIndex) {
     return self->RayCast(output, *input, *transform, childIndex);
 }

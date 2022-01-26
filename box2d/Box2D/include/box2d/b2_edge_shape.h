@@ -43,6 +43,8 @@ public:
 	/// Set this as an isolated edge. Collision is two-sided.
 	void SetTwoSided(const b2Vec2& v1, const b2Vec2& v2);
 
+    void Set(const b2Vec2& v1, const b2Vec2& v2);
+
 	/// Implement b2Shape.
 	b2Shape* Clone(b2BlockAllocator* allocator) const override;
 
