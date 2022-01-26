@@ -531,6 +531,7 @@ void b2ContactSolver::SolveVelocityConstraints()
 				x.x = 0.0f;
 				x.y = - cp2->normalMass * b.y;
 				vn1 = vc->K.ey.x * x.y + b.x;
+				vn2 = 0.0f;
 
 				if (x.y >= 0.0f && vn1 >= 0.0f)
 				{
@@ -655,14 +656,14 @@ struct b2PositionSolverManifold
 			}
 			break;
 
-		default:
-			{
-				// This shouldn't be executed if pc->type is valid.
-				separation = 0.0f;
-				normal = b2Vec2_zero;
-				point = b2Vec2_zero;
-				b2Assert(false);
-			}
+		// default:
+		// 	{
+		// 		// This shouldn't be executed if pc->type is valid.
+		// 		separation = 0.0f;
+		// 		normal = b2Vec2_zero;
+		// 		point = b2Vec2_zero;
+		// 		b2Assert(false);
+		// 	}
 		}
 	}
 
