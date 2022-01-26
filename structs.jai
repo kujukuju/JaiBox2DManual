@@ -1183,8 +1183,6 @@ b2ParticleGroupDef :: struct {
     lifetime: float32;
     userData: *void;
     group: *b2ParticleGroup;
-    circleShapes: *b2CircleShape;
-    ownShapesArray: bool;
 }
 
 b2ParticleGroup :: struct {

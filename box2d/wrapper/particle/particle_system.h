@@ -83,9 +83,3 @@ EXPORT void ParticleSystem_query_aabb(b2ParticleSystem* self, b2QueryCallback* c
 EXPORT void ParticleSystem_query_shape_aabb(b2ParticleSystem* self, b2QueryCallback* callback, const b2Shape* shape, const b2Transform* xf);
 EXPORT void ParticleSystem_ray_cast(b2ParticleSystem* self, b2RayCastCallback* callback, const b2Vec2* point1, const b2Vec2* point2);
 EXPORT void ParticleSystem_compute_aabb(b2ParticleSystem* self, b2AABB* const aabb);
-EXPORT void ParticleSystem_set_particle_velocity(b2ParticleSystem* self, int32 index, float32 vx, float32 vy);
-EXPORT float ParticleSystem_get_particle_position_x(b2ParticleSystem* self, int32 index);
-EXPORT float ParticleSystem_get_particle_position_y(b2ParticleSystem* self, int32 index);
-EXPORT int ParticleSystem_copy_position_buffer(b2ParticleSystem* self, int startIndex, int numParticles, void* outBuf, int size);
-EXPORT int ParticleSystem_copy_color_buffer(b2ParticleSystem* self, int startIndex, int numParticles, void* outBuf, int size);
-EXPORT int ParticleSystem_copy_weight_buffer(b2ParticleSystem* self, int startIndex, int numParticles, void* outBuf, int size);

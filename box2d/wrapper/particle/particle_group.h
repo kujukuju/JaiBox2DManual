@@ -1,8 +1,5 @@
 EXPORT b2ParticleGroupDef* ParticleGroupDef_new();
 EXPORT b2ParticleGroupDef ParticleGroupDef_create();
-EXPORT void ParticleGroupDef_set_circle_shapes_from_vertex_list(b2ParticleGroupDef* self, void* inBuf, int numShapes, float radius);
-EXPORT void ParticleGroupDef_set_position(b2ParticleGroupDef* self, float32 x, float32 y);
-EXPORT void ParticleGroupDef_set_color(b2ParticleGroupDef* self, int32 r, int32 g, int32 b, int32 a);
 EXPORT b2ParticleGroup* ParticleGroup_get_next(b2ParticleGroup* self);
 EXPORT b2ParticleSystem* ParticleGroup_get_particle_system(b2ParticleGroup* self);
 EXPORT int32 ParticleGroup_get_particle_count(b2ParticleGroup* self);

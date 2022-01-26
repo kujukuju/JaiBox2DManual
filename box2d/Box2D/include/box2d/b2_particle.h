@@ -282,14 +282,6 @@ struct B2_API b2ParticleDef
 		group = NULL;
 	}
 
-#if LIQUIDFUN_EXTERNAL_LANGUAGE_API
-	/// Set position with direct floats
-	void SetPosition(float32 x, float32 y);
-
-	/// Set color with direct ints.
-	void SetColor(int32 r, int32 g, int32 b, int32 a);
-#endif // LIQUIDFUN_EXTERNAL_LANGUAGE_API
-
 	/// \brief Specifies the type of particle (see #b2ParticleFlag).
 	///
 	/// A particle may be more than one type.
@@ -350,17 +342,5 @@ private:
 	// Index of the particle within the particle system.
 	int32 m_index;
 };
-
-#if LIQUIDFUN_EXTERNAL_LANGUAGE_API
-inline void b2ParticleDef::SetPosition(float32 x, float32 y)
-{
-	position.Set(x, y);
-}
-
-inline void b2ParticleDef::SetColor(int32 r, int32 g, int32 b, int32 a)
-{
-	color.Set((uint8)r, (uint8)g, (uint8)b, (uint8)a);
-}
-#endif // LIQUIDFUN_EXTERNAL_LANGUAGE_API
 
 #endif

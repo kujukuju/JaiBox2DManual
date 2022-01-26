@@ -27,15 +27,3 @@ void CircleShape_compute_aabb(b2CircleShape* self, b2AABB* aabb, const b2Transfo
 void CircleShape_compute_mass(b2CircleShape* self, b2MassData* massData, float density) {
     self->ComputeMass(massData, density);
 }
-
-void CircleShape_set_position(b2CircleShape* self, float32 x, float32 y) {
-    self->SetPosition(x, y);
-}
-
-float32 CircleShape_get_position_x(b2CircleShape* self) {
-    return self->GetPositionX();
-}
-
-float32 CircleShape_get_position_y(b2CircleShape* self) {
-    return self->GetPositionY();
-}

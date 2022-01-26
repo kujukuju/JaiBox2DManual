@@ -8,18 +8,6 @@ b2ParticleGroupDef ParticleGroupDef_create() {
     return b2ParticleGroupDef();
 }
 
-void ParticleGroupDef_set_circle_shapes_from_vertex_list(b2ParticleGroupDef* self, void* inBuf, int numShapes, float radius) {
-    self->SetCircleShapesFromVertexList(inBuf, numShapes, radius);
-}
-
-void ParticleGroupDef_set_position(b2ParticleGroupDef* self, float32 x, float32 y) {
-    self->SetPosition(x, y);
-}
-
-void ParticleGroupDef_set_color(b2ParticleGroupDef* self, int32 r, int32 g, int32 b, int32 a) {
-    self->SetColor(r, g, b, a);
-}
-
 b2ParticleGroup* ParticleGroup_get_next(b2ParticleGroup* self) {
     return self->GetNext();
 }

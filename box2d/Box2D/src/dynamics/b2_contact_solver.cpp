@@ -531,7 +531,6 @@ void b2ContactSolver::SolveVelocityConstraints()
 				x.x = 0.0f;
 				x.y = - cp2->normalMass * b.y;
 				vn1 = vc->K.ey.x * x.y + b.x;
-				// vn2 = 0.0f; TODO liquidfun deleted this in box2d 1.3.0
 
 				if (x.y >= 0.0f && vn1 >= 0.0f)
 				{
@@ -551,15 +550,6 @@ void b2ContactSolver::SolveVelocityConstraints()
 					cp1->normalImpulse = x.x;
 					cp2->normalImpulse = x.y;
 
-#if B2_DEBUG_SOLVER == 1
-					// Postconditions
-					dv2 = vB + b2Cross(wB, cp2->rB) - vA - b2Cross(wA, cp2->rA);
-
-					// Compute normal velocity
-					vn2 = b2Dot(dv2, normal);
-
-					b2Assert(b2Abs(vn2 - cp2->velocityBias) < k_errorTol);
-#endif
 					break;
 				}
 

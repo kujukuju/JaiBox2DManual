@@ -432,18 +432,6 @@ struct B2_API b2Transform
 		q.Set(angle);
 	}
 
-		/// Get x-coordinate of p.
-	float32 GetPositionX() const { return p.x; }
-
-	/// Get y-coordinate of p.
-	float32 GetPositionY() const { return p.y; }
-
-	/// Get sine-component of q.
-	float32 GetRotationSin() const { return q.s; }
-
-	/// Get cosine-component of q.
-	float32 GetRotationCos() const { return q.c; }
-
 	b2Vec2 p;
 	b2Rot q;
 };

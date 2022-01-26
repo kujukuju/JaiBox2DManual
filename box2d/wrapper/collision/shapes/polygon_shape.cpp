@@ -51,7 +51,3 @@ void PolygonShape_compute_mass(b2PolygonShape* self, b2MassData* massData, float
 bool PolygonShape_validate(b2PolygonShape* self) {
     return self->Validate();
 }
-
-void PolygonShape_set_centroid(b2PolygonShape* self, float32 x, float32 y) {
-    self->SetCentroid(x, y);
-}

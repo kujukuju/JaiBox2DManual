@@ -9,4 +9,3 @@ EXPORT void EdgeShape_compute_distance(b2EdgeShape* self, const b2Transform* xf,
 EXPORT bool EdgeShape_ray_cast(b2EdgeShape* self, b2RayCastOutput* output, const b2RayCastInput* input, const b2Transform* transform, int32 childIndex);
 EXPORT void EdgeShape_compute_aabb(b2EdgeShape* self, b2AABB* aabb, const b2Transform* transform, int32 childIndex);
 EXPORT void EdgeShape_compute_mass(b2EdgeShape* self, b2MassData* massData, float density);
-EXPORT void EdgeShape_set(b2EdgeShape* self, float32 vx1, float32 vy1, float32 vx2, float32 vy2);

@@ -55,12 +55,6 @@ public:
 	/// @see b2Shape::ComputeMass
 	void ComputeMass(b2MassData* massData, float density) const override;
 
-	void SetPosition(float32 x, float32 y) { m_p.Set(x, y); }
-
-	float32 GetPositionX() const { return m_p.x; }
-
-	float32 GetPositionY() const { return m_p.y; }
-
 	/// Position
 	b2Vec2 m_p;
 };

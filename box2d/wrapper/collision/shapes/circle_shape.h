@@ -5,6 +5,3 @@ EXPORT void CircleShape_compute_distance(b2CircleShape* self, const b2Transform*
 EXPORT bool CircleShape_ray_cast(b2CircleShape* self, b2RayCastOutput* output, const b2RayCastInput* input, const b2Transform* transform, int32 childIndex);
 EXPORT void CircleShape_compute_aabb(b2CircleShape* self, b2AABB* aabb, const b2Transform* transform, int32 childIndex);
 EXPORT void CircleShape_compute_mass(b2CircleShape* self, b2MassData* massData, float density);
-EXPORT void CircleShape_set_position(b2CircleShape* self, float32 x, float32 y);
-EXPORT float32 CircleShape_get_position_x(b2CircleShape* self);
-EXPORT float32 CircleShape_get_position_y(b2CircleShape* self);

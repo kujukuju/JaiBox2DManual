@@ -25,9 +25,6 @@ class b2World;
 class b2ParticleSystem;
 class b2ParticleGroup;
 class b2ParticleColor;
-#if LIQUIDFUN_EXTERNAL_LANGUAGE_API
-class b2CircleShape;
-#endif // LIQUIDFUN_EXTERNAL_LANGUAGE_API
 
 /// @file
 
@@ -73,18 +70,10 @@ struct B2_API b2ParticleGroupDef
 		lifetime = 0.0f;
 		userData = NULL;
 		group = NULL;
-
-#if LIQUIDFUN_EXTERNAL_LANGUAGE_API
-		circleShapes = NULL;
-		ownShapesArray = false;
-#endif // LIQUIDFUN_EXTERNAL_LANGUAGE_API
 	}
 
 	~b2ParticleGroupDef()
 	{
-#if LIQUIDFUN_EXTERNAL_LANGUAGE_API
-		FreeShapesMemory();
-#endif // LIQUIDFUN_EXTERNAL_LANGUAGE_API
 	}
 
 	/// The particle-behavior flags (See #b2ParticleFlag).
@@ -142,28 +131,6 @@ struct B2_API b2ParticleGroupDef
 
 	/// An existing particle group to which the particles will be added.
 	b2ParticleGroup* group;
-
-	/// Storage for constructed CircleShapes from an incoming vertex list
-	const b2CircleShape* circleShapes;
-
-	/// True if we create the shapes array internally.
-	bool ownShapesArray;
-
-	/// Clean up all memory associated with SetCircleShapesFromVertexList
-	void FreeShapesMemory();
-
-	/// From a vertex list created by an external language API, construct
-	/// a list of circle shapes that can be used to create a b2ParticleGroup
-	/// This eliminates cumbersome array-interfaces between languages.
-	void SetCircleShapesFromVertexList(void* inBuf,
-									   int numShapes,
-									   float radius);
-
-	/// Set position with direct floats.
-	void SetPosition(float32 x, float32 y);
-
-	/// Set color with direct ints.
-	void SetColor(int32 r, int32 g, int32 b, int32 a);
 };
 
 /// A group of particles. b2ParticleGroup::CreateParticleGroup creates these.
@@ -394,18 +361,5 @@ inline void b2ParticleGroup::DestroyParticles()
 {
 	DestroyParticles(false);
 }
-
-#if LIQUIDFUN_EXTERNAL_LANGUAGE_API
-inline void b2ParticleGroupDef::SetPosition(float32 x, float32 y)
-{
-	position.Set(x, y);
-}
-
-inline void b2ParticleGroupDef::SetColor(int32 r, int32 g, int32 b, int32 a)
-{
-	color.Set((uint8)r, (uint8)g, (uint8)b, (uint8)a);
-}
-#endif // LIQUIDFUN_EXTERNAL_LANGUAGE_API
-
 
 #endif

@@ -174,9 +174,6 @@ ParticleDef_create :: () -> b2ParticleDef #foreign box2d;
 b2_calculate_particle_iterations :: (gravity: float32, radius: float32, timeStep: float32) -> s32 #foreign box2d;
 ParticleGroupDef_new :: () -> *b2ParticleGroupDef #foreign box2d;
 ParticleGroupDef_create :: () -> b2ParticleGroupDef #foreign box2d;
-ParticleGroupDef_set_circle_shapes_from_vertex_list :: (self: *b2ParticleGroupDef, inBuf: *void, numShapes: int, radius: float) -> void #foreign box2d;
-ParticleGroupDef_set_position :: (self: *b2ParticleGroupDef, x: float32, y: float32) -> void #foreign box2d;
-ParticleGroupDef_set_color :: (self: *b2ParticleGroupDef, r: s32, g: s32, b: s32, a: s32) -> void #foreign box2d;
 ParticleGroup_get_next :: (self: *b2ParticleGroup) -> *b2ParticleGroup #foreign box2d;
 ParticleGroup_get_particle_system :: (self: *b2ParticleGroup) -> *b2ParticleSystem #foreign box2d;
 ParticleGroup_get_particle_count :: (self: *b2ParticleGroup) -> s32 #foreign box2d;
@@ -281,12 +278,6 @@ ParticleSystem_query_aabb :: (self: *b2ParticleSystem, callback: *b2QueryCallbac
 ParticleSystem_query_shape_aabb :: (self: *b2ParticleSystem, callback: *b2QueryCallback, shape: *b2Shape, xf: *b2Transform) -> void #foreign box2d;
 ParticleSystem_ray_cast :: (self: *b2ParticleSystem, callback: *b2RayCastCallback, point1: *Vector2, point2: *Vector2) -> void #foreign box2d;
 ParticleSystem_compute_aabb :: (self: *b2ParticleSystem, aabb: *b2AABB) -> void #foreign box2d;
-ParticleSystem_set_particle_velocity :: (self: *b2ParticleSystem, index: s32, vx: float32, vy: float32) -> void #foreign box2d;
-ParticleSystem_get_particle_position_x :: (self: *b2ParticleSystem, index: s32) -> float #foreign box2d;
-ParticleSystem_get_particle_position_y :: (self: *b2ParticleSystem, index: s32) -> float #foreign box2d;
-ParticleSystem_copy_position_buffer :: (self: *b2ParticleSystem, startIndex: int, numParticles: int, outBuf: *void, size: int) -> int #foreign box2d;
-ParticleSystem_copy_color_buffer :: (self: *b2ParticleSystem, startIndex: int, numParticles: int, outBuf: *void, size: int) -> int #foreign box2d;
-ParticleSystem_copy_weight_buffer :: (self: *b2ParticleSystem, startIndex: int, numParticles: int, outBuf: *void, size: int) -> int #foreign box2d;
 ChainShape_new :: () -> *b2ChainShape #foreign box2d;
 ChainShape_create :: () -> b2ChainShape #foreign box2d;
 ChainShape_clear :: (self: *b2ChainShape) -> void #foreign box2d;
@@ -307,9 +298,6 @@ CircleShape_compute_distance :: (self: *b2CircleShape, xf: *b2Transform, p: *Vec
 CircleShape_ray_cast :: (self: *b2CircleShape, output: *b2RayCastOutput, input: *b2RayCastInput, transform: *b2Transform, childIndex: s32) -> bool #foreign box2d;
 CircleShape_compute_aabb :: (self: *b2CircleShape, aabb: *b2AABB, transform: *b2Transform, childIndex: s32) -> void #foreign box2d;
 CircleShape_compute_mass :: (self: *b2CircleShape, massData: *b2MassData, density: float) -> void #foreign box2d;
-CircleShape_set_position :: (self: *b2CircleShape, x: float32, y: float32) -> void #foreign box2d;
-CircleShape_get_position_x :: (self: *b2CircleShape) -> float32 #foreign box2d;
-CircleShape_get_position_y :: (self: *b2CircleShape) -> float32 #foreign box2d;
 EdgeShape_new :: () -> *b2EdgeShape #foreign box2d;
 EdgeShape_create :: () -> b2EdgeShape #foreign box2d;
 EdgeShape_set_one_sided :: (self: *b2EdgeShape, v0: *Vector2, v1: *Vector2, v2: *Vector2, v3: *Vector2) -> void #foreign box2d;
@@ -321,7 +309,6 @@ EdgeShape_compute_distance :: (self: *b2EdgeShape, xf: *b2Transform, p: *Vector2
 EdgeShape_ray_cast :: (self: *b2EdgeShape, output: *b2RayCastOutput, input: *b2RayCastInput, transform: *b2Transform, childIndex: s32) -> bool #foreign box2d;
 EdgeShape_compute_aabb :: (self: *b2EdgeShape, aabb: *b2AABB, transform: *b2Transform, childIndex: s32) -> void #foreign box2d;
 EdgeShape_compute_mass :: (self: *b2EdgeShape, massData: *b2MassData, density: float) -> void #foreign box2d;
-EdgeShape_set :: (self: *b2EdgeShape, vx1: float32, vy1: float32, vx2: float32, vy2: float32) -> void #foreign box2d;
 PolygonShape_new :: () -> *b2PolygonShape #foreign box2d;
 PolygonShape_create :: () -> b2PolygonShape #foreign box2d;
 PolygonShape_clone :: (self: *b2PolygonShape, allocator: *b2BlockAllocator) -> *b2Shape #foreign box2d;
@@ -335,7 +322,6 @@ PolygonShape_ray_cast :: (self: *b2PolygonShape, output: *b2RayCastOutput, input
 PolygonShape_compute_aabb :: (self: *b2PolygonShape, aabb: *b2AABB, transform: *b2Transform, childIndex: s32) -> void #foreign box2d;
 PolygonShape_compute_mass :: (self: *b2PolygonShape, massData: *b2MassData, density: float) -> void #foreign box2d;
 PolygonShape_validate :: (self: *b2PolygonShape) -> bool #foreign box2d;
-PolygonShape_set_centroid :: (self: *b2PolygonShape, x: float32, y: float32) -> void #foreign box2d;
 Shape_clone :: (shape: *b2Shape, allocator: *b2BlockAllocator) -> *b2Shape #foreign box2d;
 Shape_get_type :: (shape: *b2Shape) -> b2ShapeType #foreign box2d;
 Shape_get_child_count :: (shape: *b2Shape) -> s32 #foreign box2d;

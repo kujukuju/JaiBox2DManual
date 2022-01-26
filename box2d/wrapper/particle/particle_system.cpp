@@ -336,27 +336,3 @@ void ParticleSystem_ray_cast(b2ParticleSystem* self, b2RayCastCallback* callback
 void ParticleSystem_compute_aabb(b2ParticleSystem* self, b2AABB* const aabb) {
     self->ComputeAABB(aabb);
 }
-
-void ParticleSystem_set_particle_velocity(b2ParticleSystem* self, int32 index, float32 vx, float32 vy) {
-    self->SetParticleVelocity(index, vx, vy);
-}
-
-float ParticleSystem_get_particle_position_x(b2ParticleSystem* self, int32 index) {
-    return self->GetParticlePositionX(index);
-}
-
-float ParticleSystem_get_particle_position_y(b2ParticleSystem* self, int32 index) {
-    return self->GetParticlePositionY(index);
-}
-
-int ParticleSystem_copy_position_buffer(b2ParticleSystem* self, int startIndex, int numParticles, void* outBuf, int size) {
-    return self->CopyPositionBuffer(startIndex, numParticles, outBuf, size);
-}
-
-int ParticleSystem_copy_color_buffer(b2ParticleSystem* self, int startIndex, int numParticles, void* outBuf, int size) {
-    return self->CopyColorBuffer(startIndex, numParticles, outBuf, size);
-}
-
-int ParticleSystem_copy_weight_buffer(b2ParticleSystem* self, int startIndex, int numParticles, void* outBuf, int size) {
-    return self->CopyWeightBuffer(startIndex, numParticles, outBuf, size);
-}

@@ -13,7 +13,7 @@ if (WIN32)
   find_package(Threads)
 endif()
 
-add_definitions(-DLIQUIDFUN_EXTERNAL_LANGUAGE_API=1)
+add_definitions(-DLIQUIDFUN_EXTERNAL_LANGUAGE_API=0)
 
 # set(CMAKE_CONFIGURATION_TYPES "Debug;RelWithDebInfo" CACHE STRING "" FORCE)
 

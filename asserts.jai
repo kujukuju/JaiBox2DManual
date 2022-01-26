@@ -69,7 +69,7 @@
     assert(size_of(ReportParticleRayCastCB) == 8, "ReportParticleRayCastCB must be of size 8.");
     assert(size_of(ShouldQueryParticleSystemRayCastCB) == 8, "ShouldQueryParticleSystemRayCastCB must be of size 8.");
     assert(size_of(b2ParticleDef) == 48, "b2ParticleDef must be of size 48.");
-    assert(size_of(b2ParticleGroupDef) == 120, "b2ParticleGroupDef must be of size 120.");
+    assert(size_of(b2ParticleGroupDef) == 104, "b2ParticleGroupDef must be of size 104.");
     assert(size_of(b2ParticleGroup) == 96, "b2ParticleGroup must be of size 96.");
     assert(size_of(b2ParticleContact) == 24, "b2ParticleContact must be of size 24.");
     assert(size_of(b2ParticleHandle) == 24, "b2ParticleHandle must be of size 24.");

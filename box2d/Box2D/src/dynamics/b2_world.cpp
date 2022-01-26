@@ -483,7 +483,9 @@ void b2World::Solve(const b2TimeStep& step)
 	// Clear all the island flags.
 	for (b2Body* b = m_bodyList; b; b = b->m_next)
 	{
+		printf("clearing island %p\n", b);
 		b->m_flags &= ~b2Body::e_islandFlag;
+		printf("new flags for %p %u %i\n", b, b->m_flags, (b->m_flags & b2Body::e_islandFlag) ? 1 : 0);
 	}
 	for (b2Contact* c = m_contactManager.m_contactList; c; c = c->m_next)
 	{
@@ -501,7 +503,7 @@ void b2World::Solve(const b2TimeStep& step)
 	{
 		if (seed->m_flags & b2Body::e_islandFlag)
 		{
-			printf("skipping because its an island\n");
+			printf("skipping body because its an island\n");
 			continue;
 		}
 
@@ -517,6 +519,8 @@ void b2World::Solve(const b2TimeStep& step)
 			printf("skipping because its static\n");
 			continue;
 		}
+
+		printf("continuing with body %p\m", seed);
 
 		// Reset island and stack.
 		island.Clear();
@@ -1029,10 +1033,10 @@ void b2World::Step(float dt, int32 velocityIterations, int32 positionIterations,
 	if (m_stepComplete && step.dt > 0.0f)
 	{
 		b2Timer timer;
-		for (b2ParticleSystem* p = m_particleSystemList; p; p = p->GetNext())
-		{
-			p->Solve(step); // Particle Simulation
-		}
+		// for (b2ParticleSystem* p = m_particleSystemList; p; p = p->GetNext())
+		// {
+		// 	p->Solve(step); // Particle Simulation
+		// }
 		Solve(step);
 		m_profile.solve = timer.GetMilliseconds();
 	}

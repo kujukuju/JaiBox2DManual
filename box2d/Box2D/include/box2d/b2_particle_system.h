@@ -23,14 +23,6 @@
 #include "b2_particle.h"
 #include "b2_time_step.h"
 
-#ifdef LIQUIDFUN_UNIT_TESTS
-#include <gtest/gtest.h>
-#endif // LIQUIDFUN_UNIT_TESTS
-
-#if LIQUIDFUN_EXTERNAL_LANGUAGE_API
-#include <cstring>
-#endif // LIQUIDFUN_EXTERNAL_LANGUAGE_API
-
 class b2World;
 class b2Body;
 class b2Shape;
@@ -692,57 +684,11 @@ public:
 	/// @param aabb Returns the axis-aligned bounding box of the system.
 	void ComputeAABB(b2AABB* const aabb) const;
 
-#if LIQUIDFUN_EXTERNAL_LANGUAGE_API
-public:
-	enum b2ExceptionType
-	{
-		b2_bufferTooSmall,
-		b2_particleIndexOutOfBounds,
-		b2_numErrors,
-		b2_noExceptions,
-	};
-
-	/// Set the velocity of particle at index with direct floats.
-	void SetParticleVelocity(int32 index, float32 vx, float32 vy);
-
-	/// Get the x-coordinate of particle at index.
-	float GetParticlePositionX(int32 index) const;
-
-	/// Get the y-coordinate of particle at index.
-	float GetParticlePositionY(int32 index) const;
-
-	/// Copy position buffer into a specified buffer, starting from startIndex.
-	int CopyPositionBuffer(int startIndex, int numParticles, void* outBuf,
-						   int size) const;
-
-	/// Copy color buffer into a specified buffer, starting from startIndex.
-	int CopyColorBuffer(int startIndex, int numParticles, void* outBuf,
-					    int size) const;
-
-	/// Copy color buffer into a specified buffer, starting from startIndex.
-	int CopyWeightBuffer(int startIndex, int numParticles, void* outBuf,
-						 int size) const;
-
-private:
-	/// Helper function for buffer copies.
-	int CopyBuffer(int startIndex, int numParticles, void* inBufWithOffset,
-				   void* outBuf, int outBufSize, int copySize) const;
-
-	/// Check if buffer copy is valid for the Get*Buffer functions that have
-	/// a user-supplied output buffer.
-	b2ExceptionType IsBufCopyValid(int startIndex, int numParticles,
-								   int copySize, int bufSize) const;
-#endif // LIQUIDFUN_EXTERNAL_LANGUAGE_API
-
 private:
 	friend class b2World;
 	friend class b2ParticleGroup;
 	friend class b2ParticleBodyContactRemovePredicate;
 	friend class b2FixtureParticleQueryCallback;
-#ifdef LIQUIDFUN_UNIT_TESTS
-	FRIEND_TEST(FunctionTests, GetParticleMass);
-	FRIEND_TEST(FunctionTests, AreProxyBuffersTheSame);
-#endif // LIQUIDFUN_UNIT_TESTS
 
 	template <typename T>
 	struct B2_API UserOverridableBuffer
@@ -1461,80 +1407,6 @@ inline void b2ParticleSystem::ParticleApplyLinearImpulse(int32 index,
 {
 	ApplyLinearImpulse(index, index + 1, impulse);
 }
-
-
-// Note: These functions must go in the header so the unit tests will compile
-// them. b2ParticleSystem.cpp does not compile with this #define.
-#if LIQUIDFUN_EXTERNAL_LANGUAGE_API
-
-inline void b2ParticleSystem::SetParticleVelocity(int32 index,
-												  float32 vx,
-												  float32 vy)
-{
-	b2Vec2& v = GetVelocityBuffer()[index];
-	v.x = vx;
-	v.y = vy;
-}
-
-inline float b2ParticleSystem::GetParticlePositionX(int32 index) const
-{
-	return GetPositionBuffer()[index].x;
-}
-
-inline float b2ParticleSystem::GetParticlePositionY(int32 index) const
-{
-	return GetPositionBuffer()[index].y;
-}
-
-inline int b2ParticleSystem::CopyPositionBuffer(int startIndex,
-												int numParticles,
-												void* outBuf,
-												int size) const
-{
-	int copySize = numParticles * sizeof(b2Vec2);
-	void* inBufWithOffset = (void*) (GetPositionBuffer() + startIndex);
-	return CopyBuffer(startIndex, numParticles, inBufWithOffset, outBuf, size,
-					  copySize);
-}
-
-inline int b2ParticleSystem::CopyColorBuffer(int startIndex,
-											 int numParticles,
-											 void* outBuf,
-											 int size) const
-{
-	int copySize = numParticles * sizeof(b2ParticleColor);
-	void* inBufWithOffset = (void*) (GetColorBuffer() + startIndex);
-	return CopyBuffer(startIndex, numParticles, inBufWithOffset, outBuf, size,
-					  copySize);
-}
-
-inline int b2ParticleSystem::CopyWeightBuffer(int startIndex,
-											  int numParticles,
-											  void* outBuf,
-											  int size) const
-{
-	int copySize = numParticles * sizeof(float32);
-	void* inBufWithOffset = (void*) (GetWeightBuffer() + startIndex);
-	return CopyBuffer(startIndex, numParticles, inBufWithOffset, outBuf, size,
-					  copySize);
-}
-
-inline int b2ParticleSystem::CopyBuffer(int startIndex, int numParticles,
-										void* inBufWithOffset, void* outBuf,
-										int outBufSize, int copySize) const
-{
-	b2ExceptionType exception = IsBufCopyValid(startIndex, numParticles,
-											   copySize, outBufSize);
-	if (exception != b2_noExceptions)
-	{
-		return exception;
-	}
-
-	memcpy(outBuf, inBufWithOffset, copySize);
-	return b2_noExceptions;
-}
-
-#endif // LIQUIDFUN_EXTERNAL_LANGUAGE_API
 
 #endif
 

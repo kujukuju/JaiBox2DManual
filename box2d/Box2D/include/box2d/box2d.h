@@ -23,7 +23,7 @@
 #ifndef BOX2D_H
 #define BOX2D_H
 
-#define LIQUIDFUN_EXTERNAL_LANGUAGE_API 1
+#define LIQUIDFUN_EXTERNAL_LANGUAGE_API 0
 
 // These include files constitute the main Box2D API
 

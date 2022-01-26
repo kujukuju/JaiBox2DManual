@@ -12,4 +12,3 @@ EXPORT bool PolygonShape_ray_cast(b2PolygonShape* self, b2RayCastOutput* output,
 EXPORT void PolygonShape_compute_aabb(b2PolygonShape* self, b2AABB* aabb, const b2Transform* transform, int32 childIndex);
 EXPORT void PolygonShape_compute_mass(b2PolygonShape* self, b2MassData* massData, float density);
 EXPORT bool PolygonShape_validate(b2PolygonShape* self);
-EXPORT void PolygonShape_set_centroid(b2PolygonShape* self, float32 x, float32 y);

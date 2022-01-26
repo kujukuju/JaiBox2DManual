@@ -260,12 +260,6 @@ public:
 	/// @warning this should be called outside of a time step.
 	void Dump();
 
-	/// Constructor which takes direct floats.
-	b2World(float32 gravityX, float32 gravityY);
-
-	/// Set gravity with direct floats.
-	void SetGravity(float32 gravityX, float32 gravityY);
-
 private:
 
 	friend class b2Body;
@@ -408,16 +402,6 @@ inline const b2ContactManager& b2World::GetContactManager() const
 inline const b2Profile& b2World::GetProfile() const
 {
 	return m_profile;
-}
-
-inline b2World::b2World(float32 gravityX, float32 gravityY)
-{
-	Init(b2Vec2(gravityX, gravityY));
-}
-
-inline void b2World::SetGravity(float32 gravityX, float32 gravityY)
-{
-	SetGravity(b2Vec2(gravityX, gravityY));
 }
 
 #endif

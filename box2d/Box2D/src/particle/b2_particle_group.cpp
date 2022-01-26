@@ -19,10 +19,6 @@
 #include "box2d/b2_particle_system.h"
 #include "box2d/b2_world.h"
 
-#if LIQUIDFUN_EXTERNAL_LANGUAGE_API
-#include "box2d/b2_circle_shape.h"
-#endif //LIQUIDFUN_EXTERNAL_LANGUAGE_API
-
 b2ParticleGroup::b2ParticleGroup()
 {
 
@@ -121,43 +117,3 @@ void b2ParticleGroup::DestroyParticles(bool callDestructionListener)
 		m_system->DestroyParticle(i, callDestructionListener);
 	}
 }
-
-#if LIQUIDFUN_EXTERNAL_LANGUAGE_API
-void b2ParticleGroupDef::FreeShapesMemory() {
-	if (circleShapes)
-	{
-		delete[] circleShapes;
-		circleShapes = NULL;
-	}
-	if (ownShapesArray && shapes)
-	{
-		delete[] shapes;
-		shapes = NULL;
-		ownShapesArray = false;
-	}
-}
-
-void b2ParticleGroupDef::SetCircleShapesFromVertexList(void* inBuf,
-													   int numShapes,
-													   float radius)
-{
-	float* points = (float*) inBuf;
-	// Create circle shapes from vertex list and radius
-	b2CircleShape* pCircleShapes = new b2CircleShape[numShapes];
-	b2Shape** pShapes = new b2Shape*[numShapes];
-	for (int i = 0; i < numShapes; ++i) {
-		pCircleShapes[i].m_radius = radius;
-		pCircleShapes[i].m_p = b2Vec2(points[i*2], points[i*2+1]);
-		pShapes[i] = &pCircleShapes[i];
-	}
-
-	// Clean up existing buffers
-	FreeShapesMemory();
-
-	// Assign to newly created buffers
-	ownShapesArray = true;
-	circleShapes = pCircleShapes;
-	shapes = pShapes;
-	shapeCount = numShapes;
-}
-#endif // LIQUIDFUN_EXTERNAL_LANGUAGE_API

@@ -43,7 +43,3 @@ void EdgeShape_compute_aabb(b2EdgeShape* self, b2AABB* aabb, const b2Transform* 
 void EdgeShape_compute_mass(b2EdgeShape* self, b2MassData* massData, float density) {
     self->ComputeMass(massData, density);
 }
-
-void EdgeShape_set(b2EdgeShape* self, float32 vx1, float32 vy1, float32 vx2, float32 vy2) {
-    self->Set(vx1, vy1, vx2, vy2);
-}
