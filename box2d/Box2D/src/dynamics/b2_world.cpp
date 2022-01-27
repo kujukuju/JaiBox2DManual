@@ -39,7 +39,6 @@
 #include "box2d/b2_world.h"
 
 #include <new>
-#include <cstdio>
 
 b2World::b2World(const b2Vec2& gravity)
 {
@@ -483,9 +482,7 @@ void b2World::Solve(const b2TimeStep& step)
 	// Clear all the island flags.
 	for (b2Body* b = m_bodyList; b; b = b->m_next)
 	{
-		printf("clearing island %p\n", b);
 		b->m_flags &= ~b2Body::e_islandFlag;
-		printf("new flags for %p %u %i\n", b, b->m_flags, (b->m_flags & b2Body::e_islandFlag) ? 1 : 0);
 	}
 	for (b2Contact* c = m_contactManager.m_contactList; c; c = c->m_next)
 	{
@@ -503,24 +500,19 @@ void b2World::Solve(const b2TimeStep& step)
 	{
 		if (seed->m_flags & b2Body::e_islandFlag)
 		{
-			printf("skipping body because its an island\n");
 			continue;
 		}
 
 		if (seed->IsAwake() == false || seed->IsEnabled() == false)
 		{
-			printf("skipping because its not awake or not enabled\n");
 			continue;
 		}
 
 		// The seed can be dynamic or kinematic.
 		if (seed->GetType() == b2_staticBody)
 		{
-			printf("skipping because its static\n");
 			continue;
 		}
-
-		printf("continuing with body %p\n", seed);
 
 		// Reset island and stack.
 		island.Clear();
@@ -540,7 +532,6 @@ void b2World::Solve(const b2TimeStep& step)
 			// propagate islands across static bodies.
 			if (b->GetType() == b2_staticBody)
 			{
-				printf("skipping because its static 2\n");
 				continue;
 			}
 
@@ -555,7 +546,6 @@ void b2World::Solve(const b2TimeStep& step)
 				// Has this contact already been added to an island?
 				if (contact->m_flags & b2Contact::e_islandFlag)
 				{
-					printf("skipping because contact is an island\n");
 					continue;
 				}
 
@@ -563,7 +553,6 @@ void b2World::Solve(const b2TimeStep& step)
 				if (contact->IsEnabled() == false ||
 					contact->IsTouching() == false)
 				{
-					printf("skipping because contact is not enabled or not touching %i %i\n", contact->IsEnabled() ? 1 : 0, contact->IsTouching() ? 1 : 0);
 					continue;
 				}
 
@@ -572,7 +561,6 @@ void b2World::Solve(const b2TimeStep& step)
 				bool sensorB = contact->m_fixtureB->m_isSensor;
 				if (sensorA || sensorB)
 				{
-					printf("skipping because no sensor a or sensor b\n");
 					continue;
 				}
 
@@ -584,7 +572,6 @@ void b2World::Solve(const b2TimeStep& step)
 				// Was the other body already added to this island?
 				if (other->m_flags & b2Body::e_islandFlag)
 				{
-					printf("skipping because its an island\n");
 					continue;
 				}
 
@@ -1033,10 +1020,10 @@ void b2World::Step(float dt, int32 velocityIterations, int32 positionIterations,
 	if (m_stepComplete && step.dt > 0.0f)
 	{
 		b2Timer timer;
-		// for (b2ParticleSystem* p = m_particleSystemList; p; p = p->GetNext())
-		// {
-		// 	p->Solve(step); // Particle Simulation
-		// }
+		for (b2ParticleSystem* p = m_particleSystemList; p; p = p->GetNext())
+		{
+			p->Solve(step); // Particle Simulation
+		}
 		Solve(step);
 		m_profile.solve = timer.GetMilliseconds();
 	}

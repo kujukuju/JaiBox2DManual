@@ -25,7 +25,6 @@
 #include "box2d/b2_contact_manager.h"
 #include "box2d/b2_fixture.h"
 #include "box2d/b2_world_callbacks.h"
-#include <cstdio>
 
 b2ContactFilter b2_defaultFilter;
 b2ContactListener b2_defaultListener;
@@ -109,7 +108,6 @@ void b2ContactManager::Destroy(b2Contact* c)
 // contact list.
 void b2ContactManager::Collide()
 {
-	printf("checking collisions\n");
 	// Update awake contacts.
 	b2Contact* c = m_contactList;
 	while (c)
@@ -120,8 +118,6 @@ void b2ContactManager::Collide()
 		int32 indexB = c->GetChildIndexB();
 		b2Body* bodyA = fixtureA->GetBody();
 		b2Body* bodyB = fixtureB->GetBody();
-
-		printf("contact filter flag %i\n", (c->m_flags & b2Contact::e_filterFlag) ? 1 : 0);
 		 
 		// Is this contact flagged for filtering?
 		if (c->m_flags & b2Contact::e_filterFlag)

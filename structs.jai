@@ -1155,6 +1155,27 @@ b2ParticleSystemDef :: struct {
     lifetimeGranularity: float32;
 }
 
+b2ParticleFlag :: enum u32 {
+    b2_waterParticle :: 0;
+    b2_zombieParticle :: 1 << 1;
+    b2_wallParticle :: 1 << 2;
+    b2_springParticle :: 1 << 3;
+    b2_elasticParticle :: 1 << 4;
+    b2_viscousParticle :: 1 << 5;
+    b2_powderParticle :: 1 << 6;
+    b2_tensileParticle :: 1 << 7;
+    b2_colorMixingParticle :: 1 << 8;
+    b2_destructionListenerParticle :: 1 << 9;
+    b2_barrierParticle :: 1 << 10;
+    b2_staticPressureParticle :: 1 << 11;
+    b2_reactiveParticle :: 1 << 12;
+    b2_repulsiveParticle :: 1 << 13;
+    b2_fixtureContactListenerParticle :: 1 << 14;
+    b2_particleContactListenerParticle :: 1 << 15;
+    b2_fixtureContactFilterParticle :: 1 << 16;
+    b2_particleContactFilterParticle :: 1 << 17;
+}
+
 b2ParticleDef :: struct {
     flags: u32;
     position: Vector2;
@@ -1299,6 +1320,15 @@ Proxy :: struct {
 
 b2TrackedBlockAllocator :: struct {
     m_blocks: b2TypedIntrusiveListNode;
+}
+
+b2DrawFlags :: enum u32 {
+    e_shapeBit :: 0x0001;
+    e_jointBit :: 0x0002;
+    e_aabbBit :: 0x0004;
+    e_pairBit :: 0x0008;
+    e_centerOfMassBit :: 0x0010;
+    e_particleBit :: 0x0020;
 }
 
 #scope_file

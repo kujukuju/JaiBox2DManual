@@ -306,6 +306,8 @@ generate :: () {
     array_add(*found_types, "b2FreeList");
     array_add(*found_types, "Proxy");
     array_add(*found_types, "b2TrackedBlockAllocator");
+    array_add(*found_types, "b2DrawFlags");
+    array_add(*found_types, "b2ParticleFlag");
 
     IGNORE_TYPES :: string.[
         "void",
@@ -340,6 +342,8 @@ generate :: () {
         "b2TypedIntrusiveListNode",
         "b2TypedFreeList",
         "Proxy",
+        "b2DrawFlags",
+        "b2ParticleFlag",
     ];
 
     existing_structs_contents, read_existing_structs_file := read_entire_file("structs.jai");
