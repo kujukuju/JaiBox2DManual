@@ -464,10 +464,10 @@ void b2World::Init(const b2Vec2& gravity)
 void b2World::Solve(const b2TimeStep& step)
 {
 	// update previous transforms
-	// for (b2Body* b = m_bodyList; b; b = b->m_next)
-	// {
-	// 	b->m_xf0 = b->m_xf;
-	// }
+	for (b2Body* b = m_bodyList; b; b = b->m_next)
+	{
+		b->m_xf0 = b->m_xf;
+	}
 
 	m_profile.solveInit = 0.0f;
 	m_profile.solveVelocity = 0.0f;
@@ -1091,13 +1091,13 @@ void b2World::QueryAABB(b2QueryCallback* callback, const b2AABB& aabb) const
 	wrapper.broadPhase = &m_contactManager.m_broadPhase;
 	wrapper.callback = callback;
 	m_contactManager.m_broadPhase.Query(&wrapper, aabb);
-	// for (b2ParticleSystem* p = m_particleSystemList; p; p = p->GetNext())
-	// {
-	// 	if (callback->ShouldQueryParticleSystem(p))
-	// 	{
-	// 		p->QueryAABB(callback, aabb);
-	// 	}
-	// }
+	for (b2ParticleSystem* p = m_particleSystemList; p; p = p->GetNext())
+	{
+		if (callback->ShouldQueryParticleSystem(p))
+		{
+			p->QueryAABB(callback, aabb);
+		}
+	}
 }
 
 void b2World::QueryShapeAABB(b2QueryCallback* callback, const b2Shape& shape, const b2Transform& xf) const
@@ -1142,13 +1142,13 @@ void b2World::RayCast(b2RayCastCallback* callback, const b2Vec2& point1, const b
 	input.p1 = point1;
 	input.p2 = point2;
 	m_contactManager.m_broadPhase.RayCast(&wrapper, input);
-	// for (b2ParticleSystem* p = m_particleSystemList; p; p = p->GetNext())
-	// {
-	// 	if (callback->ShouldQueryParticleSystem(p))
-	// 	{
-	// 		p->RayCast(callback, point1, point2);
-	// 	}
-	// }
+	for (b2ParticleSystem* p = m_particleSystemList; p; p = p->GetNext())
+	{
+		if (callback->ShouldQueryParticleSystem(p))
+		{
+			p->RayCast(callback, point1, point2);
+		}
+	}
 }
 
 void b2World::DrawShape(b2Fixture* fixture, const b2Transform& xf, const b2Color& color)

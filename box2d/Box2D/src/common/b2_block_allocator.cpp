@@ -124,7 +124,7 @@ void* b2BlockAllocator::Allocate(int32 size)
 
 	if (size > b2_maxBlockSize)
 	{
-		return b2Alloc(size); // return m_giants.Allocate(size);
+		return m_giants.Allocate(size);
 	}
 
 	int32 index = b2_sizeMap.values[size];
@@ -184,7 +184,7 @@ void b2BlockAllocator::Free(void* p, int32 size)
 
 	if (size > b2_maxBlockSize)
 	{
-		b2Free(p); // m_giants.Free(p);
+		m_giants.Free(p);
 		return;
 	}
 
