@@ -520,7 +520,7 @@ void b2World::Solve(const b2TimeStep& step)
 			continue;
 		}
 
-		printf("continuing with body %p\m", seed);
+		printf("continuing with body %p\n", seed);
 
 		// Reset island and stack.
 		island.Clear();

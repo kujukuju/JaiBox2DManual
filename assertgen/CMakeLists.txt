@@ -11,20 +11,19 @@ set(LIBRARY_OUTPUT_PATH "${CMAKE_BINARY_DIR}")
 set(EXECUTABLE_OUTPUT_PATH "${CMAKE_BINARY_DIR}")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}")
 
-add_subdirectory(../box2d/Box2D "${CMAKE_BINARY_DIR}/box2d")
+# option(BUILD_SHARED_LIBS "Build Box2D as a shared library" ON)
+# add_definitions(-Dbox2d_EXPORTS)
+
+# add_subdirectory(../box2d/Box2D "${CMAKE_BINARY_DIR}/box2d")
 
 message("${CMAKE_BINARY_DIR}/box2d/bin")
 message("${CMAKE_BINARY_DIR}")
-file(COPY "${CMAKE_BINARY_DIR}/box2d/bin/Debug/box2d.dll" DESTINATION "${CMAKE_BINARY_DIR}/Debug")
+# file(COPY "${CMAKE_BINARY_DIR}/box2d/bin/Debug/box2d.dll" DESTINATION "${CMAKE_BINARY_DIR}/Debug")
+
+add_subdirectory(../box2d "${CMAKE_BINARY_DIR}/box2djai")
 
 include_directories(../box2d/Box2D/include ../box2d/wrapper)
 
 add_executable(assertgen main.cpp)
 
-#message(${CMAKE_SOURCE_DIR}/box2d/bin/Debug)
-#find_library(OTHERDLL NAMES box2d PATHS ${CMAKE_SOURCE_DIR}/box2d/bin/Debug)
-#message(STATUS "find_library returned ${OTHERDLL}")
-#add_library(box2dtest SHARED IMPORTED)
-#set_property(TARGET box2dtest PROPERTY IMPORTED_LOCATION "${OTHERDLL}")
-
-target_link_libraries(assertgen PUBLIC box2d)
+target_link_libraries(assertgen PUBLIC box2djai)

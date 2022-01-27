@@ -108,8 +108,8 @@ void Fixture_set_restitution_threshold(b2Fixture* self, float threshold) {
     self->SetRestitutionThreshold(threshold);
 }
 
-b2AABB Fixture_get_aabb(b2Fixture* self, int32_t childIndex) {
-    return self->GetAABB(childIndex);
+const b2AABB* Fixture_get_aabb(b2Fixture* self, int32_t childIndex) {
+    return &self->GetAABB(childIndex);
 }
 
 void Fixture_dump(b2Fixture* self, int32_t bodyIndex) {

@@ -9,6 +9,8 @@ set(CMAKE_CXX_STANDARD 20)
 
 set(CMAKE_BUILD_TYPE RelWithDebInfo)
 
+message("BUILD_SHARED_LIBS1 ${BUILD_SHARED_LIBS}")
+
 #option(box2d_EXPORTS "Export lib I guess" ON)
 
 add_subdirectory(Box2D)

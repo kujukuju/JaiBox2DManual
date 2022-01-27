@@ -110,7 +110,7 @@ Fixture_get_restitution :: (self: *b2Fixture) -> float #foreign box2d;
 Fixture_set_restitution :: (self: *b2Fixture, restitution: float) -> void #foreign box2d;
 Fixture_get_restitution_threshold :: (self: *b2Fixture) -> float #foreign box2d;
 Fixture_set_restitution_threshold :: (self: *b2Fixture, threshold: float) -> void #foreign box2d;
-Fixture_get_aabb :: (self: *b2Fixture, childIndex: s32) -> b2AABB #foreign box2d;
+Fixture_get_aabb :: (self: *b2Fixture, childIndex: s32) -> *b2AABB #foreign box2d;
 Fixture_dump :: (self: *b2Fixture, bodyIndex: s32) -> void #foreign box2d;
 World_new :: (gravity: Vector2) -> *b2World #foreign box2d;
 World_create :: (gravity: Vector2) -> b2World #foreign box2d;

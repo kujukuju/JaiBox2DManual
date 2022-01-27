@@ -400,6 +400,7 @@ bool b2Body::ShouldCollide(const b2Body* other) const
 	// At least one body should be dynamic.
 	if (m_type != b2_dynamicBody && other->m_type != b2_dynamicBody)
 	{
+		printf("should collide false\n");
 		return false;
 	}
 
@@ -410,6 +411,7 @@ bool b2Body::ShouldCollide(const b2Body* other) const
 		{
 			if (jn->joint->m_collideConnected == false)
 			{
+				printf("should collide false\n");
 				return false;
 			}
 		}

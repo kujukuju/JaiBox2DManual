@@ -25,5 +25,5 @@ EXPORT float Fixture_get_restitution(b2Fixture* self);
 EXPORT void Fixture_set_restitution(b2Fixture* self, float restitution);
 EXPORT float Fixture_get_restitution_threshold(b2Fixture* self);
 EXPORT void Fixture_set_restitution_threshold(b2Fixture* self, float threshold);
-EXPORT b2AABB Fixture_get_aabb(b2Fixture* self, int32_t childIndex);
+EXPORT const b2AABB* Fixture_get_aabb(b2Fixture* self, int32_t childIndex);
 EXPORT void Fixture_dump(b2Fixture* self, int32_t bodyIndex);
