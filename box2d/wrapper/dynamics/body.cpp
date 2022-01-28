@@ -1,5 +1,7 @@
 #include "dynamics/body.h"
 
+#include <cstdio>
+
 b2BodyDef* BodyDef_new() {
     return new b2BodyDef();
 }

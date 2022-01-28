@@ -28,12 +28,12 @@ float DistanceJoint_get_reaction_torque(b2DistanceJoint* self, float inv_dt) {
     return self->GetReactionTorque(inv_dt);
 }
 
-b2Vec2 DistanceJoint_get_local_anchor_a(b2DistanceJoint* self) {
-    return self->GetLocalAnchorA();
+const b2Vec2* DistanceJoint_get_local_anchor_a(b2DistanceJoint* self) {
+    return &self->GetLocalAnchorA();
 }
 
-b2Vec2 DistanceJoint_get_local_anchor_b(b2DistanceJoint* self) {
-    return self->GetLocalAnchorB();
+const b2Vec2* DistanceJoint_get_local_anchor_b(b2DistanceJoint* self) {
+    return &self->GetLocalAnchorB();
 }
 
 float DistanceJoint_get_length(b2DistanceJoint* self) {

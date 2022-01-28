@@ -28,12 +28,12 @@ float FrictionJoint_get_reaction_torque(b2FrictionJoint* self, float inv_dt) {
     return self->GetReactionTorque(inv_dt);
 }
 
-b2Vec2 FrictionJoint_get_local_anchor_a(b2FrictionJoint* self) {
-    return self->GetLocalAnchorA();
+const b2Vec2* FrictionJoint_get_local_anchor_a(b2FrictionJoint* self) {
+    return &self->GetLocalAnchorA();
 }
 
-b2Vec2 FrictionJoint_get_local_anchor_b(b2FrictionJoint* self) {
-    return self->GetLocalAnchorB();
+const b2Vec2* FrictionJoint_get_local_anchor_b(b2FrictionJoint* self) {
+    return &self->GetLocalAnchorB();
 }
 
 void FrictionJoint_set_max_force(b2FrictionJoint* self, float force) {

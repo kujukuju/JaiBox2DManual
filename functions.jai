@@ -337,8 +337,8 @@ DistanceJoint_get_anchor_a :: (self: *b2DistanceJoint) -> Vector2 #foreign box2d
 DistanceJoint_get_anchor_b :: (self: *b2DistanceJoint) -> Vector2 #foreign box2d;
 DistanceJoint_get_reaction_force :: (self: *b2DistanceJoint, inv_dt: float) -> Vector2 #foreign box2d;
 DistanceJoint_get_reaction_torque :: (self: *b2DistanceJoint, inv_dt: float) -> float #foreign box2d;
-DistanceJoint_get_local_anchor_a :: (self: *b2DistanceJoint) -> Vector2 #foreign box2d;
-DistanceJoint_get_local_anchor_b :: (self: *b2DistanceJoint) -> Vector2 #foreign box2d;
+DistanceJoint_get_local_anchor_a :: (self: *b2DistanceJoint) -> *Vector2 #foreign box2d;
+DistanceJoint_get_local_anchor_b :: (self: *b2DistanceJoint) -> *Vector2 #foreign box2d;
 DistanceJoint_get_length :: (self: *b2DistanceJoint) -> float #foreign box2d;
 DistanceJoint_set_length :: (self: *b2DistanceJoint, length: float) -> float #foreign box2d;
 DistanceJoint_get_min_length :: (self: *b2DistanceJoint) -> float #foreign box2d;
@@ -359,8 +359,8 @@ FrictionJoint_get_anchor_a :: (self: *b2FrictionJoint) -> Vector2 #foreign box2d
 FrictionJoint_get_anchor_b :: (self: *b2FrictionJoint) -> Vector2 #foreign box2d;
 FrictionJoint_get_reaction_force :: (self: *b2FrictionJoint, inv_dt: float) -> Vector2 #foreign box2d;
 FrictionJoint_get_reaction_torque :: (self: *b2FrictionJoint, inv_dt: float) -> float #foreign box2d;
-FrictionJoint_get_local_anchor_a :: (self: *b2FrictionJoint) -> Vector2 #foreign box2d;
-FrictionJoint_get_local_anchor_b :: (self: *b2FrictionJoint) -> Vector2 #foreign box2d;
+FrictionJoint_get_local_anchor_a :: (self: *b2FrictionJoint) -> *Vector2 #foreign box2d;
+FrictionJoint_get_local_anchor_b :: (self: *b2FrictionJoint) -> *Vector2 #foreign box2d;
 FrictionJoint_set_max_force :: (self: *b2FrictionJoint, force: float) -> void #foreign box2d;
 FrictionJoint_get_max_force :: (self: *b2FrictionJoint) -> float #foreign box2d;
 FrictionJoint_set_max_torque :: (self: *b2FrictionJoint, torque: float) -> void #foreign box2d;
