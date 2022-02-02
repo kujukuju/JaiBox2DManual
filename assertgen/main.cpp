@@ -38,6 +38,7 @@ int main() {
     assertFile << "    assert(size_of(b2JointEdge) == " << sizeof(b2JointEdge) << ", \"b2JointEdge must be of size " << sizeof(b2JointEdge) << ".\");\n";
     assertFile << "    assert(size_of(b2ContactEdge) == " << sizeof(b2ContactEdge) << ", \"b2ContactEdge must be of size " << sizeof(b2ContactEdge) << ".\");\n";
     assertFile << "    assert(size_of(b2World) == " << sizeof(b2World) << ", \"b2World must be of size " << sizeof(b2World) << ".\");\n";
+    assertFile << "    assert(size_of(b2Contact) == " << sizeof(b2Contact) << ", \"b2Contact must be of size " << sizeof(b2Contact) << ".\");\n";
     assertFile << "    assert(size_of(b2Filter) == " << sizeof(b2Filter) << ", \"b2Filter must be of size " << sizeof(b2Filter) << ".\");\n";
     assertFile << "    assert(size_of(b2DestructionListener) == " << sizeof(b2DestructionListener) << ", \"b2DestructionListener must be of size " << sizeof(b2DestructionListener) << ".\");\n";
     assertFile << "    assert(size_of(b2ContactFilter) == " << sizeof(b2ContactFilter) << ", \"b2ContactFilter must be of size " << sizeof(b2ContactFilter) << ".\");\n";
@@ -48,7 +49,6 @@ int main() {
     assertFile << "    assert(size_of(b2ParticleSystemDef) == " << sizeof(b2ParticleSystemDef) << ", \"b2ParticleSystemDef must be of size " << sizeof(b2ParticleSystemDef) << ".\");\n";
     assertFile << "    assert(size_of(b2QueryCallback) == " << sizeof(b2QueryCallback) << ", \"b2QueryCallback must be of size " << sizeof(b2QueryCallback) << ".\");\n";
     assertFile << "    assert(size_of(b2RayCastCallback) == " << sizeof(b2RayCastCallback) << ", \"b2RayCastCallback must be of size " << sizeof(b2RayCastCallback) << ".\");\n";
-    assertFile << "    assert(size_of(b2Contact) == " << sizeof(b2Contact) << ", \"b2Contact must be of size " << sizeof(b2Contact) << ".\");\n";
     assertFile << "    assert(size_of(b2ContactManager) == " << sizeof(b2ContactManager) << ", \"b2ContactManager must be of size " << sizeof(b2ContactManager) << ".\");\n";
     assertFile << "    assert(size_of(b2Profile) == " << sizeof(b2Profile) << ", \"b2Profile must be of size " << sizeof(b2Profile) << ".\");\n";
     assertFile << "    assert(size_of(DestructionListener) == " << sizeof(DestructionListener) << ", \"DestructionListener must be of size " << sizeof(DestructionListener) << ".\");\n";

@@ -117,6 +117,7 @@ b2Contact :: struct {
     m_toi: float32;
     m_friction: float32;
     m_restitution: float32;
+    m_restitutionThreshold: float32;
     m_tangentSpeed: float32;
 }
 
@@ -943,10 +944,10 @@ ContactListener :: struct {
 
 BeginContactCB :: #type (contact: *b2Contact) -> void #c_call;
 EndContactCB :: #type (contact: *b2Contact) -> void #c_call;
-BeginContactParticleBodyCB :: #type (particleSystem: *b2ParticleSystem, particleBodyContact: *b2ParticleBodyContact);
-EndContactFixtureParticleCB :: #type (fixture: *b2Fixture, particleSystem: *b2ParticleSystem, index: s32);
-BeginContactParticleCB :: #type (particleSystem: *b2ParticleSystem, particleContact: *b2ParticleContact);
-EndContactParticleCB :: #type (particleSystem: *b2ParticleSystem, indexA: s32, indexB: s32);
+BeginContactParticleBodyCB :: #type (particleSystem: *b2ParticleSystem, particleBodyContact: *b2ParticleBodyContact) -> void #c_call;
+EndContactFixtureParticleCB :: #type (fixture: *b2Fixture, particleSystem: *b2ParticleSystem, index: s32) -> void #c_call;
+BeginContactParticleCB :: #type (particleSystem: *b2ParticleSystem, particleContact: *b2ParticleContact) -> void #c_call;
+EndContactParticleCB :: #type (particleSystem: *b2ParticleSystem, indexA: s32, indexB: s32) -> void #c_call;
 PreSolveCB :: #type (contact: *b2Contact, oldManifold: *b2Manifold) -> void #c_call;
 PostSolveCB :: #type (contact: *b2Contact, impulse: *b2ContactImpulse) -> void #c_call;
 

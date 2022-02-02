@@ -30,6 +30,7 @@
     assert(size_of(b2JointEdge) == 32, "b2JointEdge must be of size 32.");
     assert(size_of(b2ContactEdge) == 32, "b2ContactEdge must be of size 32.");
     assert(size_of(b2World) == 103312, "b2World must be of size 103312.");
+    assert(size_of(b2Contact) == 208, "b2Contact must be of size 208.");
     assert(size_of(b2Filter) == 6, "b2Filter must be of size 6.");
     assert(size_of(b2DestructionListener) == 8, "b2DestructionListener must be of size 8.");
     assert(size_of(b2ContactFilter) == 8, "b2ContactFilter must be of size 8.");
@@ -40,7 +41,6 @@
     assert(size_of(b2ParticleSystemDef) == 84, "b2ParticleSystemDef must be of size 84.");
     assert(size_of(b2QueryCallback) == 8, "b2QueryCallback must be of size 8.");
     assert(size_of(b2RayCastCallback) == 8, "b2RayCastCallback must be of size 8.");
-    assert(size_of(b2Contact) == 208, "b2Contact must be of size 208.");
     assert(size_of(b2ContactManager) == 120, "b2ContactManager must be of size 120.");
     assert(size_of(b2Profile) == 32, "b2Profile must be of size 32.");
     assert(size_of(DestructionListener) == 32, "DestructionListener must be of size 32.");

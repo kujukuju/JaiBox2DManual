@@ -8,6 +8,7 @@ extern "C" {
 #include "wrapper/common/draw.cpp"
 
 #include "wrapper/dynamics/body.cpp"
+#include "wrapper/dynamics/contact.cpp"
 #include "wrapper/dynamics/fixture.cpp"
 #include "wrapper/dynamics/world.cpp"
 #include "wrapper/dynamics/world_callbacks.cpp"
