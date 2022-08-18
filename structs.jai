@@ -427,7 +427,7 @@ b2Profile :: struct {
 }
 
 b2ChainShape :: struct {
-    using shape: b2Shape;
+    using #as shape: b2Shape;
 
     m_vertices: *Vector2;
     m_count: s32;
@@ -438,7 +438,7 @@ b2ChainShape :: struct {
 }
 
 b2EdgeShape :: struct {
-    using shape: b2Shape;
+    using #as shape: b2Shape;
 
     m_vertex1: Vector2;
     m_vertex2: Vector2;
@@ -449,13 +449,13 @@ b2EdgeShape :: struct {
 }
 
 b2CircleShape :: struct {
-    using shape: b2Shape;
+    using #as shape: b2Shape;
 
     m_p: Vector2;
 }
 
 b2PolygonShape :: struct {
-    using shape: b2Shape;
+    using #as shape: b2Shape;
 
     m_centroid: Vector2;
     m_vertices: [b2_maxPolygonVertices] Vector2;
@@ -464,7 +464,7 @@ b2PolygonShape :: struct {
 }
 
 b2DistanceJointDef :: struct {
-    using joint_def: b2JointDef;
+    using #as joint_def: b2JointDef;
 
     localAnchorA: Vector2;
     localAnchorB: Vector2;
@@ -476,7 +476,7 @@ b2DistanceJointDef :: struct {
 }
 
 b2DistanceJoint :: struct {
-    using joint: b2Joint;
+    using #as joint: b2Joint;
 
     m_stiffness: float32;
     m_damping: float32;
@@ -507,7 +507,7 @@ b2DistanceJoint :: struct {
 }
 
 b2FrictionJointDef :: struct {
-    using joint_def: b2JointDef;
+    using #as joint_def: b2JointDef;
 
     localAnchorA: Vector2;
     localAnchorB: Vector2;
@@ -516,7 +516,7 @@ b2FrictionJointDef :: struct {
 }
 
 b2FrictionJoint :: struct {
-    using joint: b2Joint;
+    using #as joint: b2Joint;
 
     m_localAnchorA: Vector2;
     m_localAnchorB: Vector2;
@@ -539,7 +539,7 @@ b2FrictionJoint :: struct {
 }
 
 b2GearJoint :: struct {
-    using joint: b2Joint;
+    using #as joint: b2Joint;
 
     m_joint1: *b2Joint;
     m_joint2: *b2Joint;
@@ -585,7 +585,7 @@ b2GearJoint :: struct {
 }
 
 b2MotorJointDef :: struct {
-    using joint_def: b2JointDef;
+    using #as joint_def: b2JointDef;
 
     linearOffset: Vector2;
     angularOffset: float32;
@@ -595,7 +595,7 @@ b2MotorJointDef :: struct {
 }
 
 b2MotorJoint :: struct {
-    using joint: b2Joint;
+    using #as joint: b2Joint;
 
     m_linearOffset: Vector2;
     m_angularOffset: float32;
@@ -621,7 +621,7 @@ b2MotorJoint :: struct {
 }
 
 b2MouseJoint :: struct {
-    using joint: b2Joint;
+    using #as joint: b2Joint;
 
     m_localAnchorB: Vector2;
     m_targetA: Vector2;
@@ -642,7 +642,7 @@ b2MouseJoint :: struct {
 }
 
 b2PrismaticJointDef :: struct {
-    using joint_def: b2JointDef;
+    using #as joint_def: b2JointDef;
 
     localAnchorA: Vector2;
     localAnchorB: Vector2;
@@ -657,7 +657,7 @@ b2PrismaticJointDef :: struct {
 }
 
 b2PrismaticJoint :: struct {
-    using joint: b2Joint;
+    using #as joint: b2Joint;
 
     m_localAnchorA: Vector2;
     m_localAnchorB: Vector2;
@@ -695,7 +695,7 @@ b2PrismaticJoint :: struct {
 }
 
 b2PulleyJointDef :: struct {
-    using joint_def: b2JointDef;
+    using #as joint_def: b2JointDef;
 
     groundAnchorA: Vector2;
     groundAnchorB: Vector2;
@@ -707,7 +707,7 @@ b2PulleyJointDef :: struct {
 }
 
 b2PulleyJoint :: struct {
-    using joint: b2Joint;
+    using #as joint: b2Joint;
 
     m_groundAnchorA: Vector2;
     m_groundAnchorB: Vector2;
@@ -734,7 +734,7 @@ b2PulleyJoint :: struct {
 }
 
 b2RevoluteJointDef :: struct {
-    using joint_def: b2JointDef;
+    using #as joint_def: b2JointDef;
 
     m_localAnchorA: Vector2;
     m_localAnchorB: Vector2;
@@ -748,7 +748,7 @@ b2RevoluteJointDef :: struct {
 }
 
 b2RevoluteJoint :: struct {
-    using joint: b2Joint;
+    using #as joint: b2Joint;
 
     m_localAnchorA: Vector2;
     m_localAnchorB: Vector2;
@@ -786,7 +786,7 @@ b2LimitState :: enum u32 {
 }
 
 b2WeldJointDef :: struct {
-    using joint_def: b2JointDef;
+    using #as joint_def: b2JointDef;
 
     m_localAnchorA: Vector2;
     m_localAnchorB: Vector2;
@@ -796,7 +796,7 @@ b2WeldJointDef :: struct {
 }
 
 b2WeldJoint :: struct {
-    using joint: b2Joint;
+    using #as joint: b2Joint;
 
     m_stiffness: float32;
     m_damping: float32;
@@ -820,7 +820,7 @@ b2WeldJoint :: struct {
 }
 
 b2WheelJointDef :: struct {
-    using joint_def: b2JointDef;
+    using #as joint_def: b2JointDef;
 
     m_localAnchorA: Vector2;
     m_localAnchorB: Vector2;
@@ -836,7 +836,7 @@ b2WheelJointDef :: struct {
 }
 
 b2WheelJoint :: struct {
-    using joint: b2Joint;
+    using #as joint: b2Joint;
 
     m_localAnchorA: Vector2;
     m_localAnchorB: Vector2;
@@ -884,7 +884,7 @@ b2ClipVertex :: struct {
 }
 
 Draw :: struct {
-    using draw: b2Draw;
+    using #as draw: b2Draw;
     
     m_drawPolygon: DrawPolygonCB;
     m_drawSolidPolygon: DrawSolidPolygonCB;
@@ -899,14 +899,14 @@ Draw :: struct {
 DrawPolygonCB :: #type (vertices: *Vector2, vertexCount: s32, color: b2Color) -> void #c_call;
 DrawSolidPolygonCB :: #type (vertices: *Vector2, vertexCount: s32, color: b2Color) -> void #c_call;
 DrawCircleCB :: #type (center: Vector2, radius: float32, color: b2Color) -> void #c_call;
-DrawSolidCircleCB :: #type (center: Vector2, radius: float32, color: b2Color) -> void #c_call;
+DrawSolidCircleCB :: #type (center: Vector2, radius: float32, axis: Vector2, color: b2Color) -> void #c_call;
 DrawParticlesCB :: #type (centers: *Vector2, radius: float32, colors: *b2ParticleColor, count: s32) -> void #c_call;
 DrawSegmentCB :: #type (p1: Vector2, p2: Vector2, color: b2Color) -> void #c_call;
 DrawTransformCB :: #type (xf: b2Transform) -> void #c_call;
 DrawPointCB :: #type (p: Vector2, size: float, color: b2Color) -> void #c_call;
 
 DestructionListener :: struct {
-    using listener: b2DestructionListener;
+    using #as listener: b2DestructionListener;
 
     m_sayGoodbyeJoint: SayGoodbyeJointCB;
     m_sayGoodbyeFixture: SayGoodbyeFixtureCB;
@@ -918,7 +918,7 @@ SayGoodbyeFixtureCB :: #type (fixture: *b2Fixture) -> void #c_call;
 SayGoodbyeParticleGroupCB :: #type (group: *b2ParticleGroup) -> void #c_call;
 
 ContactFilter :: struct {
-    using filter: b2ContactFilter;
+    using #as filter: b2ContactFilter;
 
     m_shouldCollide: ShouldCollideCB;
     m_shouldCollideFixtureParticle: ShouldCollideFixtureParticleCB;
@@ -930,7 +930,7 @@ ShouldCollideFixtureParticleCB :: #type (fixture: *b2Fixture, particleSystem: *b
 ShouldCollideParticleParticleCB :: #type (particleSystem: *b2ParticleSystem, particleIndexA: s32, particleIndexB: s32) -> bool #c_call;
 
 ContactListener :: struct {
-    using listener: b2ContactListener;
+    using #as listener: b2ContactListener;
     
     m_beginContact: BeginContactCB;
     m_endContact: EndContactCB;
@@ -952,7 +952,7 @@ PreSolveCB :: #type (contact: *b2Contact, oldManifold: *b2Manifold) -> void #c_c
 PostSolveCB :: #type (contact: *b2Contact, impulse: *b2ContactImpulse) -> void #c_call;
 
 QueryCallback :: struct {
-    using callback: b2QueryCallback;
+    using #as callback: b2QueryCallback;
     
     m_reportFixture: ReportFixtureCB;
     m_reportParticle: ReportParticleCB;
@@ -964,7 +964,7 @@ ReportParticleCB :: #type (particleSystem: *b2ParticleSystem, index: s32) -> boo
 ShouldQueryParticleSystemCB :: #type (particleSystem: *b2ParticleSystem) -> bool #c_call;
 
 RayCastCallback :: struct {
-    using callback: b2RayCastCallback;
+    using #as callback: b2RayCastCallback;
     
     m_reportFixture: ReportFixtureRayCastCB;
     m_reportParticle: ReportParticleRayCastCB;
@@ -976,7 +976,7 @@ ReportParticleRayCastCB :: #type (particleSystem: *b2ParticleSystem, index: s32,
 ShouldQueryParticleSystemRayCastCB :: #type (particleSystem: *b2ParticleSystem) -> bool #c_call;
 
 b2GearJointDef :: struct {
-    using joint_def: b2JointDef;
+    using #as joint_def: b2JointDef;
 
     joint1: *b2Joint;
     joint2: *b2Joint;
@@ -984,7 +984,7 @@ b2GearJointDef :: struct {
 }
 
 b2MouseJointDef :: struct {
-    using joint_def: b2JointDef;
+    using #as joint_def: b2JointDef;
 
     target: Vector2;
     maxForce: float32;
@@ -1234,7 +1234,7 @@ b2ParticleContact :: struct {
 }
 
 b2ParticleHandle :: struct {
-    using node: b2TypedIntrusiveListNode;
+    using #as node: b2TypedIntrusiveListNode;
 
     m_index: s32;
 }
