@@ -585,4 +585,4 @@ WheelJoint_draw :: (self: *b2WheelJoint, draw: *b2Draw) -> void #foreign box2d;
 
 #scope_file
 
-box2d :: #foreign_library "bin/win/box2djai";
+box2d :: #foreign_library,no_dll "bin/win/box2djai";

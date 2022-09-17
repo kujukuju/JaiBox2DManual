@@ -1,13 +1,27 @@
 ## Jai Box2D
 
-I might update this significantly in the near future.
+## Deprecated-ish
+
+This library is the most up to date version of box2d (as of august 2022), and I took the most up to date version of googles liquidfun library build on 8 year old box2d, and merged it in with the latest version of box2d.
+
+If you need liquidfun, this library is for you.
+
+However, I've had a few undefined bugs when doing some specific things with this library. I think if I auto generate the bindings based on the C compatability layer it would fix everything, but I personally no longer need liquidfun, so instead I generated this:
+
+https://github.com/kujukuju/JaiBox2DAuto
+
+And if you want a more simple version of box2d (that's just a wrapper on top of the above library) check out:
+
+https://github.com/kujukuju/KodaBoxJai
+
+## Notes
+
+I might update this in the future.
 
 My potential planned changes are:
 
 1. Remove a lot of the unnecessary pointers for most functions.
-2. Update the Box2D version to the latest to get all bug fixes within the past 8 years.
-3. Take the google liquidfun plugin that's based on the 8 year old version of box2d (this) and smash it into the updated version of box2d.
-4. Possibly change all the binding syntax to be more cpp style.
+2. Possibly change all the binding syntax to be more cpp style.
 
 ### Example
 
